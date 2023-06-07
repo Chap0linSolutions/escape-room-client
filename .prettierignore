@@ -1,0 +1,10 @@
+dist/**
+public/**
+
+src/vite-env.d.ts
+
+jest.config.js
+
+vite.config.ts
+
+package-lock.json
