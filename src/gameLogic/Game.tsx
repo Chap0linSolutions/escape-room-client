@@ -23,17 +23,17 @@ import {
 } from '../classes';
 import { InputHandler } from '../events/InputHandler';
 
-import floorSprite from '../assets/floor.png';
-import drawerSprite from '../assets/drawer.png';
-import deskSprite from '../assets/desk.png';
-import vDeskSprite from '../assets/v-desk.png';
-import bottleSprite from '../assets/bottle.png';
-import paperSprite from '../assets/paper.png';
+import floorSprite from '../assets/objects/floor.png';
+import drawerSprite from '../assets/objects/drawer.png';
+import deskSprite from '../assets/objects/desk.png';
+import vDeskSprite from '../assets/objects/v-desk.png';
+import bottleSprite from '../assets/objects/bottle.png';
+import paperSprite from '../assets/objects/paper.png';
 import doorSound from '../assets/sounds/door.mp3';
 import wooshSound from '../assets/sounds/woosh1.mp3';
 import glassSound from '../assets/sounds/glass.mp3';
 import paperSound from '../assets/sounds/paper.mp3';
-import playerSprite from '../assets/player.png';
+import playerSprite from '../assets/players/player.png';
 
 // const inputHandler = new InputHandler();
 // const state = new State();

@@ -1,7 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { usePopupContext } from '../../contexts';
 import { useGameLoop, useGameState } from '../../hooks';
-import { Button } from './GameScene.style';
+import { Button, Content, GameCanvas } from './GameScene.style';
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../../constants';
+import Background from '../../components/Background';
+import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar';
 
 export type GameCallbacks = {
   showPopup: () => void;
@@ -23,14 +27,17 @@ export function GameScene() {
   };
 
   return (
-    <div>
-      <h1 onClick={showPopup}>Game</h1>
-      <canvas
-        style={{ border: '1px solid gold' }}
-        ref={canvasRef}
-        width={1280}
-        height={720}></canvas>
-      <Button onClick={handleStartGame}>Start</Button>
-    </div>
+    <Background>
+      <Header logo/>
+      <Content>
+        <GameCanvas
+          ref={canvasRef}
+          width={CANVAS_WIDTH}
+          height={CANVAS_HEIGHT}
+        />
+        <Sidebar/>
+        <Button onClick={handleStartGame}>Start</Button>
+      </Content>
+    </Background>
   );
 }

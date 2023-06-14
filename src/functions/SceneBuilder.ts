@@ -1,12 +1,12 @@
 import { InteractiveObject } from '../classes/InteractiveObject';
 import { DraggableObject } from '../classes/DraggableObject';
 import { Floor } from '../classes/Floor';
-import floorSprite from '../assets/floor.png';
-import drawerSprite from '../assets/drawer.png';
-import deskSprite from '../assets/desk.png';
-import vDeskSprite from '../assets/v-desk.png';
-import bottleSprite from '../assets/bottle.png';
-import paperSprite from '../assets/paper.png';
+import floorSprite from '../assets/objects/floor.png';
+import drawerSprite from '../assets/objects/drawer.png';
+import deskSprite from '../assets/objects/desk.png';
+import vDeskSprite from '../assets/objects/v-desk.png';
+import bottleSprite from '../assets/objects/bottle.png';
+import paperSprite from '../assets/objects/paper.png';
 import doorSound from '../assets/sounds/door.mp3';
 import wooshSound from '../assets/sounds/woosh1.mp3';
 import glassSound from '../assets/sounds/glass.mp3';
