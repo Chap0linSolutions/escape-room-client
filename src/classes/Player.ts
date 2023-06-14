@@ -1,9 +1,9 @@
-import { hitbox, position } from "../types";
-import { InteractiveObject } from "./InteractiveObject";
-import { FloatingText } from "./FloatingText";
-import { Sprite } from "./Sprite";
-import { ACTION_KEYS, ISOMETRIC_RATIO, SHOW_HITBOX } from "../constants";
-import { DraggableObject } from "./DraggableObject";
+import { hitbox, position } from '../types';
+import { InteractiveObject } from './InteractiveObject';
+import { FloatingText } from './FloatingText';
+import { Sprite } from './Sprite';
+import { ACTION_KEYS, ISOMETRIC_RATIO, SHOW_HITBOX } from '../constants';
+import { DraggableObject } from './DraggableObject';
 
 export class Player {
   name: FloatingText;
@@ -13,11 +13,11 @@ export class Player {
   position: position;
   dp: position;
   direction: string;
-  allowedDirections = ["right", "down", "up", "left"];
+  allowedDirections = ['right', 'down', 'up', 'left'];
   isWalking: boolean;
-  hitboxes: hitbox[]; 
+  hitboxes: hitbox[];
   items: DraggableObject[];
-  lastKeyPressed: string | undefined;  
+  lastKeyPressed: string | undefined;
 
   constructor(
     name: string,
@@ -26,7 +26,7 @@ export class Player {
     speed: number,
     size: number,
     animationPeriod: number,
-    hitboxes: hitbox[],
+    hitboxes: hitbox[]
   ) {
     this.name = new FloatingText(name, null);
     this.isWalking = false;
@@ -34,7 +34,7 @@ export class Player {
     this.size = size;
     this.position = position;
     this.dp = { x: 0, y: 0 };
-    this.direction = "left";
+    this.direction = 'left';
     this.sprite = new Sprite(spriteSrc, size, 4, 2, animationPeriod);
     this.hitboxes = hitboxes;
     this.items = [];
@@ -45,19 +45,19 @@ export class Player {
     if (dir < 0) return;
 
     switch (direction) {
-      case "up":
+      case 'up':
         this.dp = { x: this.speed * dt, y: -this.speed * ISOMETRIC_RATIO * dt };
         break;
-      case "down":
+      case 'down':
         this.dp = { x: -this.speed * dt, y: this.speed * ISOMETRIC_RATIO * dt };
         break;
-      case "left":
+      case 'left':
         this.dp = {
           x: -this.speed * dt,
           y: -this.speed * ISOMETRIC_RATIO * dt,
         };
         break;
-      case "right":
+      case 'right':
         this.dp = { x: this.speed * dt, y: this.speed * ISOMETRIC_RATIO * dt };
         break;
     }
@@ -108,9 +108,9 @@ export class Player {
 
     return {
       x: this.position.x,
-      y: this.position.y,                                                                                                                   
-      width: (this.size),
-      height: (this.size * ratio),
+      y: this.position.y,
+      width: this.size,
+      height: this.size * ratio,
       hitboxes: this.hitboxes,
     };
   }
@@ -118,23 +118,26 @@ export class Player {
   private hasCollided(
     invaderX: number,
     invaderY: number,
-    invaderHitboxes: hitbox[],
+    invaderHitboxes: hitbox[]
   ) {
     let hit = false;
     const { x, y, hitboxes } = this.getAllDimensions();
-    hitboxes && hitboxes.forEach(myHitbox => { 
-      invaderHitboxes.forEach(hitbox => {
-        if (
-          invaderX + hitbox.offset.x < x + myHitbox.offset.x + myHitbox.size &&
-          invaderX + hitbox.offset.x + hitbox.size > x + myHitbox.offset.x &&
-          invaderY + hitbox.offset.y < y + myHitbox.offset.y + myHitbox.size &&
-          invaderY + hitbox.offset.y + hitbox.size > y + myHitbox.offset.y
-        ) {
-          hit = true;
-          return true;
-        }
+    hitboxes &&
+      hitboxes.forEach((myHitbox) => {
+        invaderHitboxes.forEach((hitbox) => {
+          if (
+            invaderX + hitbox.offset.x <
+              x + myHitbox.offset.x + myHitbox.size &&
+            invaderX + hitbox.offset.x + hitbox.size > x + myHitbox.offset.x &&
+            invaderY + hitbox.offset.y <
+              y + myHitbox.offset.y + myHitbox.size &&
+            invaderY + hitbox.offset.y + hitbox.size > y + myHitbox.offset.y
+          ) {
+            hit = true;
+            return true;
+          }
+        });
       });
-    });
     return hit;
   }
 
@@ -145,54 +148,54 @@ export class Player {
       if (this.hasCollided(x, y, hitboxes)) {
         object.orderSlotsAccordingToDistance(this);
         highlight = true;
-      } 
+      }
       object.setHighlight(highlight);
     });
   }
 
-  private renderHitboxes(canvas: CanvasRenderingContext2D){
-    canvas.fillStyle = "lime";
-    this.hitboxes.forEach(hit => {
+  private renderHitboxes(canvas: CanvasRenderingContext2D) {
+    canvas.fillStyle = 'lime';
+    this.hitboxes.forEach((hit) => {
       canvas.fillRect(
         this.position.x + hit.offset.x,
         this.position.y + hit.offset.y,
         hit.size,
-        hit.size,
+        hit.size
       );
     });
   }
 
-  getNearestItem(){
-    if(!this.items || this.items.length === 0) return null;
+  getNearestItem() {
+    if (!this.items || this.items.length === 0) return null;
     return this.items[0];
   }
 
-  takeItem(){
-    if(!this.items || this.items.length === 0) return;
+  takeItem() {
+    if (!this.items || this.items.length === 0) return;
     this.items.splice(0, 1);
   }
 
-  putItem(item: DraggableObject){
+  putItem(item: DraggableObject) {
     this.items.unshift(item);
   }
 
-  handleItems(objects: InteractiveObject[], key: string){
-    if(key !== ACTION_KEYS[1].key || this.lastKeyPressed) return;
+  handleItems(objects: InteractiveObject[], key: string) {
+    if (key !== ACTION_KEYS[1].key || this.lastKeyPressed) return;
 
-    const index = objects.findIndex(o => o.isHighlighted);
+    const index = objects.findIndex((o) => o.isHighlighted);
     if (index < 0) return;
 
     const nearestObject = objects[index];
-    if(!nearestObject.isOpen && !nearestObject.slotsAlwaysVisible) return;
+    if (!nearestObject.isOpen && !nearestObject.slotsAlwaysVisible) return;
     const item = nearestObject.getNearestItem();
-    if(item){
+    if (item) {
       nearestObject.takeItem();
       this.putItem(item);
       return item.playSound();
     }
     const myItem = this.getNearestItem();
     console.log(myItem);
-    if(!myItem) return;
+    if (!myItem) return;
     this.takeItem();
     nearestObject.putItem(myItem);
     myItem.playSound();
@@ -200,7 +203,11 @@ export class Player {
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  update(dt: number, objects: InteractiveObject[], keyPressed: string | undefined) {
+  update(
+    dt: number,
+    objects: InteractiveObject[],
+    keyPressed: string | undefined
+  ) {
     this.checkForCollisions(objects);
     if (keyPressed) {
       this.handleItems(objects, keyPressed);

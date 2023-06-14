@@ -10,25 +10,30 @@ import {
   PLAYER_SIZE,
   PLAYER_SPEED,
   ANIMATION_PERIOD,
-  PLAYER_HITBOX
+  PLAYER_HITBOX,
 } from '../constants';
 import RenderAll from '../functions/Renderer';
 import UpdateAll from '../functions/Updater';
-import { InteractiveObject, Slot, DraggableObject, Floor, Player } from '../classes';
+import {
+  InteractiveObject,
+  Slot,
+  DraggableObject,
+  Floor,
+  Player,
+} from '../classes';
 import { InputHandler } from '../events/InputHandler';
 
-import floorSprite from "../assets/floor.png";
-import drawerSprite from "../assets/drawer.png";
-import deskSprite from "../assets/desk.png";
-import vDeskSprite from "../assets/v-desk.png";
-import bottleSprite from "../assets/bottle.png";
-import paperSprite from "../assets/paper.png";
-import doorSound from "../assets/sounds/door.mp3";
-import wooshSound from "../assets/sounds/woosh1.mp3";
-import glassSound from "../assets/sounds/glass.mp3";
-import paperSound from "../assets/sounds/paper.mp3";
-import playerSprite from "../assets/player.png";
-
+import floorSprite from '../assets/floor.png';
+import drawerSprite from '../assets/drawer.png';
+import deskSprite from '../assets/desk.png';
+import vDeskSprite from '../assets/v-desk.png';
+import bottleSprite from '../assets/bottle.png';
+import paperSprite from '../assets/paper.png';
+import doorSound from '../assets/sounds/door.mp3';
+import wooshSound from '../assets/sounds/woosh1.mp3';
+import glassSound from '../assets/sounds/glass.mp3';
+import paperSound from '../assets/sounds/paper.mp3';
+import playerSprite from '../assets/player.png';
 
 // const inputHandler = new InputHandler();
 // const state = new State();
@@ -36,18 +41,18 @@ import playerSprite from "../assets/player.png";
 
 const mapKeys = (key: string) => {
   switch (key) {
-    case "w":
-    case "ArrowUp":
-      return "up";
-    case "a":
-    case "ArrowLeft":
-      return "left";
-    case "s":
-    case "ArrowDown":
-      return "down";
-    case "d":
-    case "ArrowRight":
-      return "right";
+    case 'w':
+    case 'ArrowUp':
+      return 'up';
+    case 'a':
+    case 'ArrowLeft':
+      return 'left';
+    case 's':
+    case 'ArrowDown':
+      return 'down';
+    case 'd':
+    case 'ArrowRight':
+      return 'right';
     default:
       return key;
   }
@@ -60,27 +65,27 @@ export class Game {
   players: any;
   constructor() {
     const inputHandler = new InputHandler();
-    inputHandler.subscribe("keyDown", "GameKeyDown", this.setKey.bind(this))
-    inputHandler.subscribe("keyUp", "GameKeyUp", this.resetKey.bind(this))
+    inputHandler.subscribe('keyDown', 'GameKeyDown', this.setKey.bind(this));
+    inputHandler.subscribe('keyUp', 'GameKeyUp', this.resetKey.bind(this));
   }
 
   initialSetup = () => {
     this.spawnPlayer();
     this.BuildScene();
-  }
+  };
 
   resetKey = () => {
     this.key = undefined;
-  }
+  };
 
   setKey = (e: string) => {
-    this.key = mapKeys(e)
-  }
+    this.key = mapKeys(e);
+  };
 
   spawnPlayer = () => {
     this.players = [
       new Player(
-        "Alex Topiroze",
+        'Alex Topiroze',
         playerSprite,
         {
           x: (CANVAS_WIDTH - PLAYER_SIZE) / 2,
@@ -92,21 +97,21 @@ export class Game {
         [
           {
             offset: {
-              x: (1 - PLAYER_HITBOX) * PLAYER_SIZE / 2,
+              x: ((1 - PLAYER_HITBOX) * PLAYER_SIZE) / 2,
               y: 40,
             },
             size: PLAYER_SIZE * PLAYER_HITBOX,
           },
           {
             offset: {
-              x: (1 - PLAYER_HITBOX) * PLAYER_SIZE / 2,
+              x: ((1 - PLAYER_HITBOX) * PLAYER_SIZE) / 2,
               y: 60,
             },
             size: PLAYER_SIZE * PLAYER_HITBOX,
           },
           {
             offset: {
-              x: (1 - PLAYER_HITBOX) * PLAYER_SIZE / 2,
+              x: ((1 - PLAYER_HITBOX) * PLAYER_SIZE) / 2,
               y: 80,
             },
             size: PLAYER_SIZE * PLAYER_HITBOX,
@@ -241,7 +246,7 @@ export class Game {
 
   GameLoop = (context: CanvasRenderingContext2D, dt: number) => {
     context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    console.log(this.key)
+    console.log(this.key);
     UpdateAll({
       dt,
       key: this.key,

@@ -1,4 +1,4 @@
-import { position, quad } from "../types";
+import { position, quad } from '../types';
 
 export class Sprite {
   source: HTMLImageElement;

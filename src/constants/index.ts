@@ -1,17 +1,19 @@
-import { keyAndIcon } from "../types";
-import eKey from "../assets/icons/e-key.png";
-import fKey from "../assets/icons/f-key.png";
+import { keyAndIcon } from '../types';
+import eKey from '../assets/icons/e-key.png';
+import fKey from '../assets/icons/f-key.png';
 
-export const ACTION_KEYS: keyAndIcon[] = [      //todo objeto iterável deve obedecer essa sequência de teclas (não necessariamente todas)
-    {
-        key: 'e',               //ação primária
-        icon: eKey,
-    },{
-        key: 'f',               //ação secundária
-        icon: fKey,
-    },
+export const ACTION_KEYS: keyAndIcon[] = [
+  //todo objeto iterável deve obedecer essa sequência de teclas (não necessariamente todas)
+  {
+    key: 'e', //ação primária
+    icon: eKey,
+  },
+  {
+    key: 'f', //ação secundária
+    icon: fKey,
+  },
 
-    //demais ações...
+  //demais ações...
 ];
 
 export const CANVAS_WIDTH = 1000;
@@ -32,4 +34,5 @@ export const SHOW_HITBOX = false;
 export const SHOW_DISTANCE_TO_BOTTOM_CORNER = false;
 
 export const ISOMETRIC_ANGLE = Math.PI / 6;
-export const ISOMETRIC_RATIO = Math.cos(Math.PI / 4) * Math.cos(ISOMETRIC_ANGLE); //o ângulo de visualização do mapa é de 30° de inclinação, por isso esta constante
+export const ISOMETRIC_RATIO =
+  Math.cos(Math.PI / 4) * Math.cos(ISOMETRIC_ANGLE); //o ângulo de visualização do mapa é de 30° de inclinação, por isso esta constante

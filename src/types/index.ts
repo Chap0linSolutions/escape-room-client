@@ -8,15 +8,12 @@ export type size = {
   h: number;
 };
 
-export type quad = [
-  number,
-  number
-];
+export type quad = [number, number];
 
 export type keyAndIcon = {
-  key: string,
-  icon: string,
-}
+  key: string;
+  icon: string;
+};
 
 export type textAndSound = {
   sound: string;
@@ -24,6 +21,6 @@ export type textAndSound = {
 };
 
 export type hitbox = {
-  offset: position,
-  size: number,
-}
+  offset: position;
+  size: number;
+};

@@ -1,8 +1,9 @@
-import { position } from "../types";
-import { Sprite } from "./Sprite";
+import { position } from '../types';
+import { Sprite } from './Sprite';
 
-export class FloatingText {     //classe para representar os textos flutuantes (nomes de personagens, ações em objetos, etc)
-  text: string;                         //as variáveis aqui são bem diretas (acho eu) em relação ao que armazenam.
+export class FloatingText {
+  //classe para representar os textos flutuantes (nomes de personagens, ações em objetos, etc)
+  text: string; //as variáveis aqui são bem diretas (acho eu) em relação ao que armazenam.
   color: string;
   background: string;
   padding: position;
@@ -18,10 +19,10 @@ export class FloatingText {     //classe para representar os textos flutuantes (
     style?: string
   ) {
     this.text = text;
-    this.color = color ? color : "#cccccc";
-    this.background = background ? background : "#222222CC";
+    this.color = color ? color : '#cccccc';
+    this.background = background ? background : '#222222CC';
     this.padding = padding ? padding : { x: 5, y: 5 };
-    this.style = style ? style : "16px Segoe UI";
+    this.style = style ? style : '16px Segoe UI';
     this.icon = iconSprite ? new Sprite(iconSprite, 20, 1, 1, 0) : null;
   }
 
@@ -76,23 +77,23 @@ export class FloatingText {     //classe para representar os textos flutuantes (
     canvas.fill();
   }
 
-  private drawIcon(canvas: CanvasRenderingContext2D, x: number, y: number){
+  private drawIcon(canvas: CanvasRenderingContext2D, x: number, y: number) {
     this.icon &&
       this.icon.render(canvas, {
         x: x + this.padding.x,
         y: y + this.padding.y,
-      }
-    );
+      });
   }
 
   private drawText(canvas: CanvasRenderingContext2D, position: position) {
-    canvas.textAlign = "center";
+    canvas.textAlign = 'center';
     canvas.font = this.style;
     canvas.fillStyle = this.color;
     canvas.fillText(this.text, position.x, position.y);
   }
 
-  render(canvas: CanvasRenderingContext2D, position: position) {    //desenha o fundo, o ícone (caso esteja definido) e o texto em si 
+  render(canvas: CanvasRenderingContext2D, position: position) {
+    //desenha o fundo, o ícone (caso esteja definido) e o texto em si
     const textProps = canvas.measureText(this.text);
     const textWidth = textProps.width;
     const textHeight = textProps.fontBoundingBoxAscent;

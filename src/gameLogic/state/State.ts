@@ -2,25 +2,25 @@ export class State {
   private static instance: State;
   paused = false;
   key = undefined;
-  currentPlayer = ""
+  currentPlayer = '';
 
   constructor() {
     if (!!State.instance) {
       return State.instance;
     }
     State.instance = this;
-    console.log("State created")
+    console.log('State created');
   }
 
-  pauseGame(){
-    this.paused = true
+  pauseGame() {
+    this.paused = true;
   }
 
-  resumeGame(){
-    this.paused = false
+  resumeGame() {
+    this.paused = false;
   }
 
-  setCurrentPlayer(playerType: string){
-    this.currentPlayer = playerType
+  setCurrentPlayer(playerType: string) {
+    this.currentPlayer = playerType;
   }
 }

@@ -1,1 +1,1 @@
-export * from "./PopupFragment";
+export * from './PopupFragment';
