@@ -36,9 +36,11 @@ export class InputHandler {
     document.addEventListener('mousemove', this.handleMouseMove.bind(this));
     document.addEventListener('mousedown', this.handleMouseDown.bind(this));
   }
+
   isTopic(topic: keyof EventObservers) {
     return !!this.observers[topic];
   }
+
   subscribe(topic: keyof EventObservers, name: string, observerFunction: any) {
     if (this.isTopic(topic)) {
       this.observers[topic].push({ name, observerFunction });
@@ -46,6 +48,7 @@ export class InputHandler {
       console.log(`The topic ${topic} does not exist!`);
     }
   }
+
   unsubscribe = (topic: keyof EventObservers, functionToRemove: string) => {
     if (this.isTopic(topic)) {
       this.observers[topic] = this.observers[topic].filter(
@@ -54,20 +57,25 @@ export class InputHandler {
     } else {
       console.log(`The topic ${topic} does not exist!`);
     }
-  };
+  }
+
   notifyAll(topic: keyof EventObservers, command: any) {
     const functionList = this.observers[topic];
     functionList.forEach((observer: any) => observer.observerFunction(command));
   }
+
   handleKeydown(evt: KeyboardEvent) {
     this.notifyAll('keyDown', evt.key);
   }
+
   handleKeyUp(evt: KeyboardEvent) {
     this.notifyAll('keyUp', evt.key);
   }
+
   handleMouseMove(evt: MouseEvent) {
     this.notifyAll('mouseMove', evt);
   }
+
   handleMouseDown(evt: MouseEvent) {
     this.notifyAll('mouseClick', evt);
   }
