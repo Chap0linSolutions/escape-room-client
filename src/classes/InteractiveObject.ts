@@ -1,17 +1,17 @@
 import { actionType, coordinate, positionType } from '../types';
 import { Sprite } from './Sprite';
-import { ACTION_KEYS } from '../constants';
+import { ACTION_KEYS, SHOW_HITBOX } from '../constants';
 import { FloatingText } from './FloatingText';
 import { Player } from './Player';
 import { Slot } from './Slot';
 import { DraggableObject } from './DraggableObject';
+import { getDistance, renderHitbox } from '../functions/Metrics';
 import Sound from './Sound';
 
 type Action = { //ação que o objeto pode responder
   sound: Sound; //qual som é feito quando a ação dispara
   description: FloatingText; //objeto de texto a ser exibido
   options: string[]; //opções de texto a serem exibidas no objeto
-  allowedDirections: string[];
 }
 
 export class InteractiveObject {
@@ -23,6 +23,7 @@ export class InteractiveObject {
   canBeOpened: boolean;
   isOpen: boolean;
   lastKeyPressed: string | undefined;
+  allowedDirections: string[];
   action: Action | undefined;
   slots?: Slot[];
   slotsAlwaysVisible: boolean;
@@ -30,15 +31,16 @@ export class InteractiveObject {
   constructor(
     spriteSrc: string,
     size: number,
-    coordinates: coordinate,
+    position: positionType,
     slots: Slot[],
     slotsAlwaysVisible: boolean,
-    action?: actionType
+    allowedDirections: string[],
+    action?: actionType,
   ) {
     this.canBeOpened = action ? true : false;
     this.sprite = new Sprite(spriteSrc, size, 2, action ? 2 : 1, 0);
     this.size = size;
-    this.position = {canvas: coordinates, map: undefined, hitboxes: undefined};
+    this.position = position;
     this.isHighlighted = false;
     this.isOpen = false;
     this.action = action
@@ -46,20 +48,38 @@ export class InteractiveObject {
           options: action.texts,
           sound: new Sound(action.sound),
           description: new FloatingText(action.texts[0], ACTION_KEYS[0].icon),
-          allowedDirections: action.allowedDirections
         }
       : undefined;
-
+    this.allowedDirections = allowedDirections;
     this.slotsAlwaysVisible = slotsAlwaysVisible;
 
     slots.forEach((slot) => {
-      const relativePos = {x: 0, y: 0};//slot.getPosition();
+      const relativePos = slot.getPosition();
       slot.setPosition({
-        x: coordinates.x + relativePos.x,
-        y: coordinates.y + relativePos.y,
+        x: position.canvas.x + relativePos.x,
+        y: position.canvas.y + relativePos.y,
       }); //passando de coordenadas relativas para absolutas
     });
     this.slots = slots;
+  }
+
+  isAllowedToInteract(invaderDirection: string){
+    return this.allowedDirections.includes(invaderDirection);
+  }
+
+  isInside(where: 'object' | 'hitbox', invader: coordinate){
+    const w = (where === 'object')
+    ? this.position.tiles
+    : this.position.hitboxes;
+    
+    for(let i = 0; i < w.length; i++){
+      const absolutePosition = {
+        x: this.position.map.x + w[i].x,
+        y: this.position.map.y + w[i].y,
+      }
+      if(getDistance(invader, absolutePosition) < 5) return true;
+    }
+    return false;
   }
 
   getSize() {
@@ -89,11 +109,9 @@ export class InteractiveObject {
     const ratio = h / this.sprite.rows / (w / this.sprite.columns);
 
     return {
-      x: this.position.canvas.x,
-      y: this.position.canvas.y,
+      position: this.position,
       width: this.size,
       height: this.size * ratio,
-      hitboxes: this.position.hitboxes,
     };
   }
 
@@ -119,11 +137,9 @@ export class InteractiveObject {
     this.slots[0].object = item;
   }
 
-  orderSlotsAccordingToDistance(player: Player) {
+  orderSlotsAccordingToDistance(referencePoint: coordinate) {
     if (!this.slots) return;
-    const { x, y, width, height } = player.getAllDimensions();
-    const p = { x: x + width / 2, y: y + height };
-    this.slots.sort((a, b) => a.getDistanceTo(p) - b.getDistanceTo(p));
+    this.slots.sort((a, b) => a.getDistanceTo(referencePoint) - b.getDistanceTo(referencePoint));
   }
 
   private renderTexts(canvas: CanvasRenderingContext2D) {
@@ -155,6 +171,24 @@ export class InteractiveObject {
     }
   }
 
+  private renderHitboxes(canvas: CanvasRenderingContext2D){
+    this.position.tiles.forEach((tile => {
+      const absolutePosition = {
+        x: this.position.map.x + tile.x,
+        y: this.position.map.y + tile.y,
+      }
+      renderHitbox(canvas, absolutePosition, 10, 'firebrick');
+    }));
+
+    this.position.hitboxes.forEach((hitbox => {
+      const absolutePosition = {
+        x: this.position.map.x + hitbox.x,
+        y: this.position.map.y + hitbox.y,
+      }
+      renderHitbox(canvas, absolutePosition, 10, 'gold');
+    }));
+  }
+
   ////////////////////////////////////////////////////////////////////////////////
 
   update(keyPressed: string | undefined) {
@@ -169,5 +203,7 @@ export class InteractiveObject {
     this.sprite.render(canvas, this.position.canvas);
     this.renderTexts(canvas);
     this.renderSlots(canvas);
+
+    SHOW_HITBOX && this.renderHitboxes(canvas);
   }
 }

@@ -9,7 +9,7 @@ import doorSound from '../assets/sounds/door.mp3';
 import wooshSound from '../assets/sounds/woosh1.mp3';
 import glassSound from '../assets/sounds/glass.mp3';
 import paperSound from '../assets/sounds/paper.mp3';
-import { dx, dy } from '../constants/tileMap';
+import { dx, dy, mapOrigin } from '../constants/tileMap';
 import {
   InteractiveObject,
   DraggableObject,
@@ -31,10 +31,12 @@ import {
 
 
 export const spawnPlayer = () => {
-  const initialPosition = {
-    x: FLOOR_PADDING + dx,
-    y: 0.5 * (CANVAS_HEIGHT),
+  
+  const origin = {
+    x: mapOrigin.x + dx,
+    y: mapOrigin.y,
   }
+  
   const feetOffset = {
     x: 0,
     y: -20
@@ -42,9 +44,9 @@ export const spawnPlayer = () => {
 
   const players = [
     new Player(
-      'Alex Topiroze',
+      'Alex',
       playerSprite,
-      initialPosition,
+      origin,
       PLAYER_SPEED,
       PLAYER_SIZE,
       ANIMATION_PERIOD,
@@ -60,31 +62,33 @@ export function buildScene() {
 
   const floor = new Floor(
     floorSprite,
-    CANVAS_WIDTH,
-    { x: FLOOR_PADDING, y: 0.5 * CANVAS_HEIGHT},
+    CANVAS_WIDTH - 2*FLOOR_PADDING,
+    {x: FLOOR_PADDING, y: 120},
+    mapOrigin,
   );
 
   const objects  = [
-    //ARMÁRIO///////////////////////////////////////////////////////////////////////////
+    //ARMÁRIO///////////////////////////////////////////////////////////////////////////   
     new InteractiveObject(
       drawerSprite,
       DRAWER_SIZE,
-      {
-        x: 120,
-        y: (CANVAS_HEIGHT - DRAWER_SIZE) / 5,
-
+      { 
+        canvas: {x: 100, y: 0.18*(CANVAS_HEIGHT - DRAWER_SIZE)},
+        map: {x: mapOrigin.x + 3*dx, y: mapOrigin.y - 2*dy},
+        tiles: [{x: 0, y: 0}, {x: dx, y: -dy}],
+        hitboxes: [{x: dx, y: dy}, {x: 2*dx, y: 0}],
       },
       [
         new Slot(
-          { x: DRAWER_SIZE / 2, y: DRAWER_SIZE / 2 - 10 },
+          { x: DRAWER_SIZE / 2 - 10, y: (DRAWER_SIZE / 2 - 10) },
           new DraggableObject(bottleSprite, 18, 'garrafa', glassSound)
         ),
       ],
       false,
+      ['left'],
       {
         sound: doorSound,
         texts: ['abrir o armário', 'fechar o armário'],
-        allowedDirections: ['left'],
       }
     ),
 
@@ -92,9 +96,11 @@ export function buildScene() {
     new InteractiveObject(
       deskSprite,
       DESK_SIZE,
-      {
-        x: CANVAS_WIDTH - (DESK_SIZE + 170),
-        y: (CANVAS_HEIGHT - DESK_SIZE) / 6,
+      { 
+        canvas: {x: 420, y: 0.08*(CANVAS_HEIGHT - DESK_SIZE)},
+        map: {x: mapOrigin.x + 9*dx, y: mapOrigin.y - 6*dy},
+        tiles: [{x: 0, y: 0}, {x: dx, y: dy}, {x: 2*dx, y: 2*dy}],
+        hitboxes: [{x: -dx, y: dy}, {x: 0, y: 2*dy}, {x: dx, y: 3*dy}],
       },
       [
         new Slot(
@@ -103,10 +109,10 @@ export function buildScene() {
         ),
       ],
       false,
+      ['up'],
       {
         sound: wooshSound,
         texts: ['abrir o notebook', 'fechar o notebook'],
-        allowedDirections: ['up'],
       }
     ),
 
@@ -114,18 +120,27 @@ export function buildScene() {
     new InteractiveObject(
       vDeskSprite,
       V_DESK_SIZE,
-      {
-        x: (CANVAS_WIDTH - V_DESK_SIZE) / 2,
-        y: CANVAS_HEIGHT - 275,
+      { 
+        canvas: {x: ((CANVAS_WIDTH - V_DESK_SIZE) / 2) - 22, y: (CANVAS_HEIGHT - 290)},
+        map: {x: mapOrigin.x + 6*dx, y: mapOrigin.y + 5*dy},
+        tiles: [
+          {x: 0, y: 0}, {x: dx, y: dy}, {x: 2*dx, y: 2*dy}, {x: 3*dx, y: 3*dy},
+          {x: 4*dx, y: 2*dy}, {x: 5*dx, y: dy}, {x: 6*dx, y: 0},
+        ],
+        hitboxes: [
+          {x: dx, y: -dy}, {x: 2*dx, y: 0}, {x: 3*dx, y: dy},
+          {x: 4*dx, y: 0}, {x: 5*dx, y: -dy},
+        ],
       },
       [
         new Slot({ x: V_DESK_SIZE * 0.18, y: V_DESK_SIZE * 0.04 }, undefined),
         new Slot({ x: V_DESK_SIZE * 0.5, y: V_DESK_SIZE * 0.2 }, undefined),
         new Slot({ x: V_DESK_SIZE * 0.8, y: V_DESK_SIZE * 0.04 }, undefined),
       ],
-      true
+      true,
+      ['down', 'right'],
     ),
   ];
 
-  return { objects, floor}//TODO voltar para {objects, floor};
+  return { objects, floor}
 }

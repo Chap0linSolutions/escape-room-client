@@ -24,6 +24,6 @@ export default function UpdateAll({
   });
 
   players.forEach((p) => {
-    p.update(dt, floor, key);
+    p.update(dt, floor, objects, key);
   });
 }

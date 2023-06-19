@@ -57,13 +57,24 @@ export class Player {
     }
   }
 
-  private startNewMove(direction: string, map: Floor){
+  private checkForMoves(direction: string, map: Floor, objects: InteractiveObject[]){
     const dir = this.allowedDirections.indexOf(direction);
     if (dir < 0) return;
     this.sprite.setQuad([0, dir]);
-    if(this.canMove(direction, map)){
+    if(this.canMove(direction, map, objects)){
       this.dp = getDp(direction);
       this.movementLeft = {x: dx, y: dy};
+    }
+  }
+
+  private checkInteractions(objects: InteractiveObject[]){
+    const myDirection = this.allowedDirections[this.sprite.getQuad()[1]];
+    for(let i = 0; i < objects.length; i++){
+      if(objects[i].isInside('hitbox', this.position)){
+        objects[i].setHighlight(objects[i].isAllowedToInteract(myDirection));
+        objects[i].orderSlotsAccordingToDistance(this.position);
+        return;
+      }
     }
   }
 
@@ -78,11 +89,14 @@ export class Player {
     )
   }
 
-  private canMove(direction: string, map: Floor){
+  private canMove(direction: string, map: Floor, objects: InteractiveObject[]){
     const delta = getDp(direction);
     const destination = {
       x: this.position.x + dx*delta[0],
       y: this.position.y + dy*delta[1],
+    }
+    for(let i = 0; i < objects.length; i++){
+      if(objects[i].isInside('object', destination)) return false;
     }
     return map.isInsideTileMap(destination);
   }
@@ -164,7 +178,7 @@ export class Player {
     this.items.unshift(item);
   }
 
-  handleItems(objects: InteractiveObject[], key: string) {
+  handleItems(key: string, objects: InteractiveObject[]) {
     if (key !== ACTION_KEYS[1].key || this.lastKeyPressed) return;
 
     const index = objects.findIndex((o) => o.isHighlighted);
@@ -188,15 +202,17 @@ export class Player {
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  update(dt: number, map: Floor, keyPressed: string | undefined) {
+  update(dt: number, map: Floor, objects: InteractiveObject[], keyPressed: string | undefined) {
     if(this.isThereAnyMovementLeft()) {
       this.move(dt);
       this.sprite.update(dt);
     } else if (keyPressed) {
-      this.startNewMove(keyPressed, map);
+      this.checkForMoves(keyPressed, map, objects);
+      this.handleItems(keyPressed, objects);
     } else {
       this.reset();
     }
+    this.checkInteractions(objects);
     this.lastKeyPressed = keyPressed;
   }
 
@@ -211,6 +227,6 @@ export class Player {
     SHOW_HITBOX && renderHitbox(canvas, {
       x: this.position.x + this.movementLeft.x * this.dp[0],
       y: this.position.y + this.movementLeft.y * this.dp[1],
-    }, 5, 'red');
+    }, 5, 'firebrick');
   }
 }

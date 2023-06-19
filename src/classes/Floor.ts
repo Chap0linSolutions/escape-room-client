@@ -1,5 +1,5 @@
 //import { ISOMETRIC_ANGLE } from '../constants';
-import { SHOW_HITBOX } from '../constants';
+import { ISOMETRIC_ANGLE, SHOW_HITBOX, SHOW_TILEMAP } from '../constants';
 import { tileMap, dx, dy } from '../constants/tileMap';
 import { getDistance, renderHitbox } from '../functions/Metrics';
 import { coordinate } from '../types';
@@ -7,10 +7,12 @@ import { Sprite } from './Sprite';
 
 export class Floor {
   sprite: Sprite;
+  spritePosition: coordinate;
   baseCoordinate: coordinate;
 
-  constructor(spriteSrc: string, size: number, baseCoordinate: coordinate) {
+  constructor(spriteSrc: string, size: number, spritePosition: coordinate, baseCoordinate: coordinate) {
     this.sprite = new Sprite(spriteSrc, size, 1, 1, 0);
+    this.spritePosition = spritePosition;
     this.baseCoordinate = baseCoordinate;
   }
 
@@ -19,7 +21,15 @@ export class Floor {
   }
 
   setBaseCoordinate(newcoordinate: coordinate) {
+    const diff = {
+      x: this.baseCoordinate.x - this.spritePosition.x,
+      y: this.baseCoordinate.y - this.spritePosition.y, 
+    }
     this.baseCoordinate = newcoordinate;
+    this.spritePosition = {
+      x: this.spritePosition.x - diff.x,
+      y: this.spritePosition.y - diff.y,
+    }
   }
 
   setSize(newSize: number) {
@@ -47,26 +57,28 @@ export class Floor {
     return false;
   }
 
-  renderTileMap(canvas: CanvasRenderingContext2D, showHitbox: boolean){
-    canvas.fillStyle = '#aaaaaa';
+  renderTileMap(canvas: CanvasRenderingContext2D, showHitbox: boolean, showTilemap: boolean){
+    canvas.fillStyle = '#aaaaaa55';
     canvas.strokeStyle = '#222222';
     canvas.lineWidth = 2;
     tileMap.forEach((tileRow) => {
       tileRow.forEach((tile) => {
-        canvas.beginPath();
-        canvas.moveTo(this.baseCoordinate.x + tile.x, this.baseCoordinate.y + tile.y);
-        canvas.lineTo(this.baseCoordinate.x + dx + tile.x, this.baseCoordinate.y - dy + tile.y);
-        canvas.lineTo(this.baseCoordinate.x + 2 * dx + tile.x, this.baseCoordinate.y + tile.y);
-        canvas.lineTo(this.baseCoordinate.x + dx + tile.x, this.baseCoordinate.y + dy + tile.y);
-        canvas.lineTo(this.baseCoordinate.x + tile.x, this.baseCoordinate.y + tile.y);
-        canvas.stroke();
-        canvas.fill();
-        canvas.closePath();
+        showTilemap && (() => {
+          canvas.beginPath();
+          canvas.moveTo(this.baseCoordinate.x + tile.x, this.baseCoordinate.y + tile.y);
+          canvas.lineTo(this.baseCoordinate.x + dx + tile.x, this.baseCoordinate.y - dy + tile.y);
+          canvas.lineTo(this.baseCoordinate.x + 2 * dx + tile.x, this.baseCoordinate.y + tile.y);
+          canvas.lineTo(this.baseCoordinate.x + dx + tile.x, this.baseCoordinate.y + dy + tile.y);
+          canvas.lineTo(this.baseCoordinate.x + tile.x, this.baseCoordinate.y + tile.y);
+          canvas.stroke();
+          canvas.fill();
+          canvas.closePath();
+        });
         
         showHitbox && renderHitbox(canvas, {
           x: this.baseCoordinate.x + tile.x + dx,
           y: this.baseCoordinate.y + tile.y,
-        }, 0.5 * dy);
+        }, 5);
       })
     });
   }
@@ -78,6 +90,7 @@ export class Floor {
   }
 
   render(canvas: CanvasRenderingContext2D) {
-    this.renderTileMap(canvas, SHOW_HITBOX);
+    this.sprite.render(canvas, this.spritePosition);
+    this.renderTileMap(canvas, SHOW_HITBOX, SHOW_TILEMAP);
   }
 }
