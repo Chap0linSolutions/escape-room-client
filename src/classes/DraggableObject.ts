@@ -1,4 +1,4 @@
-import { position } from '../types';
+import { coordinate } from '../types';
 import { Sprite } from './Sprite';
 import Sound from './Sound';
 
@@ -28,10 +28,10 @@ export class DraggableObject {
     this.sprite.setSize(newSize);
   }
 
-  render(canvas: CanvasRenderingContext2D, position: position) {
+  render(canvas: CanvasRenderingContext2D, coordinate: coordinate) {
     this.sprite.render(canvas, {
-      x: position.x - this.size / 2,
-      y: position.y,
+      x: coordinate.x - this.size / 2,
+      y: coordinate.y,
     });
   }
 }

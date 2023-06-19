@@ -1,54 +1,74 @@
-import { ISOMETRIC_ANGLE } from '../constants';
-import { getDistance } from '../functions/Metrics';
-import { position } from '../types';
+//import { ISOMETRIC_ANGLE } from '../constants';
+import { SHOW_HITBOX } from '../constants';
+import { tileMap, dx, dy } from '../constants/tileMap';
+import { getDistance, renderHitbox } from '../functions/Metrics';
+import { coordinate } from '../types';
 import { Sprite } from './Sprite';
 
 export class Floor {
   sprite: Sprite;
-  position: position;
-  topCornerCoordinates: position;
+  baseCoordinate: coordinate;
 
-  constructor(spriteSrc: string, position: position, size: number) {
+  constructor(spriteSrc: string, size: number, baseCoordinate: coordinate) {
     this.sprite = new Sprite(spriteSrc, size, 1, 1, 0);
-    this.position = position;
-    this.topCornerCoordinates = {
-      x: position.x + size / 2,
-      y: position.y,
-    };
+    this.baseCoordinate = baseCoordinate;
   }
 
   setSprite(newSprite: string) {
     this.sprite.setSource(newSprite);
   }
 
-  setPosition(newPosition: position) {
-    this.position = newPosition;
-    this.topCornerCoordinates = {
-      x: newPosition.x + this.sprite.getSize() / 2,
-      y: newPosition.y,
-    };
+  setBaseCoordinate(newcoordinate: coordinate) {
+    this.baseCoordinate = newcoordinate;
   }
 
   setSize(newSize: number) {
     this.sprite.setSize(newSize);
   }
 
-  getTopCornerCoordinates() {
-    return this.topCornerCoordinates;
+  isInsideTile(invader: coordinate, i: number, j: number){
+    if(i < 0 || i >= tileMap.length) return undefined;
+    if(j < 0 || j >= tileMap[i].length) return undefined;
+    const tileCenter = {
+      x: this.baseCoordinate.x + tileMap[i][j].x + dx,
+      y: this.baseCoordinate.y + tileMap[i][j].y,
+    }
+    return (getDistance(tileCenter, invader) < (0.5 * dy));
   }
 
-  getBottomCornerCoordinates() {
-    return {
-      x: this.topCornerCoordinates.x,
-      y:
-        this.topCornerCoordinates.y +
-        this.sprite.getSize() * Math.tan(ISOMETRIC_ANGLE),
-    };
+  isInsideTileMap(invader: coordinate){
+    for(let i = 0; i < tileMap.length; i++){
+      for(let j = 0; j < tileMap[i].length; j++){
+        if(this.isInsideTile(invader, i, j)){
+          return true;
+        }
+      }
+    }   
+    return false;
   }
 
-  getDistanceToBottomCorner(origin: position) {
-    const destiny = this.getBottomCornerCoordinates();
-    return getDistance(origin, destiny);
+  renderTileMap(canvas: CanvasRenderingContext2D, showHitbox: boolean){
+    canvas.fillStyle = '#aaaaaa';
+    canvas.strokeStyle = '#222222';
+    canvas.lineWidth = 2;
+    tileMap.forEach((tileRow) => {
+      tileRow.forEach((tile) => {
+        canvas.beginPath();
+        canvas.moveTo(this.baseCoordinate.x + tile.x, this.baseCoordinate.y + tile.y);
+        canvas.lineTo(this.baseCoordinate.x + dx + tile.x, this.baseCoordinate.y - dy + tile.y);
+        canvas.lineTo(this.baseCoordinate.x + 2 * dx + tile.x, this.baseCoordinate.y + tile.y);
+        canvas.lineTo(this.baseCoordinate.x + dx + tile.x, this.baseCoordinate.y + dy + tile.y);
+        canvas.lineTo(this.baseCoordinate.x + tile.x, this.baseCoordinate.y + tile.y);
+        canvas.stroke();
+        canvas.fill();
+        canvas.closePath();
+        
+        showHitbox && renderHitbox(canvas, {
+          x: this.baseCoordinate.x + tile.x + dx,
+          y: this.baseCoordinate.y + tile.y,
+        }, 0.5 * dy);
+      })
+    });
   }
 
   ////////////////////////////////////////////////////////////////////
@@ -58,6 +78,6 @@ export class Floor {
   }
 
   render(canvas: CanvasRenderingContext2D) {
-    this.sprite.render(canvas, this.position);
+    this.renderTileMap(canvas, SHOW_HITBOX);
   }
 }

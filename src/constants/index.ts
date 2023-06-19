@@ -27,12 +27,11 @@ export const V_DESK_SIZE = 400;
 export const PLAYER_SPEED = 0.4;
 export const ANIMATION_PERIOD = 100;
 
-export const PLAYER_HITBOX = 0.25;
-export const OBJECTS_HITBOX = 0.35;
-
 export const SHOW_HITBOX = false;
 export const SHOW_DISTANCE_TO_BOTTOM_CORNER = false;
 
 export const ISOMETRIC_ANGLE = Math.PI / 6;
 export const ISOMETRIC_RATIO =
   Math.cos(Math.PI / 4) * Math.cos(ISOMETRIC_ANGLE); //o ângulo de visualização do mapa é de 30° de inclinação, por isso esta constante
+
+export const TILE_SIZE = 50;

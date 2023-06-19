@@ -1,4 +1,4 @@
-export type position = {
+export type coordinate = {
   x: number;
   y: number;
 };
@@ -15,12 +15,14 @@ export type keyAndIcon = {
   icon: string;
 };
 
-export type textAndSound = {
+export type actionType = {
   sound: string;
   texts: string[];
+  allowedDirections: string[];
 };
 
-export type hitbox = {
-  offset: position;
-  size: number;
-};
+export type positionType = {
+  canvas: coordinate;
+  map?: coordinate[];
+  hitboxes?: coordinate[];
+}

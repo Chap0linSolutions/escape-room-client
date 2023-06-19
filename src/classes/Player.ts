@@ -1,83 +1,122 @@
-import { hitbox, position } from '../types';
+import { coordinate, quad } from '../types';
 import { InteractiveObject } from './InteractiveObject';
 import { FloatingText } from './FloatingText';
 import { Sprite } from './Sprite';
-import { ACTION_KEYS, ISOMETRIC_RATIO, SHOW_HITBOX } from '../constants';
 import { DraggableObject } from './DraggableObject';
+import { Floor } from './Floor';
+import { dx, dy } from '../constants/tileMap';
+import { renderHitbox } from '../functions/Metrics';
+import { ACTION_KEYS, ISOMETRIC_RATIO, SHOW_HITBOX } from '../constants';
 
+function getDp(direction: string): quad {
+  switch (direction) {
+    case 'up': return [1, -1];
+    case 'down': return [-1, 1];
+    case 'left': return [-1, -1];
+    case 'right': return [1, 1];
+    default: return [0, 0];
+  }
+}
 export class Player {
   name: FloatingText;
   sprite: Sprite;
   speed: number;
   size: number;
-  position: position;
-  dp: position;
-  direction: string;
-  allowedDirections = ['right', 'down', 'up', 'left'];
-  isWalking: boolean;
-  hitboxes: hitbox[];
+  position: coordinate;
+  dp: quad;
+  movementLeft: coordinate;
+  feetOffset: coordinate;
   items: DraggableObject[];
   lastKeyPressed: string | undefined;
+  allowedDirections = ['right', 'down', 'up', 'left'];
 
   constructor(
     name: string,
     spriteSrc: string,
-    position: position,
+    position: coordinate,
     speed: number,
     size: number,
     animationPeriod: number,
-    hitboxes: hitbox[]
+    feetOffset: coordinate,
   ) {
     this.name = new FloatingText(name, null);
-    this.isWalking = false;
     this.speed = speed;
     this.size = size;
     this.position = position;
-    this.dp = { x: 0, y: 0 };
-    this.direction = 'left';
+    this.dp = [1, 1];
+    this.movementLeft = {x: 0, y: 0};    
+    this.feetOffset = feetOffset;
     this.sprite = new Sprite(spriteSrc, size, 4, 2, animationPeriod);
-    this.hitboxes = hitboxes;
     this.items = [];
   }
 
-  private updateDirection(dt: number, direction: string) {
-    const dir = this.allowedDirections.indexOf(direction);
-    if (dir < 0) return;
-
-    switch (direction) {
-      case 'up':
-        this.dp = { x: this.speed * dt, y: -this.speed * ISOMETRIC_RATIO * dt };
-        break;
-      case 'down':
-        this.dp = { x: -this.speed * dt, y: this.speed * ISOMETRIC_RATIO * dt };
-        break;
-      case 'left':
-        this.dp = {
-          x: -this.speed * dt,
-          y: -this.speed * ISOMETRIC_RATIO * dt,
-        };
-        break;
-      case 'right':
-        this.dp = { x: this.speed * dt, y: this.speed * ISOMETRIC_RATIO * dt };
-        break;
+  private incrementalMoveTo(delta: coordinate){
+    this.position = {
+      x: this.position.x + delta.x * this.dp[0],
+      y: this.position.y + delta.y * this.dp[1],
     }
-
-    this.direction = direction;
-    this.sprite.update(dt, dir);
-    this.setWalking(true);
   }
 
-  private updatePosition() {
-    this.position = {
-      x: this.position.x + this.dp.x,
-      y: this.position.y + this.dp.y,
-    };
+  private startNewMove(direction: string, map: Floor){
+    const dir = this.allowedDirections.indexOf(direction);
+    if (dir < 0) return;
+    this.sprite.setQuad([0, dir]);
+    if(this.canMove(direction, map)){
+      this.dp = getDp(direction);
+      this.movementLeft = {x: dx, y: dy};
+    }
+  }
+
+  private isThereAnyMovementLeft(){
+    return (this.movementLeft.x > 0);
+  }
+
+  private hasMovedBeyondDestination(delta: coordinate){
+    return (
+      (this.movementLeft.x - delta.x < 0) ||
+      (this.movementLeft.y - delta.y < 0)
+    )
+  }
+
+  private canMove(direction: string, map: Floor){
+    const delta = getDp(direction);
+    const destination = {
+      x: this.position.x + dx*delta[0],
+      y: this.position.y + dy*delta[1],
+    }
+    return map.isInsideTileMap(destination);
+  }
+
+  private move(dt: number){
+    const delta = {
+      x: dt * this.speed,
+      y: dt * this.speed * ISOMETRIC_RATIO,
+    }
+    if(this.hasMovedBeyondDestination(delta)){
+      this.incrementalMoveTo(this.movementLeft);
+      this.movementLeft = {x: 0, y: 0};
+      return;
+    }
+    this.incrementalMoveTo(delta);
+    this.movementLeft.x -= delta.x;
+    this.movementLeft.y -= delta.y;
   }
 
   private reset() {
-    this.dp = { x: 0, y: 0 };
+    this.movementLeft = { x: 0, y: 0 };
     this.sprite.reset();
-    this.setWalking(false);
+  }
+
+  getPosition(){
+    return this.position;
+  }
+
+  getTopLeftCorner(){
+    const {x, y, width, height, feetOffset} = this.getAllDimensions();
+    return {
+      x: (x - (width + feetOffset.x)/2),
+      y: (y - (height + feetOffset.y)),
+    }
   }
 
   getSize() {
@@ -89,15 +128,11 @@ export class Player {
     this.sprite.setSize(newSize);
   }
 
-  setWalking(state: boolean) {
-    this.isWalking = state;
-  }
-
   setSpeed(amount: number) {
     this.speed = amount;
   }
 
-  setPosition(pos: position) {
+  setPosition(pos: coordinate) {
     this.position = pos;
   }
 
@@ -111,58 +146,8 @@ export class Player {
       y: this.position.y,
       width: this.size,
       height: this.size * ratio,
-      hitboxes: this.hitboxes,
+      feetOffset: this.feetOffset,
     };
-  }
-
-  private hasCollided(
-    invaderX: number,
-    invaderY: number,
-    invaderHitboxes: hitbox[]
-  ) {
-    let hit = false;
-    const { x, y, hitboxes } = this.getAllDimensions();
-    hitboxes &&
-      hitboxes.forEach((myHitbox) => {
-        invaderHitboxes.forEach((hitbox) => {
-          if (
-            invaderX + hitbox.offset.x <
-              x + myHitbox.offset.x + myHitbox.size &&
-            invaderX + hitbox.offset.x + hitbox.size > x + myHitbox.offset.x &&
-            invaderY + hitbox.offset.y <
-              y + myHitbox.offset.y + myHitbox.size &&
-            invaderY + hitbox.offset.y + hitbox.size > y + myHitbox.offset.y
-          ) {
-            hit = true;
-            return true;
-          }
-        });
-      });
-    return hit;
-  }
-
-  private checkForCollisions(objects: InteractiveObject[]) {
-    objects.forEach((object) => {
-      let highlight = false;
-      const { x, y, hitboxes } = object.getAllDimensions();
-      if (this.hasCollided(x, y, hitboxes)) {
-        object.orderSlotsAccordingToDistance(this);
-        highlight = true;
-      }
-      object.setHighlight(highlight);
-    });
-  }
-
-  private renderHitboxes(canvas: CanvasRenderingContext2D) {
-    canvas.fillStyle = 'lime';
-    this.hitboxes.forEach((hit) => {
-      canvas.fillRect(
-        this.position.x + hit.offset.x,
-        this.position.y + hit.offset.y,
-        hit.size,
-        hit.size
-      );
-    });
   }
 
   getNearestItem() {
@@ -203,16 +188,12 @@ export class Player {
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  update(
-    dt: number,
-    objects: InteractiveObject[],
-    keyPressed: string | undefined
-  ) {
-    this.checkForCollisions(objects);
-    if (keyPressed) {
-      this.handleItems(objects, keyPressed);
-      this.updateDirection(dt, keyPressed);
-      this.updatePosition();
+  update(dt: number, map: Floor, keyPressed: string | undefined) {
+    if(this.isThereAnyMovementLeft()) {
+      this.move(dt);
+      this.sprite.update(dt);
+    } else if (keyPressed) {
+      this.startNewMove(keyPressed, map);
     } else {
       this.reset();
     }
@@ -220,12 +201,16 @@ export class Player {
   }
 
   render(canvas: CanvasRenderingContext2D) {
-    this.sprite.render(canvas, this.position);
+    const topLeftCorner = this.getTopLeftCorner();
+    this.sprite.render(canvas, topLeftCorner);
     this.name.render(canvas, {
-      x: this.position.x + this.size / 2,
-      y: this.position.y - 5,
+      x: topLeftCorner.x + this.size / 2,
+      y: topLeftCorner.y - 5,
     });
 
-    SHOW_HITBOX && this.renderHitboxes(canvas);
+    SHOW_HITBOX && renderHitbox(canvas, {
+      x: this.position.x + this.movementLeft.x * this.dp[0],
+      y: this.position.y + this.movementLeft.y * this.dp[1],
+    }, 5, 'red');
   }
 }

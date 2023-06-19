@@ -1,15 +1,15 @@
 import { ACTION_KEYS } from '../constants';
 import { getDistance } from '../functions/Metrics';
-import { position } from '../types';
+import { coordinate } from '../types';
 import { DraggableObject } from './DraggableObject';
 import { FloatingText } from './FloatingText';
 
 export class Slot {
-  position: position;
+  position: coordinate;
   object: DraggableObject | undefined;
   text: FloatingText;
 
-  constructor(position: position, object: DraggableObject | undefined) {
+  constructor(position: coordinate, object: DraggableObject | undefined) {
     this.position = position;
     this.object = object;
     this.text = new FloatingText(
@@ -18,7 +18,7 @@ export class Slot {
     );
   }
 
-  getDistanceTo(location: position) {
+  getDistanceTo(location: coordinate) {
     return getDistance(this.position, location);
   }
 
@@ -26,7 +26,7 @@ export class Slot {
     return this.position;
   }
 
-  setPosition(newPos: position) {
+  setPosition(newPos: coordinate) {
     this.position = newPos;
   }
 

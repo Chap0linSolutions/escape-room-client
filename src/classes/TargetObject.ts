@@ -1,20 +1,16 @@
+import { coordinate } from '../types';
 import { Player } from './Player';
 import { Sprite } from './Sprite';
 
-type position = {
-  x: number;
-  y: number;
-};
-
 export class TargetObject {
   size: number;
-  position: position;
+  position: coordinate;
   sprite: Sprite;
 
   constructor(
     spriteSrc: string,
     size: number,
-    initialPos: position,
+    initialPos: coordinate,
     animationPeriod: number
   ) {
     this.sprite = new Sprite(spriteSrc, size, 1, 2, animationPeriod);
@@ -31,7 +27,7 @@ export class TargetObject {
     this.sprite.setSize(newSize);
   }
 
-  setPosition(pos: position) {
+  setPosition(pos: coordinate) {
     this.position = pos;
   }
 

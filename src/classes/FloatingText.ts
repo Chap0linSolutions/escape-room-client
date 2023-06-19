@@ -1,4 +1,4 @@
-import { position } from '../types';
+import { coordinate } from '../types';
 import { Sprite } from './Sprite';
 
 export class FloatingText {
@@ -6,7 +6,7 @@ export class FloatingText {
   text: string; //as variáveis aqui são bem diretas (acho eu) em relação ao que armazenam.
   color: string;
   background: string;
-  padding: position;
+  padding: coordinate;
   style: string;
   icon: Sprite | null;
 
@@ -15,7 +15,7 @@ export class FloatingText {
     iconSprite: string | null,
     color?: string,
     background?: string,
-    padding?: position,
+    padding?: coordinate,
     style?: string
   ) {
     this.text = text;
@@ -42,7 +42,7 @@ export class FloatingText {
     this.background = newColor;
   }
 
-  setPadding(newPadding: position) {
+  setPadding(newPadding: coordinate) {
     this.padding = newPadding;
   }
 
@@ -85,14 +85,14 @@ export class FloatingText {
       });
   }
 
-  private drawText(canvas: CanvasRenderingContext2D, position: position) {
+  private drawText(canvas: CanvasRenderingContext2D, coordinate: coordinate) {
     canvas.textAlign = 'center';
     canvas.font = this.style;
     canvas.fillStyle = this.color;
-    canvas.fillText(this.text, position.x, position.y);
+    canvas.fillText(this.text, coordinate.x, coordinate.y);
   }
 
-  render(canvas: CanvasRenderingContext2D, position: position) {
+  render(canvas: CanvasRenderingContext2D, coordinate: coordinate) {
     //desenha o fundo, o ícone (caso esteja definido) e o texto em si
     const textProps = canvas.measureText(this.text);
     const textWidth = textProps.width;
@@ -101,11 +101,11 @@ export class FloatingText {
 
     const iconOffset = this.icon ? this.icon.getSize() : 0;
 
-    const x = position.x - 2 * this.padding.x - textWidth / 2 - iconOffset;
-    const y = position.y - this.padding.y - textHeight / 1.25;
+    const x = coordinate.x - 2 * this.padding.x - textWidth / 2 - iconOffset;
+    const y = coordinate.y - this.padding.y - textHeight / 1.25;
 
     this.drawBackground(canvas, x, y, textWidth, textHeight, iconOffset, 10);
     this.drawIcon(canvas, x, y);
-    this.drawText(canvas, position);
+    this.drawText(canvas, coordinate);
   }
 }

@@ -1,6 +1,4 @@
-import { InteractiveObject } from '../classes/InteractiveObject';
-import { DraggableObject } from '../classes/DraggableObject';
-import { Floor } from '../classes/Floor';
+import playerSprite from '../assets/player.png';
 import floorSprite from '../assets/floor.png';
 import drawerSprite from '../assets/drawer.png';
 import deskSprite from '../assets/desk.png';
@@ -11,26 +9,62 @@ import doorSound from '../assets/sounds/door.mp3';
 import wooshSound from '../assets/sounds/woosh1.mp3';
 import glassSound from '../assets/sounds/glass.mp3';
 import paperSound from '../assets/sounds/paper.mp3';
-
+import { dx, dy } from '../constants/tileMap';
+import {
+  InteractiveObject,
+  DraggableObject,
+  Floor,
+  Slot,
+  Player 
+} from '../classes';
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
   DRAWER_SIZE,
   DESK_SIZE,
-  FLOOR_TOP_Y,
   FLOOR_PADDING,
-  OBJECTS_HITBOX,
   V_DESK_SIZE,
+  PLAYER_SIZE,
+  PLAYER_SPEED,
+  ANIMATION_PERIOD,
 } from '../constants';
-import { Slot } from '../classes/Slot';
 
-interface SceneBuilderProps {
-  objects: React.MutableRefObject<InteractiveObject[]>;
-  floor: React.MutableRefObject<Floor | undefined>;
-}
 
-export default function BuildScene({ objects, floor }: SceneBuilderProps) {
-  objects.current = [
+export const spawnPlayer = () => {
+  const initialPosition = {
+    x: FLOOR_PADDING + dx,
+    y: 0.5 * (CANVAS_HEIGHT),
+  }
+  const feetOffset = {
+    x: 0,
+    y: -20
+  };
+
+  const players = [
+    new Player(
+      'Alex Topiroze',
+      playerSprite,
+      initialPosition,
+      PLAYER_SPEED,
+      PLAYER_SIZE,
+      ANIMATION_PERIOD,
+      feetOffset,
+    ),
+  ];
+
+  return players;
+};
+
+
+export function buildScene() {
+
+  const floor = new Floor(
+    floorSprite,
+    CANVAS_WIDTH,
+    { x: FLOOR_PADDING, y: 0.5 * CANVAS_HEIGHT},
+  );
+
+  const objects  = [
     //ARMÁRIO///////////////////////////////////////////////////////////////////////////
     new InteractiveObject(
       drawerSprite,
@@ -38,23 +72,8 @@ export default function BuildScene({ objects, floor }: SceneBuilderProps) {
       {
         x: 120,
         y: (CANVAS_HEIGHT - DRAWER_SIZE) / 5,
+
       },
-      [
-        {
-          offset: {
-            x: 90,
-            y: 155,
-          },
-          size: DRAWER_SIZE * OBJECTS_HITBOX,
-        },
-        {
-          offset: {
-            x: 135,
-            y: 135,
-          },
-          size: DRAWER_SIZE * OBJECTS_HITBOX,
-        },
-      ],
       [
         new Slot(
           { x: DRAWER_SIZE / 2, y: DRAWER_SIZE / 2 - 10 },
@@ -65,6 +84,7 @@ export default function BuildScene({ objects, floor }: SceneBuilderProps) {
       {
         sound: doorSound,
         texts: ['abrir o armário', 'fechar o armário'],
+        allowedDirections: ['left'],
       }
     ),
 
@@ -77,29 +97,6 @@ export default function BuildScene({ objects, floor }: SceneBuilderProps) {
         y: (CANVAS_HEIGHT - DESK_SIZE) / 6,
       },
       [
-        {
-          offset: {
-            x: 10,
-            y: 85,
-          },
-          size: DESK_SIZE * OBJECTS_HITBOX,
-        },
-        {
-          offset: {
-            x: 37,
-            y: 105,
-          },
-          size: DESK_SIZE * OBJECTS_HITBOX,
-        },
-        {
-          offset: {
-            x: 65,
-            y: 125,
-          },
-          size: DESK_SIZE * OBJECTS_HITBOX,
-        },
-      ],
-      [
         new Slot(
           { x: DESK_SIZE * 0.55, y: DESK_SIZE * 0.4 },
           new DraggableObject(paperSprite, 70, 'papel', paperSound)
@@ -109,6 +106,7 @@ export default function BuildScene({ objects, floor }: SceneBuilderProps) {
       {
         sound: wooshSound,
         texts: ['abrir o notebook', 'fechar o notebook'],
+        allowedDirections: ['up'],
       }
     ),
 
@@ -121,22 +119,6 @@ export default function BuildScene({ objects, floor }: SceneBuilderProps) {
         y: CANVAS_HEIGHT - 275,
       },
       [
-        {
-          offset: {
-            x: 60,
-            y: 10,
-          },
-          size: V_DESK_SIZE * OBJECTS_HITBOX,
-        },
-        {
-          offset: {
-            x: 200,
-            y: 10,
-          },
-          size: V_DESK_SIZE * OBJECTS_HITBOX,
-        },
-      ],
-      [
         new Slot({ x: V_DESK_SIZE * 0.18, y: V_DESK_SIZE * 0.04 }, undefined),
         new Slot({ x: V_DESK_SIZE * 0.5, y: V_DESK_SIZE * 0.2 }, undefined),
         new Slot({ x: V_DESK_SIZE * 0.8, y: V_DESK_SIZE * 0.04 }, undefined),
@@ -145,9 +127,5 @@ export default function BuildScene({ objects, floor }: SceneBuilderProps) {
     ),
   ];
 
-  floor.current = new Floor(
-    floorSprite,
-    { x: FLOOR_PADDING, y: FLOOR_TOP_Y },
-    CANVAS_WIDTH - 2 * FLOOR_PADDING
-  );
+  return { objects, floor}//TODO voltar para {objects, floor};
 }

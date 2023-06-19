@@ -1,4 +1,4 @@
-import { position, quad } from '../types';
+import { coordinate, quad } from '../types';
 
 export class Sprite {
   source: HTMLImageElement;
@@ -48,8 +48,10 @@ export class Sprite {
     this.size = newSize;
   }
 
-  setQuad(newQuad: quad) {
-    this.quad = newQuad;
+  setQuad(newQuad: number | quad) {
+    this.quad = (typeof newQuad === 'number')
+    ? [newQuad, this.quad[1]]
+    : newQuad;
   }
 
   nextSprite() {
@@ -59,15 +61,15 @@ export class Sprite {
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  update(dt: number, direction?: number) {
+  update(dt: number) {
     if (this.count < this.maxCount) {
       return (this.count += dt);
     }
     this.count = 0;
-    this.setQuad([this.nextSprite(), direction ? direction : 0]);
+    this.setQuad(this.nextSprite());
   }
 
-  render(canvas: CanvasRenderingContext2D, position: position) {
+  render(canvas: CanvasRenderingContext2D, position: coordinate) {
     const h = this.source.height;
     const w = this.source.width;
     const ratio = h / this.rows / (w / this.columns);
