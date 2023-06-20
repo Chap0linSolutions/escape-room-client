@@ -2,7 +2,7 @@ import { Floor } from '../classes/Floor';
 import { Player } from '../classes/Player';
 import { InteractiveObject } from '../classes/InteractiveObject';
 import { coordinate } from '../types';
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../constants';
+import { CANVAS_HEIGHT, CANVAS_WIDTH, SHOW_WALK_TOGGLE_PADDING, WALK_TOGGLE_PADDING } from '../constants';
 import { getDistance } from './Metrics';
 import { SHOW_DISTANCE_TO_BOTTOM_CORNER } from '../constants';
 
@@ -22,6 +22,14 @@ type ObjectAndDistance = {
 const canvasBottom = {
   x: CANVAS_WIDTH / 2,
   y: CANVAS_HEIGHT,
+}
+
+const renderWalkPadding = (canvas: CanvasRenderingContext2D) => {
+  canvas.fillStyle = '#FF000022';
+  canvas.fillRect(0, 0, WALK_TOGGLE_PADDING, CANVAS_HEIGHT);
+  canvas.fillRect(WALK_TOGGLE_PADDING, 0, CANVAS_WIDTH - WALK_TOGGLE_PADDING, WALK_TOGGLE_PADDING);
+  canvas.fillRect(CANVAS_WIDTH - WALK_TOGGLE_PADDING, WALK_TOGGLE_PADDING, WALK_TOGGLE_PADDING, CANVAS_HEIGHT - WALK_TOGGLE_PADDING);
+  canvas.fillRect(WALK_TOGGLE_PADDING, CANVAS_HEIGHT - WALK_TOGGLE_PADDING, CANVAS_WIDTH - 2*WALK_TOGGLE_PADDING, WALK_TOGGLE_PADDING);
 }
 
 const renderDistance = (
@@ -75,4 +83,6 @@ export default function RenderAll({
     r.object.render(context);
     SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin, ground);
   });
+
+  SHOW_WALK_TOGGLE_PADDING && renderWalkPadding(context);
 }

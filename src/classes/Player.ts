@@ -4,9 +4,8 @@ import { FloatingText } from './FloatingText';
 import { Sprite } from './Sprite';
 import { DraggableObject } from './DraggableObject';
 import { Floor } from './Floor';
-import { dx, dy } from '../constants/tileMap';
-import { renderHitbox } from '../functions/Metrics';
-import { ACTION_KEYS, ISOMETRIC_RATIO, SHOW_HITBOX } from '../constants';
+import { isInsideAllowedSpace, renderHitbox } from '../functions/Metrics';
+import { ACTION_KEYS, ISOMETRIC_RATIO, SHOW_HITBOX, DX, DY } from '../constants';
 
 function getDp(direction: string): quad {
   switch (direction) {
@@ -29,6 +28,7 @@ export class Player {
   items: DraggableObject[];
   lastKeyPressed: string | undefined;
   allowedDirections = ['right', 'down', 'up', 'left'];
+  whoMoves: 'player' | 'scene';
 
   constructor(
     name: string,
@@ -57,13 +57,22 @@ export class Player {
     }
   }
 
+  private incrementalMoveSceneTo(delta: coordinate, objects: InteractiveObject[], map: Floor){
+    const deltaWithDirection = {
+      x: delta.x * (-this.dp[0]),
+      y: delta.y * (-this.dp[1]),
+    }
+    objects.forEach(o => o.incrementalMoveTo(deltaWithDirection));
+    map.incrementalMoveTo(deltaWithDirection);
+  }
+
   private checkForMoves(direction: string, map: Floor, objects: InteractiveObject[]){
     const dir = this.allowedDirections.indexOf(direction);
     if (dir < 0) return;
     this.sprite.setQuad([0, dir]);
     if(this.canMove(direction, map, objects)){
       this.dp = getDp(direction);
-      this.movementLeft = {x: dx, y: dy};
+      this.movementLeft = {x: DX, y: DY};
     }
   }
 
@@ -92,26 +101,33 @@ export class Player {
   private canMove(direction: string, map: Floor, objects: InteractiveObject[]){
     const delta = getDp(direction);
     const destination = {
-      x: this.position.x + dx*delta[0],
-      y: this.position.y + dy*delta[1],
+      x: this.position.x + DX*delta[0],
+      y: this.position.y + DY*delta[1],
     }
     for(let i = 0; i < objects.length; i++){
       if(objects[i].isInside('object', destination)) return false;
     }
-    return map.isInsideTileMap(destination);
+    if(map.isInsideTileMap(destination)){
+      this.whoMoves = isInsideAllowedSpace(destination)
+      ? 'player' : 'scene';
+      return true;  
+    } 
+    return false;
   }
 
-  private move(dt: number){
-    const delta = {
+  private move(dt: number, objects: InteractiveObject[], map: Floor){
+    let delta = {
       x: dt * this.speed,
       y: dt * this.speed * ISOMETRIC_RATIO,
     }
     if(this.hasMovedBeyondDestination(delta)){
-      this.incrementalMoveTo(this.movementLeft);
-      this.movementLeft = {x: 0, y: 0};
-      return;
+      delta = this.movementLeft;
     }
-    this.incrementalMoveTo(delta);
+    if(this.whoMoves === 'player'){
+      this.incrementalMoveTo(delta);
+    } else {
+      this.incrementalMoveSceneTo(delta, objects, map);
+    }
     this.movementLeft.x -= delta.x;
     this.movementLeft.y -= delta.y;
   }
@@ -204,7 +220,7 @@ export class Player {
 
   update(dt: number, map: Floor, objects: InteractiveObject[], keyPressed: string | undefined) {
     if(this.isThereAnyMovementLeft()) {
-      this.move(dt);
+      this.move(dt, objects, map);
       this.sprite.update(dt);
     } else if (keyPressed) {
       this.checkForMoves(keyPressed, map, objects);

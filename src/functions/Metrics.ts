@@ -1,4 +1,17 @@
+import { CANVAS_HEIGHT, CANVAS_WIDTH, WALK_TOGGLE_PADDING } from '../constants';
 import { coordinate } from '../types';
+
+const topLeft = {x: WALK_TOGGLE_PADDING, y: WALK_TOGGLE_PADDING};
+const bottomRight = {x: CANVAS_WIDTH - WALK_TOGGLE_PADDING, y: CANVAS_HEIGHT - WALK_TOGGLE_PADDING};
+
+export function isInsideAllowedSpace(destination: coordinate){
+  if(destination.x < topLeft.x ||
+    destination.x > bottomRight.x || 
+    destination.y < topLeft.y ||
+    destination.y > bottomRight.y
+    ) return false;
+  return true;
+}
 
 export function getDistance(origin: coordinate, destination: coordinate) {
   return Math.hypot(origin.x - destination.x, origin.y - destination.y);

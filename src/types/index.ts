@@ -23,6 +23,6 @@ export type actionType = {
 export type positionType = {
   canvas: coordinate;           //absolute canvas coordinates (where the sprite will be drawn on map)
   map: coordinate;              //coordinates relative to the tile map origin
-  tiles: coordinate[];          //coordinates relative to the 'map' attribute
-  hitboxes: coordinate[];       //hitbox relative to the 'map' attribute
+  tiles?: coordinate[];          //coordinates relative to the 'map' attribute
+  hitboxes?: coordinate[];       //hitbox relative to the 'map' attribute
 }

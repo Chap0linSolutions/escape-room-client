@@ -18,6 +18,11 @@ export class Slot {
     );
   }
 
+  incrementalMoveto(delta: coordinate){
+    this.position.x += delta.x;
+    this.position.y += delta.y;
+  }
+
   getDistanceTo(location: coordinate) {
     return getDistance(this.position, location);
   }

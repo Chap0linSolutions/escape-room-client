@@ -5,6 +5,7 @@ import UpdateAll from '../functions/Updater';
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
+  SCENE,
 } from '../constants';
 
 // const inputHandler = new InputHandler();
@@ -42,8 +43,8 @@ export class Game {
   }
 
   initialSetup = () => {
-    const {objects, floor} = buildScene();
-    this.players = spawnPlayer();
+    const {objects, floor} = buildScene(SCENE);
+    this.players = spawnPlayer(SCENE);
     this.objects = objects;
     this.floor = floor;
   };

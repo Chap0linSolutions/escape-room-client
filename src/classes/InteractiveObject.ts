@@ -91,8 +91,32 @@ export class InteractiveObject {
     this.sprite.setSize(newSize);
   }
 
-  setCanvasPosition(pos: coordinate) {
-    this.position.canvas = pos;
+  incrementalMoveTo(delta: coordinate){
+    this.position.canvas.x += delta.x;
+    this.position.canvas.y += delta.y;
+    this.position.map.x += delta.x;
+    this.position.map.y += delta.y;
+    this.slots.forEach(slot => slot.incrementalMoveto(delta));
+  }
+
+  setPosition(ofWhat: 'canvas' | 'map', pos: coordinate) {
+    const diff = {
+      x: this.position.canvas.x - this.position.map.x,
+      y: this.position.canvas.y - this.position.map.y,
+    }
+    if(ofWhat === 'canvas'){
+      this.position.canvas = pos;
+      this.position.map = {
+        x: pos.x - diff.x,
+        y: pos.y - diff.y,
+      }
+    } else {
+      this.position.map = pos;
+      this.position.canvas = {
+        x: pos.x + diff.x,
+        y: pos.y + diff.y,
+      }
+    }
   }
 
   setHighlight(high: boolean) {
