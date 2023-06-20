@@ -57,7 +57,7 @@ export class InputHandler {
     } else {
       console.log(`The topic ${topic} does not exist!`);
     }
-  }
+  };
 
   notifyAll(topic: keyof EventObservers, command: any) {
     const functionList = this.observers[topic];

@@ -20,9 +20,9 @@ export const useGameLoop = (gameCallbacks: GameCallbacks) => {
     if (!ref.current) return null;
     const gameCtx = ref.current.getContext('2d');
     if (!gameCtx) return null;
-    animationLoop && cancelAnimationFrame(animationLoop)
+    animationLoop && cancelAnimationFrame(animationLoop);
     ctx = gameCtx;
-    game = new Game({gameCallbacks});
+    game = new Game({ gameCallbacks });
     game.initialSetup();
     animationLoop = requestAnimationFrame(loop);
   };

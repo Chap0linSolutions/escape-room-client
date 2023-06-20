@@ -22,7 +22,7 @@ import {
   Player,
 } from '../classes';
 import { InputHandler } from '../events/InputHandler';
-import { GameCallbacks } from "../types"
+import { GameCallbacks } from '../types';
 
 import floorSprite from '../assets/floor.png';
 import drawerSprite from '../assets/drawer.png';
@@ -62,8 +62,8 @@ const mapKeys = (key: string) => {
 };
 
 export type GameProps = {
-  gameCallbacks: GameCallbacks
-}
+  gameCallbacks: GameCallbacks;
+};
 
 export class Game {
   key: any;
@@ -72,7 +72,7 @@ export class Game {
   players: any;
   callbacks: GameCallbacks;
 
-  constructor({gameCallbacks}: GameProps) {
+  constructor({ gameCallbacks }: GameProps) {
     const inputHandler = new InputHandler();
     inputHandler.subscribe('keyDown', 'GameKeyDown', this.setKey.bind(this));
     inputHandler.subscribe('keyUp', 'GameKeyUp', this.resetKey.bind(this));
@@ -90,7 +90,7 @@ export class Game {
 
   setKey = (e: string) => {
     this.key = mapKeys(e);
-    if (this.key === "Enter") {
+    if (this.key === 'Enter') {
       this.callbacks.showPopup(TestFragment);
     }
   };

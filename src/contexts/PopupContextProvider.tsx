@@ -26,16 +26,14 @@ export const PopupContextProvider = ({
   const [fragment, setFragment] = useState<ReactNode | null>(null);
 
   const showPopup = (fragmentPiece: ReactNode) => {
-    console.log("set true")
-
-    setFragment(fragmentPiece)
+    setFragment(fragmentPiece);
     setShow(true);
-  }
+  };
 
   const closePopup = () => {
     setShow(false);
-    setFragment(null)
-  }
+    setFragment(null);
+  };
 
   const value: PopupContextValue = {
     showPopup,

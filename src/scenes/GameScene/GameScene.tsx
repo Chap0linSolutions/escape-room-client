@@ -3,7 +3,6 @@ import { usePopupContext } from '../../contexts';
 import { useGameLoop, useGameState } from '../../hooks';
 import { Button } from './GameScene.style';
 
-
 export function GameScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { showPopup, popupOpened } = usePopupContext();
@@ -20,7 +19,7 @@ export function GameScene() {
     startGame(canvasRef);
   };
 
-  const randomFragment = <h1 style={{color: "green"}}>Daleeeeeee brabo</h1>
+  const randomFragment = <h1 style={{ color: 'green' }}>Daleeeeeee brabo</h1>;
 
   return (
     <div>
