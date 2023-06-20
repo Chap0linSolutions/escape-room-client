@@ -22,6 +22,7 @@ import {
   Player,
 } from '../classes';
 import { InputHandler } from '../events/InputHandler';
+import { GameCallbacks } from "../types"
 
 import floorSprite from '../assets/floor.png';
 import drawerSprite from '../assets/drawer.png';
@@ -34,6 +35,8 @@ import wooshSound from '../assets/sounds/woosh1.mp3';
 import glassSound from '../assets/sounds/glass.mp3';
 import paperSound from '../assets/sounds/paper.mp3';
 import playerSprite from '../assets/player.png';
+
+import { TestFragment } from './fragments/testFragment';
 
 // const inputHandler = new InputHandler();
 // const state = new State();
@@ -58,15 +61,22 @@ const mapKeys = (key: string) => {
   }
 };
 
+export type GameProps = {
+  gameCallbacks: GameCallbacks
+}
+
 export class Game {
   key: any;
   floor: any;
   objects: any;
   players: any;
-  constructor() {
+  callbacks: GameCallbacks;
+
+  constructor({gameCallbacks}: GameProps) {
     const inputHandler = new InputHandler();
     inputHandler.subscribe('keyDown', 'GameKeyDown', this.setKey.bind(this));
     inputHandler.subscribe('keyUp', 'GameKeyUp', this.resetKey.bind(this));
+    this.callbacks = gameCallbacks;
   }
 
   initialSetup = () => {
@@ -80,6 +90,9 @@ export class Game {
 
   setKey = (e: string) => {
     this.key = mapKeys(e);
+    if (this.key === "Enter") {
+      this.callbacks.showPopup(TestFragment);
+    }
   };
 
   spawnPlayer = () => {
