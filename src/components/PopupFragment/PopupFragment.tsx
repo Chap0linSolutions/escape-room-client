@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
 
-type Props = {
+type PopupProps = {
   show?: boolean;
   closePopup: () => void;
   children?: ReactNode;
 };
 
-export const PopupFragment = ({ show, closePopup, children }: Props) => {
+export const PopupFragment = ({ show, closePopup, children }: PopupProps) => {
   return (
     <div
       style={{
