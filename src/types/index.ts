@@ -24,3 +24,7 @@ export type hitbox = {
   offset: position;
   size: number;
 };
+
+export type GameCallbacks = {
+  showPopup: (fragment: any) => void;
+};
