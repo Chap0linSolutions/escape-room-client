@@ -13,7 +13,7 @@ export const useGameLoop = (gameCallbacks: GameCallbacks) => {
     const dt = ts - lastTS.current;
     lastTS.current = ts;
     game.GameLoop(ctx, dt);
-    requestAnimationFrame(loop);
+    animationLoop = requestAnimationFrame(loop);
   };
 
   const startGame = (ref: RefObject<HTMLCanvasElement>) => {
