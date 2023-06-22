@@ -4,9 +4,6 @@ import { useGameLoop, useGameState } from '../../hooks';
 import { Button } from './GameScene.style';
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../../constants';
 
-export type GameCallbacks = {
-  showPopup: () => void;
-};
 export function GameScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { showPopup, popupOpened } = usePopupContext();
@@ -23,9 +20,11 @@ export function GameScene() {
     startGame(canvasRef);
   };
 
+  const randomFragment = <h1 style={{ color: 'green' }}>Daleeeeeee brabo</h1>;
+
   return (
     <div>
-      <h1 onClick={showPopup}>Game</h1>
+      <h1 onClick={() => showPopup(randomFragment)}>Game</h1>
       <canvas
         style={{ border: '1px solid gold' }}
         ref={canvasRef}

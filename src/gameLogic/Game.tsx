@@ -7,6 +7,8 @@ import {
   CANVAS_HEIGHT,
   SCENE,
 } from '../constants';
+import { GameCallbacks } from '../types';
+import { TestFragment } from './fragments/testFragment';
 
 // const inputHandler = new InputHandler();
 // const state = new State();
@@ -31,15 +33,22 @@ const mapKeys = (key: string) => {
   }
 };
 
+export type GameProps = {
+  gameCallbacks: GameCallbacks;
+};
+
 export class Game {
   key: any;
   floor: any;
   objects: any;
   players: any;
-  constructor() {
+  callbacks: GameCallbacks;
+
+  constructor({ gameCallbacks }: GameProps) {
     const inputHandler = new InputHandler();
     inputHandler.subscribe('keyDown', 'GameKeyDown', this.setKey.bind(this));
     inputHandler.subscribe('keyUp', 'GameKeyUp', this.resetKey.bind(this));
+    this.callbacks = gameCallbacks;
   }
 
   initialSetup = () => {
@@ -55,6 +64,9 @@ export class Game {
 
   setKey = (e: string) => {
     this.key = mapKeys(e);
+    if (this.key === 'Enter') {
+      this.callbacks.showPopup(TestFragment);
+    }
   };
 
   GameLoop = (context: CanvasRenderingContext2D, dt: number) => {

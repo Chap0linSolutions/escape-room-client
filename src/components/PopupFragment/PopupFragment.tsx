@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { ReactNode } from 'react';
 
-type Props = {
+type PopupProps = {
   show?: boolean;
   closePopup: () => void;
+  children?: ReactNode;
 };
 
-export const PopupFragment = ({ show, closePopup }: Props) => {
+export const PopupFragment = ({ show, closePopup, children }: PopupProps) => {
   return (
     <div
       style={{
@@ -27,10 +28,10 @@ export const PopupFragment = ({ show, closePopup }: Props) => {
           justifyContent: 'center',
           alignItems: 'center',
           background: 'white',
-          width: '400px',
-          height: '300px',
+          width: '500px',
+          height: '500px',
         }}>
-        <h1>Popup</h1>
+        {children}
         <button onClick={closePopup}>Close</button>
       </div>
     </div>

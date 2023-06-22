@@ -26,3 +26,12 @@ export type positionType = {
   tiles?: coordinate[];          //coordinates relative to the 'map' attribute
   hitboxes?: coordinate[];       //hitbox relative to the 'map' attribute
 }
+
+export type hitbox = {
+  offset: coordinate;
+  size: number;
+};
+
+export type GameCallbacks = {
+  showPopup: (fragment: any) => void;
+};
