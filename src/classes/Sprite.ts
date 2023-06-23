@@ -15,14 +15,14 @@ export class Sprite {
     size: number,
     rows: number,
     columns: number,
-    maxCount: number
+    maxCount?: number
   ) {
     this.source = new Image();
     this.source.src = sprite;
     this.size = size;
     this.quad = [0, 0];
     this.count = 0;
-    this.maxCount = maxCount;
+    this.maxCount = (maxCount)? maxCount : 0;
     this.columns = columns;
     this.rows = rows;
     this.lastFrame = 0;

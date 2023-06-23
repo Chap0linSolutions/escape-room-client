@@ -35,3 +35,13 @@ export type hitbox = {
 export type GameCallbacks = {
   showPopup: (fragment: any) => void;
 };
+
+export type clickableArea = {
+  coordinate: coordinate;
+  radius: number;
+}
+
+export type interactiveCoords = {
+  open: clickableArea[];
+  close: clickableArea[];
+}

@@ -55,6 +55,7 @@ export default function RenderAll({
   const ground = floor;
   if (!ground) return;
   const renderables: ObjectAndDistance[] = [];
+  const fragments: InteractiveObject[] = [];
 
   players &&
     players.forEach((p) => {
@@ -75,6 +76,7 @@ export default function RenderAll({
       origin: origin,
       distance: getDistance(canvasBottom, origin),
     });
+    o.fragment && o.fragment.isVisible() && fragments.push(o);
   });
 
   ground.render(context);
@@ -83,6 +85,8 @@ export default function RenderAll({
     r.object.render(context);
     SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin, ground);
   });
+
+  fragments.forEach(f => f.renderFragment(context));
 
   SHOW_WALK_TOGGLE_PADDING && renderWalkPadding(context);
 }

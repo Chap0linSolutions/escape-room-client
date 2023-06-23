@@ -7,7 +7,7 @@ import {
   CANVAS_HEIGHT,
   SCENE,
 } from '../constants';
-import { GameCallbacks } from '../types';
+import { GameCallbacks, coordinate } from '../types';
 import { TestFragment } from './fragments/testFragment';
 
 // const inputHandler = new InputHandler();
@@ -69,11 +69,12 @@ export class Game {
     }
   };
 
-  GameLoop = (context: CanvasRenderingContext2D, dt: number) => {
+  GameLoop = (context: CanvasRenderingContext2D, mouseXY: coordinate, dt: number) => {
     context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     //console.log(this.key);
     UpdateAll({
       dt,
+      mouseXY,
       key: this.key,
       floor: this.floor,
       objects: this.objects,

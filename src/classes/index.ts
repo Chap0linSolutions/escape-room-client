@@ -7,3 +7,4 @@ export * from './Sound';
 export * from './Sprite';
 export * from './TargetObject';
 export * from './Player';
+export * from './Fragment';

@@ -1,3 +1,5 @@
+import drawerFragment from '../../../assets/fragments/drawerFragment.png';
+
 import floorSprite from '../../../assets/floor2.png';
 import drawerSprite from '../../../assets/drawer.png';
 import deskSprite from '../../../assets/desk.png';
@@ -14,6 +16,7 @@ import {
   DraggableObject,
   Floor,
   Slot,
+  Fragment,
 } from '../../../classes';
 import {
   CANVAS_WIDTH,
@@ -68,6 +71,17 @@ const objects = [
         false,
         ['left'],
         {
+            size: 400,
+            sprite: drawerFragment,
+            interactionCoordinates: {
+                open: [{coordinate: {x: 200, y: 200}, radius: 50}],
+                close: [
+                    {coordinate: {x: 100, y: 200}, radius: 50},
+                    {coordinate: {x: 300, y: 200}, radius: 50},
+                ],
+            },
+        },
+        {
             sound: doorSound,
             texts: ['abrir o armário', 'fechar o armário'],
         }
@@ -91,6 +105,7 @@ const objects = [
         ],
         false,
         ['up'],
+        null,
         {
             sound: wooshSound,
             texts: ['abrir o notebook', 'fechar o notebook'],
@@ -120,6 +135,7 @@ const objects = [
         ],
         true,
         ['down', 'right'],
+        null,
     ),
 ];
 
