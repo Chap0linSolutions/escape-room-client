@@ -1,6 +1,6 @@
 import { actionType, clickableArea, coordinate, interactiveCoords, positionType } from '../types';
 import { Sprite } from './Sprite';
-import { ACTION_KEYS, CANVAS_WIDTH, SHOW_HITBOX } from '../constants';
+import { ACTION_KEYS, SHOW_HITBOX } from '../constants';
 import { FloatingText } from './FloatingText';
 import { Slot } from './Slot';
 import { Fragment } from './Fragment';
@@ -182,12 +182,17 @@ export class InteractiveObject {
     this.fragment = newFrag;
   }
 
+  isBeingInteractedWith(){
+    return this.fragment && this.fragment.isVisible();
+  }
+
   private toggleState() {
     this.state = !this.state;
   }
 
   private renderTexts(canvas: CanvasRenderingContext2D) {
     if (!this.isHighlighted || !this.action) return;
+    if(this.fragment && this.fragment.isVisible()) return;
 
     const pos = {
       x: this.position.canvas.x + this.size / 2,

@@ -3,6 +3,9 @@ import { Sprite } from './Sprite';
 import { getDistance, renderHitbox } from '../functions/Metrics';
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../constants';
 import { InteractiveObject } from './InteractiveObject';
+import { FloatingText } from './FloatingText';
+import eKey from '../assets/icons/e-key.png';
+import cursorKey from '../assets/icons/cursor.png';
 
 type fragmentConstructor = {
     sprite: string,
@@ -15,18 +18,21 @@ type fragmentConstructor = {
 export class Fragment {
     sprite: Sprite;
     slots: clickableArea[] | null;
-    position: coordinate;
+    position: coordinate | null;
     interactions: interactiveCoords | null;
     visible: boolean;
     object: InteractiveObject;
+    leaveText: FloatingText;
+    interactText: FloatingText;
 
     constructor({sprite, size, slots, interactionCoordinates, object}: fragmentConstructor) {
         this.sprite = new Sprite(sprite, size, 1, 2);
         this.slots = (slots)? slots : null;
-        this.position = {x: (CANVAS_WIDTH - size) / 2, y: 0.2 * CANVAS_HEIGHT};
         this.interactions = (interactionCoordinates)? interactionCoordinates : null;
         this.visible = false;
         this.object = (object)? object : null;
+        this.leaveText = new FloatingText('sair', eKey);
+        this.interactText = new FloatingText('interagir', cursorKey);
     }
 
     private getAbsoluteCoords(coords: coordinate){
@@ -98,12 +104,37 @@ export class Fragment {
         } return false;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    private drawBackground(canvas: CanvasRenderingContext2D, width: number, height: number, margin: number){
+        const fill = canvas.fillStyle;
+        canvas.fillStyle = '#000000AA';
+        canvas.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        canvas.fillStyle = '#AAAAAA';
+        canvas.fillRect(this.position.x - margin, this.position.y - margin, width + 2*margin, height + 2*margin);
+        canvas.fillStyle = fill;
+        this.leaveText.render(canvas, {x: this.position.x, y: this.position.y - margin - 40}, true);
+        this.interactText.render(canvas, {x: this.position.x, y: this.position.y - margin - 10}, true);
+    }
 
-    render(canvas: CanvasRenderingContext2D){
+    private drawFragment(canvas: CanvasRenderingContext2D){
+        const { width, height } = this.sprite.getAllDimensions();
+        !this.position && this.setPosition({
+            x: (CANVAS_WIDTH - width) / 2,
+            y: (CANVAS_HEIGHT - height) / 2,
+        });
+        this.visible && this.drawBackground(canvas, width, height, 2);
         this.visible && this.sprite.render(canvas, this.position);
+    }
+
+    private drawHitboxes(canvas: CanvasRenderingContext2D){
         (this.sprite.getQuad()[0] === 0)
         ? this.interactions.open.forEach(o => renderHitbox(canvas, this.getAbsoluteCoords(o.coordinate), o.radius))
         : this.interactions.close.forEach(o => renderHitbox(canvas, this.getAbsoluteCoords(o.coordinate), o.radius), '#800080');
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    render(canvas: CanvasRenderingContext2D){
+        this.drawFragment(canvas);
+        //this.drawHitboxes(canvas);
     }
 }

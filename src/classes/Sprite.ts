@@ -40,6 +40,19 @@ export class Sprite {
     return this.size;
   }
 
+  getAllDimensions(){
+    const sourceH = this.source.height;
+    const sourceW = this.source.width;
+    const ratio = sourceH / this.rows / (sourceW / this.columns);
+
+    return {
+      sourceW,
+      sourceH,
+      width: this.size,
+      height: this.size * ratio,
+    }
+  }
+
   getQuad() {
     return this.quad;
   }
@@ -70,20 +83,18 @@ export class Sprite {
   }
 
   render(canvas: CanvasRenderingContext2D, position: coordinate) {
-    const h = this.source.height;
-    const w = this.source.width;
-    const ratio = h / this.rows / (w / this.columns);
+    const {sourceW, sourceH, width, height} = this.getAllDimensions();
 
     canvas.drawImage(
       this.source, // src da imagem a ser desenhada
-      this.quad[0] * (w / this.columns),
-      this.quad[1] * (h / this.rows), // coordenadas X e Y, relativos à própria imagem, do início do quadrante
-      w / this.columns,
-      h / this.rows, // tamanho do quadrante (width, height)
+      this.quad[0] * (sourceW / this.columns),
+      this.quad[1] * (sourceH / this.rows), // coordenadas X e Y, relativos à própria imagem, do início do quadrante
+      sourceW / this.columns,
+      sourceH / this.rows, // tamanho do quadrante (width, height)
       position.x,
       position.y, // coordenadas X e Y do início do desenho (canto superior esquerdo)
-      this.size,
-      this.size * ratio // tamanho final da imagem (width, height)
+      width,
+      height // tamanho final da imagem (width, height)
     );
   }
 }

@@ -16,7 +16,6 @@ import {
   DraggableObject,
   Floor,
   Slot,
-  Fragment,
 } from '../../../classes';
 import {
   CANVAS_WIDTH,
@@ -71,13 +70,13 @@ const objects = [
         false,
         ['left'],
         {
-            size: 400,
+            size: 600,
             sprite: drawerFragment,
             interactionCoordinates: {
-                open: [{coordinate: {x: 200, y: 200}, radius: 50}],
+                open: [{coordinate: {x: 300, y: 300}, radius: 50}],
                 close: [
-                    {coordinate: {x: 100, y: 200}, radius: 50},
-                    {coordinate: {x: 300, y: 200}, radius: 50},
+                    {coordinate: {x: 160, y: 300}, radius: 50},
+                    {coordinate: {x: 440, y: 300}, radius: 50},
                 ],
             },
         },

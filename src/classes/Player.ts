@@ -23,6 +23,7 @@ export class Player {
   size: number;
   position: coordinate;
   dp: quad;
+  interactingWithFragment: boolean;
   movementLeft: coordinate;
   feetOffset: coordinate;
   items: DraggableObject[];
@@ -48,6 +49,7 @@ export class Player {
     this.feetOffset = feetOffset;
     this.sprite = new Sprite(spriteSrc, size, 4, 2, animationPeriod);
     this.items = [];
+    this.interactingWithFragment = false;
   }
 
   private incrementalMoveTo(delta: coordinate){
@@ -68,7 +70,7 @@ export class Player {
 
   private checkForMoves(direction: string, map: Floor, objects: InteractiveObject[]){
     const dir = this.allowedDirections.indexOf(direction);
-    if (dir < 0) return;
+    if (dir < 0 || this.interactingWithFragment) return;
     this.sprite.setQuad([0, dir]);
     if(this.canMove(direction, map, objects)){
       this.dp = getDp(direction);
@@ -82,6 +84,7 @@ export class Player {
       if(objects[i].isInside('hitbox', this.position)){
         objects[i].setHighlight(objects[i].isAllowedToInteract(myDirection));
         objects[i].orderSlotsAccordingToDistance(this.position);
+        this.interactingWithFragment = objects[i].isBeingInteractedWith();
         return;
       }
     }
@@ -201,7 +204,7 @@ export class Player {
     if (index < 0) return;
 
     const nearestObject = objects[index];
-    if (!nearestObject.isOpen && !nearestObject.slotsAlwaysVisible) return;
+    if (!nearestObject.fragment.isVisible() && !nearestObject.slotsAlwaysVisible) return;
     const item = nearestObject.getNearestItem();
     if (item) {
       nearestObject.takeItem();
