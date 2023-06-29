@@ -25,14 +25,12 @@ export function GameScene() {
   const updateMouseState = (e: undefined | React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     if(!e){
       mouseRef.current = undefined;
-      console.log('released');
     } else {
       const pos = {
         x: e.nativeEvent.offsetX,
         y: e.nativeEvent.offsetY,
       }
       mouseRef.current = pos;
-      console.log(pos);
     }
   }
 

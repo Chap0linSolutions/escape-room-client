@@ -1,8 +1,9 @@
-import { actionType, clickableArea, coordinate, interactiveCoords, positionType } from '../types';
+import { actionType, coordinate, interactiveCoords, positionType } from '../types';
 import { Sprite } from './Sprite';
 import { ACTION_KEYS, SHOW_HITBOX } from '../constants';
 import { FloatingText } from './FloatingText';
 import { Slot } from './Slot';
+import { Player } from './Player';
 import { Fragment } from './Fragment';
 import { DraggableObject } from './DraggableObject';
 import { getDistance, renderHitbox } from '../functions/Metrics';
@@ -15,9 +16,9 @@ type Action = { //ação que o objeto pode responder
 }
 
 type Frag = {
-  sprite: string,
-  size: number,
-  slots?: clickableArea[];
+  sprite: string;
+  size: number;
+  items: DraggableObject[];
   interactionCoordinates?: interactiveCoords;
 }
 
@@ -33,16 +34,12 @@ export class InteractiveObject {
   lastMouseXY: coordinate | undefined;
   allowedDirections: string[];
   action: Action | undefined;
-  slots?: Slot[];
-  slotsAlwaysVisible: boolean;
   fragment: Fragment | null;
 
   constructor(
     spriteSrc: string,
     size: number,
     position: positionType,
-    slots: Slot[],
-    slotsAlwaysVisible: boolean,
     allowedDirections: string[],
     fragment: Frag | null,
     action?: actionType,
@@ -61,16 +58,7 @@ export class InteractiveObject {
         }
       : undefined;
     this.allowedDirections = allowedDirections;
-    this.slotsAlwaysVisible = slotsAlwaysVisible;
 
-    slots.forEach((slot) => {
-      const relativePos = slot.getPosition();
-      slot.setPosition({
-        x: position.canvas.x + relativePos.x,
-        y: position.canvas.y + relativePos.y,
-      }); //passando de coordenadas relativas para absolutas
-    });
-    this.slots = slots;
     this.fragment = (fragment)
     ? new Fragment({
       ...fragment,
@@ -111,7 +99,6 @@ export class InteractiveObject {
     this.position.canvas.y += delta.y;
     this.position.map.x += delta.x;
     this.position.map.y += delta.y;
-    this.slots.forEach(slot => slot.incrementalMoveto(delta));
   }
 
   setPosition(ofWhat: 'canvas' | 'map', pos: coordinate) {
@@ -152,27 +139,7 @@ export class InteractiveObject {
       width: this.size,
       height: this.size * ratio,
     };
-  }
-
-  getNearestItem() {
-    if (!this.slots || this.slots.length === 0) return undefined;
-    return this.slots[0].object;
-  }
-
-  takeItem() {
-    if (!this.slots || this.slots.length === 0) return;
-    this.slots[0].object = undefined;
-  }
-
-  putItem(item: DraggableObject) {
-    if (!this.slots || this.slots.length === 0) return;
-    this.slots[0].object = item;
-  }
-
-  orderSlotsAccordingToDistance(referencePoint: coordinate) {
-    if (!this.slots) return;
-    this.slots.sort((a, b) => a.getDistanceTo(referencePoint) - b.getDistanceTo(referencePoint));
-  }
+  } 
 
   getFragment() {
     return this.fragment;
@@ -186,11 +153,27 @@ export class InteractiveObject {
     return this.fragment && this.fragment.isVisible();
   }
 
+  interact(player: Player, key: string | undefined, mouseXY: coordinate | undefined){
+    this.updateKey(key);
+    if (!this.lastMouseXY && this.fragment) {
+      const { hasInteracted, item } = this.fragment.interact(this.state, mouseXY);
+      if(hasInteracted && !item){
+        this.toggleState();
+        this.action.sound.play();
+      } else if(item){
+        item.sound.play();
+        this.fragment.removeItem(item);
+        player.addItem(item);
+      }
+    }
+    this.lastMouseXY = mouseXY;
+  }
+
   private toggleState() {
     this.state = !this.state;
   }
 
-  private renderTexts(canvas: CanvasRenderingContext2D) {
+  private drawTexts(canvas: CanvasRenderingContext2D) {
     if (!this.isHighlighted || !this.action) return;
     if(this.fragment && this.fragment.isVisible()) return;
 
@@ -205,17 +188,16 @@ export class InteractiveObject {
     });
   }
 
-  private renderSlots(canvas: CanvasRenderingContext2D) {
-    if (this.slots && (this.slotsAlwaysVisible || this.state)) {
-      this.slots.forEach((slot, i) => {
-        i === 0 &&
-          slot.setText(slot.object ? `pegar ${slot.object.name}` : 'vazio');
-        slot.render(canvas, this.isHighlighted && i === 0);
-      });
-    }
+  private drawItems(canvas: CanvasRenderingContext2D) {
+    if(!this.fragment || !this.state) return;
+    const items = this.fragment.getItems().map(item => item.sprite);
+    items.forEach(item => {
+      item.setSize(0.5*item.getSize());
+      item.render(canvas, {x: this.position.canvas.x + 0.5*this.size, y: this.position.canvas.y + 0.5*this.size});    //TODO melhorar o posicionamento
+    });
   }
 
-  private renderHitboxes(canvas: CanvasRenderingContext2D){
+  private drawHitboxes(canvas: CanvasRenderingContext2D){
     this.position.tiles.forEach((tile => {
       const absolutePosition = {
         x: this.position.map.x + tile.x,
@@ -242,21 +224,6 @@ export class InteractiveObject {
     this.lastKeyPressed = key;
   }
 
-  interact(key: string | undefined, mouseXY: coordinate | undefined){
-    this.updateKey(key);
-    if (!this.lastMouseXY && this.fragment) {
-      const { hasInteracted, object } = this.fragment.interact(this.state, mouseXY);
-      if(hasInteracted){
-        if(object){
-          
-        } else {
-          this.toggleState();
-          this.action.sound.play();
-        }
-      }
-    }
-    this.lastMouseXY = mouseXY;
-  }
 
   ////////////////////////////////////////////////////////////////////////////////
 
@@ -266,12 +233,13 @@ export class InteractiveObject {
 
   render(canvas: CanvasRenderingContext2D) {
     this.sprite.render(canvas, this.position.canvas);
-    this.renderTexts(canvas);
-    this.renderSlots(canvas);
-    SHOW_HITBOX && this.renderHitboxes(canvas);
+    this.drawTexts(canvas);
+    //this.drawItems(canvas);
+    SHOW_HITBOX && this.drawHitboxes(canvas);
   }
 
   renderFragment(canvas: CanvasRenderingContext2D){
-    this.fragment && this.fragment.isVisible() && this.fragment.render(canvas);
+    this.fragment &&
+    this.fragment.render(canvas, this.state);
   }
 }

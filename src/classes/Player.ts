@@ -84,7 +84,7 @@ export class Player {
       if(objects[i].isInside('hitbox', this.position)){
         this.interactingWithFragment = objects[i].isBeingInteractedWith();
         objects[i].isAllowedToInteract(myDirection) &&
-        objects[i].interact(keyPressed, mouseXY);
+        objects[i].interact(this, keyPressed, mouseXY);
         objects[i].setHighlight(true);
         return;
       }
@@ -185,40 +185,14 @@ export class Player {
     };
   }
 
-  getNearestItem() {
-    if (!this.items || this.items.length === 0) return null;
-    return this.items[0];
-  }
-
-  takeItem() {
+  removeItem() {
     if (!this.items || this.items.length === 0) return;
     this.items.splice(0, 1);
   }
 
-  putItem(item: DraggableObject) {
+  addItem(item: DraggableObject) {
     this.items.unshift(item);
-  }
-
-  handleItems(key: string, objects: InteractiveObject[]) {
-    if (key !== ACTION_KEYS[1].key || this.lastKeyPressed) return;
-
-    const index = objects.findIndex((o) => o.isHighlighted);
-    if (index < 0) return;
-
-    const nearestObject = objects[index];
-    if (!nearestObject.fragment.isVisible() && !nearestObject.slotsAlwaysVisible) return;
-    const item = nearestObject.getNearestItem();
-    if (item) {
-      nearestObject.takeItem();
-      this.putItem(item);
-      return item.playSound();
-    }
-    const myItem = this.getNearestItem();
-    console.log(myItem);
-    if (!myItem) return;
-    this.takeItem();
-    nearestObject.putItem(myItem);
-    myItem.playSound();
+    console.log('itens com o jogador:', this.items.map(item => item.name));
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -229,7 +203,6 @@ export class Player {
       this.sprite.update(dt);
     } else if (keyPressed) {
       this.checkForMoves(keyPressed, map, objects);
-      this.handleItems(keyPressed, objects);
     } else {
       this.reset();
     }
@@ -251,6 +224,3 @@ export class Player {
     }, 5, 'firebrick');
   }
 }
-
-
-//objects[i].orderSlotsAccordingToDistance(this.position);

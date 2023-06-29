@@ -61,12 +61,6 @@ const objects = [
             tiles: [{x: 0, y: 0}, {x: DX, y: -DY}],
             hitboxes: [{x: DX, y: DY}, {x: 2*DX, y: 0}],
         },
-        [
-            new Slot(
-                { x: DRAWER_SIZE / 2 - 10, y: (DRAWER_SIZE / 2 - 10) },
-                new DraggableObject(bottleSprite, 18, 'garrafa', glassSound)
-            ),
-        ],
         false,
         ['left'],
         {
@@ -79,6 +73,22 @@ const objects = [
                     {coordinate: {x: 440, y: 300}, radius: 50},
                 ],
             },
+            items: [
+                new DraggableObject({
+                    spriteSrc: bottleSprite,
+                    size: 28,
+                    name: 'garrafa',
+                    sound: glassSound,
+                    position: {x: 300, y: 200}
+                }),
+                new DraggableObject({
+                    spriteSrc: paperSprite,
+                    size: 90,
+                    name: 'papel',
+                    sound: paperSound,
+                    position: {x: 260, y: 330}
+                }),
+            ]
         },
         {
             sound: doorSound,
@@ -96,12 +106,6 @@ const objects = [
             tiles: [{x: 0, y: 0}, {x: DX, y: DY}, {x: 2*DX, y: 2*DY}],
             hitboxes: [{x: -DX, y: DY}, {x: 0, y: 2*DY}, {x: DX, y: 3*DY}],
         },
-        [
-            new Slot(
-                { x: DESK_SIZE * 0.55, y: DESK_SIZE * 0.4 },
-                new DraggableObject(paperSprite, 70, 'papel', paperSound)
-            ),
-        ],
         false,
         ['up'],
         null,
@@ -127,11 +131,6 @@ const objects = [
                 {x: 4*DX, y: 0}, {x: 5*DX, y: -DY},
             ],
         },
-        [
-            new Slot({ x: V_DESK_SIZE * 0.18, y: V_DESK_SIZE * 0.04 }, undefined),
-            new Slot({ x: V_DESK_SIZE * 0.5, y: V_DESK_SIZE * 0.2 }, undefined),
-            new Slot({ x: V_DESK_SIZE * 0.8, y: V_DESK_SIZE * 0.04 }, undefined),
-        ],
         true,
         ['down', 'right'],
         null,
