@@ -2,7 +2,6 @@ import { actionType, coordinate, interactiveCoords, positionType } from '../type
 import { Sprite } from './Sprite';
 import { ACTION_KEYS, SHOW_HITBOX } from '../constants';
 import { FloatingText } from './FloatingText';
-import { Slot } from './Slot';
 import { Player } from './Player';
 import { Fragment } from './Fragment';
 import { DraggableObject } from './DraggableObject';

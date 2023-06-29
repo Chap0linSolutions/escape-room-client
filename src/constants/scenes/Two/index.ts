@@ -1,5 +1,4 @@
 import drawerFragment from '../../../assets/fragments/drawerFragment.png';
-
 import floorSprite from '../../../assets/floor2.png';
 import drawerSprite from '../../../assets/drawer.png';
 import deskSprite from '../../../assets/desk.png';
@@ -15,7 +14,6 @@ import {
   InteractiveObject,
   DraggableObject,
   Floor,
-  Slot,
 } from '../../../classes';
 import {
   CANVAS_WIDTH,
@@ -61,7 +59,6 @@ const objects = [
             tiles: [{x: 0, y: 0}, {x: DX, y: -DY}],
             hitboxes: [{x: DX, y: DY}, {x: 2*DX, y: 0}],
         },
-        false,
         ['left'],
         {
             size: 600,
@@ -106,7 +103,6 @@ const objects = [
             tiles: [{x: 0, y: 0}, {x: DX, y: DY}, {x: 2*DX, y: 2*DY}],
             hitboxes: [{x: -DX, y: DY}, {x: 0, y: 2*DY}, {x: DX, y: 3*DY}],
         },
-        false,
         ['up'],
         null,
         {
@@ -131,7 +127,6 @@ const objects = [
                 {x: 4*DX, y: 0}, {x: 5*DX, y: -DY},
             ],
         },
-        true,
         ['down', 'right'],
         null,
     ),
