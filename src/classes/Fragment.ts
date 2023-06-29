@@ -94,14 +94,14 @@ export class Fragment {
     }
 
     interact(state: boolean, clickCoords: coordinate){
-        if(!this.interactions || !clickCoords) return false;
+        if(!this.interactions || !clickCoords) return { hasInteracted: false, object: null };
         const inter = (state)? this.interactions.close : this.interactions.open;
         for(let i = 0; i < inter.length; i++){
             if(this.isWithin(inter[i], clickCoords)){
                 this.sprite.setQuad(this.sprite.nextSprite());
-                return true;
+                return { hasInteracted: true, object: null };
             }
-        } return false;
+        } return { hasInteracted: false, object: null };
     }
 
     private drawBackground(canvas: CanvasRenderingContext2D, width: number, height: number, margin: number){

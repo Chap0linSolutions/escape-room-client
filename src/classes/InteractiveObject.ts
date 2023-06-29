@@ -242,19 +242,25 @@ export class InteractiveObject {
     this.lastKeyPressed = key;
   }
 
-  private updateMouse(mouseXY: coordinate | undefined){
-    if (!this.lastMouseXY) {
-      const hasInteracted = this.fragment && this.fragment.interact(this.state, mouseXY);
-      hasInteracted && this.toggleState();
+  interact(key: string | undefined, mouseXY: coordinate | undefined){
+    this.updateKey(key);
+    if (!this.lastMouseXY && this.fragment) {
+      const { hasInteracted, object } = this.fragment.interact(this.state, mouseXY);
+      if(hasInteracted){
+        if(object){
+          
+        } else {
+          this.toggleState();
+          this.action.sound.play();
+        }
+      }
     }
     this.lastMouseXY = mouseXY;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  update(keyPressed: string | undefined, mouseXY: coordinate | undefined) {
-    this.updateKey(keyPressed);
-    this.updateMouse(mouseXY);
+  update() {
     this.sprite.setQuad([this.state ? 1 : 0, this.isHighlighted ? 1 : 0]);
   }
 

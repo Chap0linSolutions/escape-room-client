@@ -23,10 +23,10 @@ export default function UpdateAll({
   floor && floor.update();
 
   objects.forEach((o) => {
-    o.update(key, mouseXY);
+    o.update();
   });
 
   players.forEach((p) => {
-    p.update(dt, floor, objects, key);
+    p.update(dt, floor, objects, key, mouseXY);
   });
 }

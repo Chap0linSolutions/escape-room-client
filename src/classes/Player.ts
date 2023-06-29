@@ -78,15 +78,17 @@ export class Player {
     }
   }
 
-  private checkInteractions(objects: InteractiveObject[]){
+  private checkInteractions(objects: InteractiveObject[], keyPressed: string | undefined, mouseXY: coordinate | undefined){
     const myDirection = this.allowedDirections[this.sprite.getQuad()[1]];
     for(let i = 0; i < objects.length; i++){
       if(objects[i].isInside('hitbox', this.position)){
-        objects[i].setHighlight(objects[i].isAllowedToInteract(myDirection));
-        objects[i].orderSlotsAccordingToDistance(this.position);
         this.interactingWithFragment = objects[i].isBeingInteractedWith();
+        objects[i].isAllowedToInteract(myDirection) &&
+        objects[i].interact(keyPressed, mouseXY);
+        objects[i].setHighlight(true);
         return;
       }
+      objects[i].setHighlight(false);
     }
   }
 
@@ -221,7 +223,7 @@ export class Player {
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  update(dt: number, map: Floor, objects: InteractiveObject[], keyPressed: string | undefined) {
+  update(dt: number, map: Floor, objects: InteractiveObject[], keyPressed: string | undefined, mouseXY: coordinate | undefined) {
     if(this.isThereAnyMovementLeft()) {
       this.move(dt, objects, map);
       this.sprite.update(dt);
@@ -231,7 +233,7 @@ export class Player {
     } else {
       this.reset();
     }
-    this.checkInteractions(objects);
+    this.checkInteractions(objects, keyPressed, mouseXY);
     this.lastKeyPressed = keyPressed;
   }
 
@@ -249,3 +251,6 @@ export class Player {
     }, 5, 'firebrick');
   }
 }
+
+
+//objects[i].orderSlotsAccordingToDistance(this.position);
