@@ -12,10 +12,10 @@ export class Slot {
   constructor(position: coordinate, object: DraggableObject | undefined) {
     this.position = position;
     this.object = object;
-    this.text = new FloatingText(
-      object ? object.name : 'vazio',
-      ACTION_KEYS[1].icon
-    );
+    this.text = new FloatingText({
+      text: object ? object.name : 'vazio',
+      iconSprite: ACTION_KEYS[1].icon
+    });
   }
 
   incrementalMoveto(delta: coordinate){

@@ -2,13 +2,20 @@ import { coordinate } from '../types';
 import { Sprite } from './Sprite';
 import Sound from './Sound';
 
+
+type classConstructor = {
+  spriteSrc: string;
+  size: number;
+  name: string;
+  sound: string;
+}
 export class DraggableObject {
   name: string;
   size: number;
   sprite: Sprite;
   sound: Sound;
 
-  constructor(spriteSrc: string, size: number, name: string, sound: string) {
+  constructor({spriteSrc, size, name, sound}: classConstructor) {
     this.size = size;
     this.sound = new Sound(sound);
     this.sprite = new Sprite(spriteSrc, size, 1, 1, 0);

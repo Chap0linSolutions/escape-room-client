@@ -14,6 +14,16 @@ type Action = { //ação que o objeto pode responder
   options: string[]; //opções de texto a serem exibidas no objeto
 }
 
+type classConstructor = {
+  spriteSrc: string;
+  size: number;
+  position: positionType;
+  slots: Slot[];
+  slotsAlwaysVisible: boolean;
+  allowedDirections: string[];
+  action?: actionType;
+}
+
 export class InteractiveObject {
   //clase para representar os objetos que o usuário pode interagir
   size: number; //tamanho (largura, pra ser mais exato. O comprimento é calculado automaticamente a partir dela)
@@ -28,15 +38,15 @@ export class InteractiveObject {
   slots?: Slot[];
   slotsAlwaysVisible: boolean;
 
-  constructor(
-    spriteSrc: string,
-    size: number,
-    position: positionType,
-    slots: Slot[],
-    slotsAlwaysVisible: boolean,
-    allowedDirections: string[],
-    action?: actionType,
-  ) {
+  constructor({
+    spriteSrc,
+    size,
+    position,
+    slots,
+    slotsAlwaysVisible,
+    allowedDirections,
+    action,
+  }: classConstructor) {
     this.canBeOpened = action ? true : false;
     this.sprite = new Sprite(spriteSrc, size, 2, action ? 2 : 1, 0);
     this.size = size;
@@ -47,13 +57,13 @@ export class InteractiveObject {
       ? {
           options: action.texts,
           sound: new Sound(action.sound),
-          description: new FloatingText(action.texts[0], ACTION_KEYS[0].icon),
+          description: new FloatingText({text: action.texts[0], iconSprite: ACTION_KEYS[0].icon}),
         }
       : undefined;
     this.allowedDirections = allowedDirections;
     this.slotsAlwaysVisible = slotsAlwaysVisible;
 
-    slots.forEach((slot) => {
+    slots && slots.forEach((slot) => {
       const relativePos = slot.getPosition();
       slot.setPosition({
         x: position.canvas.x + relativePos.x,

@@ -50,58 +50,68 @@ const floor = new Floor(
 
 const objects = [
     //ARMÁRIO///////////////////////////////////////////////////////////////////////////   
-    new InteractiveObject(
-        drawerSprite,
-        DRAWER_SIZE,
-        { 
+    new InteractiveObject({
+        spriteSrc: drawerSprite,
+        size: DRAWER_SIZE,
+        position: { 
             canvas: {x: 95, y: 90},
             map: {x: mapOrigin.x + 3*DX, y: mapOrigin.y - 2*DY},
             tiles: [{x: 0, y: 0}, {x: DX, y: -DY}],
             hitboxes: [{x: DX, y: DY}, {x: 2*DX, y: 0}],
         },
-        [
+        slots: [
             new Slot(
                 { x: DRAWER_SIZE / 2 - 10, y: (DRAWER_SIZE / 2 - 10) },
-                new DraggableObject(bottleSprite, 18, 'garrafa', glassSound)
+                new DraggableObject({
+                    spriteSrc: bottleSprite,
+                    size: 18,
+                    name: 'garrafa',
+                    sound: glassSound
+                })
             ),
         ],
-        false,
-        ['left'],
-        {
+        slotsAlwaysVisible: false,
+        allowedDirections: ['left'],
+        action: {
             sound: doorSound,
             texts: ['abrir o armário', 'fechar o armário'],
         }
-    ),
+    }),
 
     //MESA COM COMPUTADOR///////////////////////////////////////////////////////////////////
-    new InteractiveObject(
-        deskSprite,
-        DESK_SIZE,
-        { 
+    new InteractiveObject({
+        spriteSrc: deskSprite,
+        size: DESK_SIZE,
+        position: { 
             canvas: {x: 640, y: 280},
             map: {x: mapOrigin.x + 13*DX, y: mapOrigin.y + 2*DY},
             tiles: [{x: 0, y: 0}, {x: DX, y: DY}, {x: 2*DX, y: 2*DY}],
             hitboxes: [{x: -DX, y: DY}, {x: 0, y: 2*DY}, {x: DX, y: 3*DY}],
         },
-        [
+        slots: [
             new Slot(
                 { x: DESK_SIZE * 0.55, y: DESK_SIZE * 0.4 },
-                new DraggableObject(paperSprite, 70, 'papel', paperSound)
+                new DraggableObject({
+                    spriteSrc: paperSprite,
+                    size: 70,
+                    name: 'papel',
+                    sound: paperSound
+                })
             ),
         ],
-        false,
-        ['up'],
-        {
+        slotsAlwaysVisible: false,
+        allowedDirections: ['up'],
+        action: {
             sound: wooshSound,
             texts: ['abrir o notebook', 'fechar o notebook'],
         }
-    ),
+    }),
 
     //MESA EM L///////////////////////////////////////////////////////////////////////////
-    new InteractiveObject(
-        vDeskSprite,
-        V_DESK_SIZE,
-        { 
+    new InteractiveObject({
+        spriteSrc: vDeskSprite,
+        size: V_DESK_SIZE,
+        position: { 
             canvas: {x: 680, y: 640},
             map: {x: mapOrigin.x + 13*DX, y: mapOrigin.y + 12*DY},
             tiles: [
@@ -113,14 +123,14 @@ const objects = [
                 {x: 4*DX, y: 0}, {x: 5*DX, y: -DY},
             ],
         },
-        [
+        slots: [
             new Slot({ x: V_DESK_SIZE * 0.18, y: V_DESK_SIZE * 0.04 }, undefined),
             new Slot({ x: V_DESK_SIZE * 0.5, y: V_DESK_SIZE * 0.2 }, undefined),
             new Slot({ x: V_DESK_SIZE * 0.8, y: V_DESK_SIZE * 0.04 }, undefined),
         ],
-        true,
-        ['down', 'right'],
-    ),
+        slotsAlwaysVisible: true,
+        allowedDirections: ['down', 'right'],
+    }),
 ];
 
 const sceneTwo = { playerOrigin, floor, objects };

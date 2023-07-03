@@ -39,7 +39,7 @@ export class Player {
     animationPeriod: number,
     feetOffset: coordinate,
   ) {
-    this.name = new FloatingText(name, null);
+    this.name = new FloatingText({text: name, iconSprite: null});
     this.speed = speed;
     this.size = size;
     this.position = position;
