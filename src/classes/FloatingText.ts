@@ -1,6 +1,14 @@
 import { coordinate } from '../types';
 import { Sprite } from './Sprite';
 
+type constructorType = {
+  text: string;
+  iconSprite: string | null;
+  color?: string;
+  background?: string;
+  padding?: coordinate;
+  style?: string;
+}
 export class FloatingText {
   //classe para representar os textos flutuantes (nomes de personagens, ações em objetos, etc)
   text: string; //as variáveis aqui são bem diretas (acho eu) em relação ao que armazenam.
@@ -10,14 +18,14 @@ export class FloatingText {
   style: string;
   icon: Sprite | null;
 
-  constructor(
-    text: string,
-    iconSprite: string | null,
-    color?: string,
-    background?: string,
-    padding?: coordinate,
-    style?: string
-  ) {
+  constructor({
+    text,
+    iconSprite,
+    color,
+    background,
+    padding,
+    style
+  }: constructorType) {
     this.text = text;
     this.color = color ? color : '#cccccc';
     this.background = background ? background : '#222222CC';

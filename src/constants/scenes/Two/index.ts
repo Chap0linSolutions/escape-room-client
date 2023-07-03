@@ -50,17 +50,17 @@ const floor = new Floor(
 
 const objects = [
     //ARMÁRIO///////////////////////////////////////////////////////////////////////////   
-    new InteractiveObject(
-        drawerSprite,
-        DRAWER_SIZE,
-        { 
+    new InteractiveObject({
+        spriteSrc: drawerSprite,
+        size: DRAWER_SIZE,
+        position: { 
             canvas: {x: 95, y: 90},
             map: {x: mapOrigin.x + 3*DX, y: mapOrigin.y - 2*DY},
             tiles: [{x: 0, y: 0}, {x: DX, y: -DY}],
             hitboxes: [{x: DX, y: DY}, {x: 2*DX, y: 0}],
         },
-        ['left'],
-        {
+        allowedDirections: ['left'],
+        fragment: {
             size: 600,
             sprite: drawerFragment,
             interactionCoordinates: {
@@ -87,35 +87,35 @@ const objects = [
                 }),
             ]
         },
-        {
+        action: {
             sound: doorSound,
             texts: ['abrir o armário', 'fechar o armário'],
         }
-    ),
+    }),
 
     //MESA COM COMPUTADOR///////////////////////////////////////////////////////////////////
-    new InteractiveObject(
-        deskSprite,
-        DESK_SIZE,
-        { 
+    new InteractiveObject({
+        spriteSrc: deskSprite,
+        size: DESK_SIZE,
+        position: { 
             canvas: {x: 640, y: 280},
             map: {x: mapOrigin.x + 13*DX, y: mapOrigin.y + 2*DY},
             tiles: [{x: 0, y: 0}, {x: DX, y: DY}, {x: 2*DX, y: 2*DY}],
             hitboxes: [{x: -DX, y: DY}, {x: 0, y: 2*DY}, {x: DX, y: 3*DY}],
         },
-        ['up'],
-        null,
-        {
+        allowedDirections: ['up'],
+        fragment: null,
+        action: {
             sound: wooshSound,
             texts: ['abrir o notebook', 'fechar o notebook'],
         }
-    ),
+    }),
 
     //MESA EM L///////////////////////////////////////////////////////////////////////////
-    new InteractiveObject(
-        vDeskSprite,
-        V_DESK_SIZE,
-        { 
+    new InteractiveObject({
+        spriteSrc: vDeskSprite,
+        size: V_DESK_SIZE,
+        position: { 
             canvas: {x: 680, y: 640},
             map: {x: mapOrigin.x + 13*DX, y: mapOrigin.y + 12*DY},
             tiles: [
@@ -127,9 +127,9 @@ const objects = [
                 {x: 4*DX, y: 0}, {x: 5*DX, y: -DY},
             ],
         },
-        ['down', 'right'],
-        null,
-    ),
+        allowedDirections: ['down', 'right'],
+        fragment: null,
+    }),
 ];
 
 const sceneTwo = { playerOrigin, floor, objects };

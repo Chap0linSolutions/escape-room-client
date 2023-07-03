@@ -29,6 +29,6 @@ export class Slot {
   }
 
   render(canvas: CanvasRenderingContext2D) {
-    this.object && this.object.render(canvas, this.position);
+    this.object && this.object.render(canvas);
   }
 }

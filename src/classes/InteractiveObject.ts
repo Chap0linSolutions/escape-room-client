@@ -21,6 +21,15 @@ type Frag = {
   interactionCoordinates?: interactiveCoords;
 }
 
+type constructorType = {
+  spriteSrc: string;
+  size: number;
+  position: positionType;
+  allowedDirections: string[];
+  fragment: Frag | null;
+  action?: actionType;
+}
+
 export class InteractiveObject {
   //clase para representar os objetos que o usuário pode interagir
   size: number; //tamanho (largura, pra ser mais exato. O comprimento é calculado automaticamente a partir dela)
@@ -35,14 +44,14 @@ export class InteractiveObject {
   action: Action | undefined;
   fragment: Fragment | null;
 
-  constructor(
-    spriteSrc: string,
-    size: number,
-    position: positionType,
-    allowedDirections: string[],
-    fragment: Frag | null,
-    action?: actionType,
-  ) {
+  constructor({
+    spriteSrc,
+    size,
+    position,
+    allowedDirections,
+    fragment,
+    action,
+  }) {
     this.canBeOpened = action ? true : false;
     this.sprite = new Sprite(spriteSrc, size, 2, action ? 2 : 1, 0);
     this.size = size;
@@ -53,7 +62,7 @@ export class InteractiveObject {
       ? {
           options: action.texts,
           sound: new Sound(action.sound),
-          description: new FloatingText('interagir', ACTION_KEYS[0].icon),
+          description: new FloatingText({text: 'interagir', iconSprite: ACTION_KEYS[0].icon}),
         }
       : undefined;
     this.allowedDirections = allowedDirections;
