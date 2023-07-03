@@ -32,8 +32,8 @@ export class Fragment {
         this.interactions = (interactionCoordinates)? interactionCoordinates : null;
         this.visible = false;
         this.object = (object)? object : null;
-        this.leaveText = new FloatingText('sair', eKey);
-        this.interactText = new FloatingText('interagir', cursorKey);
+        this.leaveText = new FloatingText({text: 'sair', iconSprite: eKey});
+        this.interactText = new FloatingText({text: 'interagir', iconSprite: cursorKey});
         this.items = items;
     }
 
