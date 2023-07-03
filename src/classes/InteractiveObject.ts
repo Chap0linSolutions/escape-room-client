@@ -51,7 +51,7 @@ export class InteractiveObject {
     allowedDirections,
     fragment,
     action,
-  }) {
+  }: constructorType) {
     this.canBeOpened = action ? true : false;
     this.sprite = new Sprite(spriteSrc, size, 2, action ? 2 : 1, 0);
     this.size = size;
