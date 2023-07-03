@@ -3,7 +3,7 @@ import { Sprite } from './Sprite';
 import Sound from './Sound';
 
 
-type classConstructor = {
+type constructorType = {
   spriteSrc: string;
   size: number;
   name: string;
@@ -15,7 +15,7 @@ export class DraggableObject {
   sprite: Sprite;
   sound: Sound;
 
-  constructor({spriteSrc, size, name, sound}: classConstructor) {
+  constructor({spriteSrc, size, name, sound}: constructorType) {
     this.size = size;
     this.sound = new Sound(sound);
     this.sprite = new Sprite(spriteSrc, size, 1, 1, 0);

@@ -14,7 +14,7 @@ type Action = { //ação que o objeto pode responder
   options: string[]; //opções de texto a serem exibidas no objeto
 }
 
-type classConstructor = {
+type constructorType = {
   spriteSrc: string;
   size: number;
   position: positionType;
@@ -46,7 +46,7 @@ export class InteractiveObject {
     slotsAlwaysVisible,
     allowedDirections,
     action,
-  }: classConstructor) {
+  }: constructorType) {
     this.canBeOpened = action ? true : false;
     this.sprite = new Sprite(spriteSrc, size, 2, action ? 2 : 1, 0);
     this.size = size;
