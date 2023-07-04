@@ -2,15 +2,15 @@ import { getDistance } from '../functions/Metrics';
 import { coordinate } from '../types';
 import { DraggableObject } from './DraggableObject';
 
-type constructorType = {
+type SlotParams = {
   position: coordinate;
-  object: DraggableObject | undefined
+  object: DraggableObject | undefined;
 }
 export class Slot {
   position: coordinate;
   object: DraggableObject | undefined;
 
-  constructor({position, object}: constructorType) {
+  constructor({position, object}: SlotParams) {
     this.position = position;
     this.object = object;
   }

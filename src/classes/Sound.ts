@@ -1,4 +1,4 @@
-type constructorType = {
+type SoundParams = {
   source: string;
 }
 
@@ -6,7 +6,7 @@ export default class Sound {
   source: string;
   audio: HTMLAudioElement;
 
-  constructor({source}: constructorType) {
+  constructor({source}: SoundParams) {
     this.source = source;
     this.audio = new Audio(source);
   }

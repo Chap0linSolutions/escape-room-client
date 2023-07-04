@@ -1,7 +1,7 @@
 import { coordinate } from '../types';
 import { Sprite } from './Sprite';
 
-type constructorType = {
+type FloatingTextParams = {
   text: string;
   iconSprite: string | null;
   color?: string;
@@ -25,7 +25,7 @@ export class FloatingText {
     background,
     padding,
     style
-  }: constructorType) {
+  }: FloatingTextParams) {
     this.text = text;
     this.color = color ? color : '#cccccc';
     this.background = background ? background : '#222222CC';

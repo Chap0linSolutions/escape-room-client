@@ -9,12 +9,12 @@ import eKey from '../assets/icons/e-key.png';
 import cursorKey from '../assets/icons/cursor.png';
 import { DraggableObject } from './DraggableObject';
 
-type fragmentConstructor = {
-    sprite: string,
-    size: number,
-    items: DraggableObject[],
-    interactionCoordinates?: interactiveCoords,
-    object?: InteractiveObject,
+type FragmentParams = {
+    sprite: string;
+    size: number;
+    items: DraggableObject[];
+    interactionCoordinates?: interactiveCoords;
+    object?: InteractiveObject;
 }
 
 export class Fragment {
@@ -27,7 +27,7 @@ export class Fragment {
     interactText: FloatingText;
     items: DraggableObject[];
 
-    constructor({sprite, size, interactionCoordinates, object, items}: fragmentConstructor) {
+    constructor({sprite, size, interactionCoordinates, object, items}: FragmentParams) {
         this.sprite = new Sprite({sprite, size, rows: 1, columns: 2});
         this.interactions = (interactionCoordinates)? interactionCoordinates : null;
         this.visible = false;

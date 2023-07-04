@@ -2,7 +2,7 @@ import { coordinate } from '../types';
 import { Player } from './Player';
 import { Sprite } from './Sprite';
 
-type constructorType = {
+type TargetObjectParams = {
   spriteSrc: string;
   size: number;
   initialPos: coordinate;
@@ -18,7 +18,7 @@ export class TargetObject {
     size,
     initialPos,
     animationPeriod
-  }: constructorType) {
+  }: TargetObjectParams) {
     this.sprite = new Sprite({ sprite: spriteSrc, size, rows: 1, columns: 2, maxCount: animationPeriod });
     this.size = size;
     this.position = initialPos;

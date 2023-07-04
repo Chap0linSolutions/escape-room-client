@@ -21,7 +21,7 @@ type Frag = {
   interactionCoordinates?: interactiveCoords;
 }
 
-type constructorType = {
+type InteractiveObjectParams = {
   spriteSrc: string;
   size: number;
   position: positionType;
@@ -51,7 +51,7 @@ export class InteractiveObject {
     allowedDirections,
     fragment,
     action,
-  }: constructorType) {
+  }: InteractiveObjectParams) {
     this.canBeOpened = action ? true : false;
     this.sprite = new Sprite({ sprite: spriteSrc, size, rows: 2, columns: action ? 2 : 1, maxCount: 0 });
     this.size = size;

@@ -1,6 +1,6 @@
 import { coordinate, quad } from '../types';
 
-type constructorType = {
+type SpriteParams = {
   sprite: string;
   size: number;
   rows: number;
@@ -24,7 +24,7 @@ export class Sprite {
     rows,
     columns,
     maxCount
-  }: constructorType) {
+  }: SpriteParams) {
     this.source = new Image();
     this.source.src = sprite;
     this.size = size;

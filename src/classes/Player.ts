@@ -17,7 +17,7 @@ function getDp(direction: string): quad {
   }
 }
 
-type constructorType = {
+type PlayerParams = {
   name: string;
   spriteSrc: string;
   position: coordinate;
@@ -50,7 +50,7 @@ export class Player {
     size,
     animationPeriod,
     feetOffset,
-  }: constructorType) {
+  }: PlayerParams) {
     this.name = new FloatingText({text: name, iconSprite: null});
     this.speed = speed;
     this.size = size;

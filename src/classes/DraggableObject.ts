@@ -4,12 +4,12 @@ import Sound from './Sound';
 import { isInsideBox } from '../functions/Metrics';
 
 
-type constructorType = {
-  spriteSrc: string,
-  size: number,
-  name: string,
-  sound: string,
-  position?: coordinate,
+type DraggableObjectParams = {
+  spriteSrc: string;
+  size: number;
+  name: string;
+  sound: string;
+  position?: coordinate;
 }
 export class DraggableObject {
   name: string;
@@ -18,7 +18,7 @@ export class DraggableObject {
   sound: Sound;
   position: coordinate | null;
 
-  constructor({spriteSrc, size, name, sound, position}: constructorType) {
+  constructor({spriteSrc, size, name, sound, position}: DraggableObjectParams) {
     this.size = size;
     this.sound = new Sound({source: sound});
     this.sprite = new Sprite({
