@@ -1,5 +1,5 @@
 import { coordinate } from "../../../types";
-import { DX, DY } from "../../index";
+import { DX, DY } from "../../../constants";
 
 const tileMap: coordinate[][] = [
     [   //first row

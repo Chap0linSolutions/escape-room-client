@@ -1,7 +1,5 @@
 import playerSprite from '../assets/player.png';
 import { Player } from '../classes';
-// import { sceneOne } from '../constants/scenes/One';
-// import { sceneTwo } from '../constants/scenes/Two';
 import {
   PLAYER_SIZE,
   PLAYER_SPEED,
@@ -9,8 +7,6 @@ import {
   PLAYER_FEET_OFFSET,
 } from '../constants';
 
-
-// const scenes = [sceneOne, sceneTwo];  //new scenes must be added to this array
 
 export const spawnPlayer = (origin) => {
   const playerOrigin = origin;
@@ -34,8 +30,8 @@ export const spawnPlayer = (origin) => {
 
 
 export async function buildScene(s: number) {
-  const {sceneOne} = await import("../constants/scenes/One");
-  const {sceneTwo} = await import("../constants/scenes/Two");
+  const {sceneOne} = await import("../gameLogic/levels/One");
+  const {sceneTwo} = await import("../gameLogic/levels/Two");
 
   const scenes = [sceneOne, sceneTwo];  //new scenes must be added to this array
 

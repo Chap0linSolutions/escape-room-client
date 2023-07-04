@@ -110,6 +110,8 @@ export class Fragment {
     }
 
     interact(clickCoords: coordinate){
+        if(!this.position) return;
+
         const state = new State()
         if(!this.interactions || !clickCoords) return { hasInteracted: false, item: null };
         const interaction = (this.isOpen)? this.interactions.close : this.interactions.open;

@@ -24,7 +24,7 @@ import {
   V_DESK_SIZE,
   DX,
   DY,
-} from '../../index';
+} from '../../../constants/index';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOrigin = {
