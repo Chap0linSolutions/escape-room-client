@@ -1,5 +1,6 @@
 import { clickableArea, coordinate, interactiveCoords } from '../types';
 import { getDistance, renderHitbox } from '../functions/Metrics';
+import { InputHandler } from "../events/InputHandler";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, SHOW_HITBOX } from '../constants';
 import { InteractiveObject } from './InteractiveObject';
 import { FloatingText } from './FloatingText';
@@ -8,6 +9,7 @@ import { Slot } from './Slot';
 import eKey from '../assets/icons/e-key.png';
 import cursorKey from '../assets/icons/cursor.png';
 import { InventoryItem } from './InventoryItem';
+import { State } from '../gameLogic/state';
 
 type FragmentParams = {
     sprite: string;
@@ -26,6 +28,7 @@ export class Fragment {
     leaveText: FloatingText;
     interactText: FloatingText;
     items: InventoryItem[];
+    isOpen: boolean;
 
     constructor({sprite, size, interactionCoordinates, object, items}: FragmentParams) {
         this.sprite = new Sprite({sprite, size, rows: 1, columns: 2});
@@ -35,6 +38,8 @@ export class Fragment {
         this.leaveText = new FloatingText({text: 'sair', iconSprite: eKey});
         this.interactText = new FloatingText({text: 'interagir', iconSprite: cursorKey});
         this.items = items;
+        const inputHandler = new InputHandler();
+        inputHandler.subscribe("mouseDown", "fragmentMouseDown", (pos) => this.interact(pos))
     }
 
     private getAbsoluteCoords(coords: coordinate){
@@ -104,19 +109,25 @@ export class Fragment {
         return this.visible;
     }
 
-    interact(isOpen: boolean, clickCoords: coordinate){
+    interact(clickCoords: coordinate){
+        const state = new State()
         if(!this.interactions || !clickCoords) return { hasInteracted: false, item: null };
-        const interaction = (isOpen)? this.interactions.close : this.interactions.open;
+        const interaction = (this.isOpen)? this.interactions.close : this.interactions.open;
         for(let i = 0; i < interaction.length; i++){                    //verifica se o jogador está tentando abrir/fechar o fragmento (ex.: portas de um armário)
             if(this.isWithin(interaction[i], clickCoords)){
                 this.sprite.setQuad(this.sprite.nextSprite());
+                this.isOpen = !this.isOpen;
+                this.object.toggleState()
                 return { hasInteracted: true, slot: null };
             }
         }
-        if(isOpen){
+        if(this.isOpen){
             for(let i = 0; i < this.items.length; i++){
                 const item = this.items[i];
                 if(item.isInside(clickCoords)){
+                    this.removeItem(item);
+                    state.addItem(item);
+                    item.sound.play();
                     return { hasInteracted: true, item };
                 }
             }

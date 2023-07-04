@@ -52,9 +52,9 @@ export class Game {
     this.callbacks = gameCallbacks;
   }
 
-  initialSetup = () => {
-    const {objects, floor} = buildScene(SCENE);
-    this.players = spawnPlayer(SCENE);
+  initialSetup = async () => {
+    const {objects, floor, playerOrigin} = await buildScene(SCENE);
+    this.players = spawnPlayer(playerOrigin);
     this.objects = objects;
     this.floor = floor;
   };
@@ -71,12 +71,11 @@ export class Game {
     }
   };
 
-  GameLoop = (context: CanvasRenderingContext2D, mouseXY: coordinate, dt: number) => {
+  GameLoop = (context: CanvasRenderingContext2D, dt: number) => {
     context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     //console.log(this.key);
     UpdateAll({
       dt,
-      mouseXY,
       key: this.key.lastKey && this.key[this.key.lastKey] ? this.key.lastKey : undefined,
       floor: this.floor,
       objects: this.objects,

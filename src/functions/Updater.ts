@@ -5,7 +5,6 @@ import { coordinate } from '../types';
 
 interface UpdaterProps {
   dt: number;
-  mouseXY: coordinate;
   key: string | undefined;
   players: Player[];
   objects: InteractiveObject[];
@@ -14,7 +13,6 @@ interface UpdaterProps {
 
 export default function UpdateAll({
   dt,
-  mouseXY,
   key,
   players,
   objects,
@@ -27,6 +25,6 @@ export default function UpdateAll({
   });
 
   players.forEach((p) => {
-    p.update(dt, floor, objects, key, mouseXY);
+    p.update(dt, floor, objects, key);
   });
 }

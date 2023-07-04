@@ -39,7 +39,6 @@ export class InteractiveObject {
   canBeOpened: boolean;
   state: boolean;
   lastKeyPressed: string | undefined;
-  lastMouseXY: coordinate | undefined;
   allowedDirections: string[];
   action: Action | undefined;
   fragment: Fragment | null;
@@ -161,24 +160,13 @@ export class InteractiveObject {
     return this.fragment && this.fragment.isVisible();
   }
 
-  interact(player: Player, key: string | undefined, mouseXY: coordinate | undefined){
+  interact(player: Player, key: string | undefined){
     this.updateKey(key);
-    if (!this.lastMouseXY && this.fragment) {
-      const { hasInteracted, item } = this.fragment.interact(this.state, mouseXY);
-      if(hasInteracted && !item){
-        this.toggleState();
-        this.action.sound.play();
-      } else if(item){
-        item.sound.play();
-        this.fragment.removeItem(item);
-        player.addItem(item);
-      }
-    }
-    this.lastMouseXY = mouseXY;
   }
 
-  private toggleState() {
+  toggleState() {
     this.state = !this.state;
+    this.action.sound.play()
   }
 
   private drawTexts(canvas: CanvasRenderingContext2D) {
@@ -242,7 +230,7 @@ export class InteractiveObject {
   render(canvas: CanvasRenderingContext2D) {
     this.sprite.render(canvas, this.position.canvas);
     this.drawTexts(canvas);
-    //this.drawItems(canvas);
+    // this.drawItems(canvas);
     SHOW_HITBOX && this.drawHitboxes(canvas);
   }
 

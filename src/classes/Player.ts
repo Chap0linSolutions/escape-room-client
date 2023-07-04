@@ -89,13 +89,13 @@ export class Player {
     }
   }
 
-  private checkInteractions(objects: InteractiveObject[], keyPressed: string | undefined, mouseXY: coordinate | undefined){
+  private checkInteractions(objects: InteractiveObject[], keyPressed: string | undefined){
     const myDirection = this.allowedDirections[this.sprite.getQuad()[1]];
     for(let i = 0; i < objects.length; i++){
       if(objects[i].isInside('hitbox', this.position)){
         this.interactingWithFragment = objects[i].isBeingInteractedWith();
         objects[i].isAllowedToInteract(myDirection) &&
-        objects[i].interact(this, keyPressed, mouseXY);
+        objects[i].interact(this, keyPressed);
         objects[i].setHighlight(true);
         return;
       }
@@ -196,19 +196,9 @@ export class Player {
     };
   }
 
-  removeItem() {
-    if (!this.items || this.items.length === 0) return;
-    this.items.splice(0, 1);
-  }
-
-  addItem(item: InventoryItem) {
-    this.items.unshift(item);
-    console.log('itens com o jogador:', this.items.map(item => item.name));
-  }
-
   ////////////////////////////////////////////////////////////////////////////////
 
-  update(dt: number, map: Floor, objects: InteractiveObject[], keyPressed: string | undefined, mouseXY: coordinate | undefined) {
+  update(dt: number, map: Floor, objects: InteractiveObject[], keyPressed: string | undefined) {
     if(this.isThereAnyMovementLeft()) {
       this.move(dt, objects, map);
       this.sprite.update(dt);
@@ -217,7 +207,7 @@ export class Player {
     } else {
       this.reset();
     }
-    this.checkInteractions(objects, keyPressed, mouseXY);
+    this.checkInteractions(objects, keyPressed);
     this.lastKeyPressed = keyPressed;
   }
 

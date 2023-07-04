@@ -1,7 +1,7 @@
 import playerSprite from '../assets/player.png';
 import { Player } from '../classes';
-import { sceneOne } from '../constants/scenes/One';
-import { sceneTwo } from '../constants/scenes/Two';
+// import { sceneOne } from '../constants/scenes/One';
+// import { sceneTwo } from '../constants/scenes/Two';
 import {
   PLAYER_SIZE,
   PLAYER_SPEED,
@@ -10,10 +10,10 @@ import {
 } from '../constants';
 
 
-const scenes = [sceneOne, sceneTwo];  //new scenes must be added to this array
+// const scenes = [sceneOne, sceneTwo];  //new scenes must be added to this array
 
-export const spawnPlayer = (s: number) => {
-  const playerOrigin = scenes[s].playerOrigin;
+export const spawnPlayer = (origin) => {
+  const playerOrigin = origin;
 
   const players = [
     new Player(
@@ -33,9 +33,15 @@ export const spawnPlayer = (s: number) => {
 };
 
 
-export function buildScene(s: number) {
+export async function buildScene(s: number) {
+  const {sceneOne} = await import("../constants/scenes/One");
+  const {sceneTwo} = await import("../constants/scenes/Two");
+
+  const scenes = [sceneOne, sceneTwo];  //new scenes must be added to this array
+
   const objects = scenes[s].objects;
   const floor = scenes[s].floor;
+  const playerOrigin = scenes[s].playerOrigin;
 
-  return { objects, floor }
+  return { objects, floor, playerOrigin }
 }
