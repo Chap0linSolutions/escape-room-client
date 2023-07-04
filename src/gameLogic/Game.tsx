@@ -48,6 +48,7 @@ export class Game {
     const inputHandler = new InputHandler();
     inputHandler.subscribe('keyDown', 'GameKeyDown', this.setKey.bind(this));
     inputHandler.subscribe('keyUp', 'GameKeyUp', this.resetKey.bind(this));
+    this.key = {}
     this.callbacks = gameCallbacks;
   }
 
@@ -58,12 +59,13 @@ export class Game {
     this.floor = floor;
   };
 
-  resetKey = () => {
-    this.key = undefined;
+  resetKey = (e: string) => {
+    this.key[mapKeys(e)] = false;
   };
 
   setKey = (e: string) => {
-    this.key = mapKeys(e);
+    this.key[mapKeys(e)] = true;
+    this.key.lastKey = mapKeys(e);
     if (this.key === 'Enter') {
       this.callbacks.showPopup(TestFragment);
     }
@@ -75,7 +77,7 @@ export class Game {
     UpdateAll({
       dt,
       mouseXY,
-      key: this.key,
+      key: this.key.lastKey && this.key[this.key.lastKey] ? this.key.lastKey : undefined,
       floor: this.floor,
       objects: this.objects,
       players: this.players,
