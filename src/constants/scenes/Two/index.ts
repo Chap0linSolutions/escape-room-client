@@ -12,7 +12,7 @@ import paperSound from '../../../assets/sounds/paper.mp3';
 import { tileMap } from './TileMap';
 import {
   InteractiveObject,
-  DraggableObject,
+  InventoryItem,
   Floor,
 } from '../../../classes';
 import {
@@ -73,14 +73,14 @@ const objects = [
                 ],
             },
             items: [
-                new DraggableObject({
+                new InventoryItem({
                     spriteSrc: bottleSprite,
                     size: 28,
                     name: 'garrafa',
                     sound: glassSound,
                     position: {x: 300, y: 200}
                 }),
-                new DraggableObject({
+                new InventoryItem({
                     spriteSrc: paperSprite,
                     size: 90,
                     name: 'papel',

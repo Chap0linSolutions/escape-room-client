@@ -11,7 +11,7 @@ import paperSound from '../../../assets/sounds/paper.mp3';
 import { tileMap } from './TileMap';
 import {
   InteractiveObject,
-  DraggableObject,
+  InventoryItem,
   Floor,
   Slot,
 } from '../../../classes';
@@ -64,7 +64,7 @@ const objects = [
         [
             new Slot({
                 position: { x: DRAWER_SIZE / 2 - 10, y: (DRAWER_SIZE / 2 - 10) },
-                object: new DraggableObject(bottleSprite, 18, 'garrafa', glassSound)
+                object: new InventoryItem(bottleSprite, 18, 'garrafa', glassSound)
             }),
         ],
         false,
@@ -88,7 +88,7 @@ const objects = [
         [
             new Slot({
                 position: { x: DESK_SIZE * 0.55, y: DESK_SIZE * 0.4 },
-                object: new DraggableObject(paperSprite, 70, 'papel', paperSound)
+                object: new InventoryItem(paperSprite, 70, 'papel', paperSound)
             }),
         ],
         false,

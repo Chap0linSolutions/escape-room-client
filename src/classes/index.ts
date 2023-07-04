@@ -1,4 +1,4 @@
-export * from './DraggableObject';
+export * from './InventoryItem';
 export * from './FloatingText';
 export * from './Floor';
 export * from './InteractiveObject';

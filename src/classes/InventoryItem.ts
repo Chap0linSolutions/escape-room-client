@@ -4,21 +4,21 @@ import Sound from './Sound';
 import { isInsideBox } from '../functions/Metrics';
 
 
-type DraggableObjectParams = {
+type InventoryItemParams = {
   spriteSrc: string;
   size: number;
   name: string;
   sound: string;
   position?: coordinate;
 }
-export class DraggableObject {
+export class InventoryItem {
   name: string;
   size: number;
   sprite: Sprite;
   sound: Sound;
   position: coordinate | null;
 
-  constructor({spriteSrc, size, name, sound, position}: DraggableObjectParams) {
+  constructor({spriteSrc, size, name, sound, position}: InventoryItemParams) {
     this.size = size;
     this.sound = new Sound({source: sound});
     this.sprite = new Sprite({

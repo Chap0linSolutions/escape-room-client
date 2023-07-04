@@ -7,12 +7,12 @@ import { Sprite } from './Sprite';
 import { Slot } from './Slot';
 import eKey from '../assets/icons/e-key.png';
 import cursorKey from '../assets/icons/cursor.png';
-import { DraggableObject } from './DraggableObject';
+import { InventoryItem } from './InventoryItem';
 
 type FragmentParams = {
     sprite: string;
     size: number;
-    items: DraggableObject[];
+    items: InventoryItem[];
     interactionCoordinates?: interactiveCoords;
     object?: InteractiveObject;
 }
@@ -25,7 +25,7 @@ export class Fragment {
     object: InteractiveObject;
     leaveText: FloatingText;
     interactText: FloatingText;
-    items: DraggableObject[];
+    items: InventoryItem[];
 
     constructor({sprite, size, interactionCoordinates, object, items}: FragmentParams) {
         this.sprite = new Sprite({sprite, size, rows: 1, columns: 2});
@@ -64,7 +64,7 @@ export class Fragment {
         })
     }
 
-    setItems(newItems: DraggableObject[]){
+    setItems(newItems: InventoryItem[]){
         this.items = newItems;
     }
 
@@ -72,7 +72,7 @@ export class Fragment {
         return this.items;
     }
 
-    removeItem(item: DraggableObject){
+    removeItem(item: InventoryItem){
         const index = this.items.findIndex(i => item.name === i.name);
         const removed = this.items.splice(index, 1);
         if(removed.length > 0) return removed;

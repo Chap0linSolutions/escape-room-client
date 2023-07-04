@@ -1,14 +1,14 @@
 import { getDistance } from '../functions/Metrics';
 import { coordinate } from '../types';
-import { DraggableObject } from './DraggableObject';
+import { InventoryItem } from './InventoryItem';
 
 type SlotParams = {
   position: coordinate;
-  object: DraggableObject | undefined;
+  object: InventoryItem | undefined;
 }
 export class Slot {
   position: coordinate;
-  object: DraggableObject | undefined;
+  object: InventoryItem | undefined;
 
   constructor({position, object}: SlotParams) {
     this.position = position;

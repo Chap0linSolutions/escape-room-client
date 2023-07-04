@@ -2,7 +2,7 @@ import { coordinate, quad } from '../types';
 import { InteractiveObject } from './InteractiveObject';
 import { FloatingText } from './FloatingText';
 import { Sprite } from './Sprite';
-import { DraggableObject } from './DraggableObject';
+import { InventoryItem } from './InventoryItem';
 import { Floor } from './Floor';
 import { isInsideAllowedSpace, renderHitbox } from '../functions/Metrics';
 import { ACTION_KEYS, ISOMETRIC_RATIO, SHOW_HITBOX, DX, DY } from '../constants';
@@ -37,7 +37,7 @@ export class Player {
   interactingWithFragment: boolean;
   movementLeft: coordinate;
   feetOffset: coordinate;
-  items: DraggableObject[];
+  items: InventoryItem[];
   lastKeyPressed: string | undefined;
   allowedDirections = ['right', 'down', 'up', 'left'];
   whoMoves: 'player' | 'scene';
@@ -201,7 +201,7 @@ export class Player {
     this.items.splice(0, 1);
   }
 
-  addItem(item: DraggableObject) {
+  addItem(item: InventoryItem) {
     this.items.unshift(item);
     console.log('itens com o jogador:', this.items.map(item => item.name));
   }

@@ -4,7 +4,7 @@ import { ACTION_KEYS, SHOW_HITBOX } from '../constants';
 import { FloatingText } from './FloatingText';
 import { Player } from './Player';
 import { Fragment } from './Fragment';
-import { DraggableObject } from './DraggableObject';
+import { InventoryItem } from './InventoryItem';
 import { getDistance, renderHitbox } from '../functions/Metrics';
 import Sound from './Sound';
 
@@ -17,7 +17,7 @@ type Action = { //ação que o objeto pode responder
 type Frag = {
   sprite: string;
   size: number;
-  items: DraggableObject[];
+  items: InventoryItem[];
   interactionCoordinates?: interactiveCoords;
 }
 
