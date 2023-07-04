@@ -4,13 +4,20 @@ import { getDistance, renderHitbox } from '../functions/Metrics';
 import { coordinate, positionType } from '../types';
 import { Sprite } from './Sprite';
 
+type constructorType = {
+  tileMap: coordinate[][];
+  spriteSrc: string;
+  size: number;
+  position: positionType;
+}
+
 export class Floor {
   sprite: Sprite;
   position: positionType;
   tileMap: coordinate[][];
 
-  constructor(tileMap: coordinate[][], spriteSrc: string, size: number, position: positionType) {
-    this.sprite = new Sprite(spriteSrc, size, 1, 1, 0);
+  constructor({tileMap, spriteSrc, size, position}: constructorType) {
+    this.sprite = new Sprite({ sprite: spriteSrc, size, rows: 1, columns: 1, maxCount: 0 });
     this.position = position;
     this.tileMap = tileMap;
   }

@@ -28,7 +28,7 @@ export class Fragment {
     items: DraggableObject[];
 
     constructor({sprite, size, interactionCoordinates, object, items}: fragmentConstructor) {
-        this.sprite = new Sprite(sprite, size, 1, 2);
+        this.sprite = new Sprite({sprite, size, rows: 1, columns: 2});
         this.interactions = (interactionCoordinates)? interactionCoordinates : null;
         this.visible = false;
         this.object = (object)? object : null;

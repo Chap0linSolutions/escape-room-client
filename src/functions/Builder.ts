@@ -17,13 +17,15 @@ export const spawnPlayer = (s: number) => {
 
   const players = [
     new Player(
-      'Alex',
-      playerSprite,
-      playerOrigin,
-      PLAYER_SPEED,
-      PLAYER_SIZE,
-      ANIMATION_PERIOD,
-      PLAYER_FEET_OFFSET,
+      {
+      name: 'Alex',
+      spriteSrc: playerSprite,
+      position: playerOrigin,
+      speed: PLAYER_SPEED,
+      size: PLAYER_SIZE,
+      animationPeriod: ANIMATION_PERIOD,
+      feetOffset: PLAYER_FEET_OFFSET,
+      }
     ),
   ];
 

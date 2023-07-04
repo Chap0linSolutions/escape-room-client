@@ -53,7 +53,7 @@ export class InteractiveObject {
     action,
   }: constructorType) {
     this.canBeOpened = action ? true : false;
-    this.sprite = new Sprite(spriteSrc, size, 2, action ? 2 : 1, 0);
+    this.sprite = new Sprite({ sprite: spriteSrc, size, rows: 2, columns: action ? 2 : 1, maxCount: 0 });
     this.size = size;
     this.position = position;
     this.isHighlighted = false;
@@ -61,7 +61,7 @@ export class InteractiveObject {
     this.action = action
       ? {
           options: action.texts,
-          sound: new Sound(action.sound),
+          sound: new Sound({ source: action.sound }),
           description: new FloatingText({text: 'interagir', iconSprite: ACTION_KEYS[0].icon}),
         }
       : undefined;

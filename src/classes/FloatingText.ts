@@ -31,7 +31,9 @@ export class FloatingText {
     this.background = background ? background : '#222222CC';
     this.padding = padding ? padding : { x: 5, y: 5 };
     this.style = style ? style : '16px Segoe UI';
-    this.icon = iconSprite ? new Sprite(iconSprite, 20, 1, 1, 0) : null;
+    this.icon = iconSprite ? 
+      new Sprite({sprite: iconSprite, size: 20, rows: 1, columns: 1, maxCount: 0}) 
+      : null;
   }
 
   getText() {

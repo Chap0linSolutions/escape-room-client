@@ -39,13 +39,15 @@ const playerOrigin = {
 
 //CHÃO/////////////////////////////////////////////////////////////////////////////////
 const floor = new Floor(
-    tileMap,
-    floorSprite,
-    1.4*CANVAS_WIDTH,
-    { 
-        canvas: {x: FLOOR_PADDING, y: -20},
-        map: mapOrigin,
-    },
+    {
+        tileMap,
+        spriteSrc: floorSprite,
+        size: 1.4*CANVAS_WIDTH,
+        position: { 
+            canvas: {x: FLOOR_PADDING, y: -20},
+            map: mapOrigin,
+        },
+    }
 );
 
 const objects = [

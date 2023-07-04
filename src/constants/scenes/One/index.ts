@@ -39,13 +39,15 @@ const playerOrigin = {
 
 //CHÃO/////////////////////////////////////////////////////////////////////////////////
 const floor = new Floor(
-    tileMap,
-    floorSprite,
-    CANVAS_WIDTH - 2*FLOOR_PADDING,
-    { 
-        canvas: {x: FLOOR_PADDING, y: 120},
-        map: mapOrigin,
-    },
+    {
+        tileMap,
+        spriteSrc: floorSprite,
+        size: CANVAS_WIDTH - 2*FLOOR_PADDING,
+        position: { 
+            canvas: {x: FLOOR_PADDING, y: 120},
+            map: mapOrigin,
+        },
+    }
 );
 
 const objects = [
@@ -60,10 +62,10 @@ const objects = [
             hitboxes: [{x: DX, y: DY}, {x: 2*DX, y: 0}],
         },
         [
-            new Slot(
-                { x: DRAWER_SIZE / 2 - 10, y: (DRAWER_SIZE / 2 - 10) },
-                new DraggableObject(bottleSprite, 18, 'garrafa', glassSound)
-            ),
+            new Slot({
+                position: { x: DRAWER_SIZE / 2 - 10, y: (DRAWER_SIZE / 2 - 10) },
+                object: new DraggableObject(bottleSprite, 18, 'garrafa', glassSound)
+            }),
         ],
         false,
         ['left'],
@@ -84,10 +86,10 @@ const objects = [
             hitboxes: [{x: -DX, y: DY}, {x: 0, y: 2*DY}, {x: DX, y: 3*DY}],
         },
         [
-            new Slot(
-                { x: DESK_SIZE * 0.55, y: DESK_SIZE * 0.4 },
-                new DraggableObject(paperSprite, 70, 'papel', paperSound)
-            ),
+            new Slot({
+                position: { x: DESK_SIZE * 0.55, y: DESK_SIZE * 0.4 },
+                object: new DraggableObject(paperSprite, 70, 'papel', paperSound)
+            }),
         ],
         false,
         ['up'],
@@ -114,9 +116,9 @@ const objects = [
             ],
         },
         [
-            new Slot({ x: V_DESK_SIZE * 0.18, y: V_DESK_SIZE * 0.04 }, undefined),
-            new Slot({ x: V_DESK_SIZE * 0.5, y: V_DESK_SIZE * 0.2 }, undefined),
-            new Slot({ x: V_DESK_SIZE * 0.8, y: V_DESK_SIZE * 0.04 }, undefined),
+            new Slot({ position: { x: V_DESK_SIZE * 0.18, y: V_DESK_SIZE * 0.04 }}),
+            new Slot({ position: { x: V_DESK_SIZE * 0.5, y: V_DESK_SIZE * 0.2 }}),
+            new Slot({ position: { x: V_DESK_SIZE * 0.8, y: V_DESK_SIZE * 0.04 }}),
         ],
         true,
         ['down', 'right'],

@@ -1,5 +1,13 @@
 import { coordinate, quad } from '../types';
 
+type constructorType = {
+  sprite: string;
+  size: number;
+  rows: number;
+  columns: number;
+  maxCount?: number;
+}
+
 export class Sprite {
   source: HTMLImageElement;
   rows: number;
@@ -10,13 +18,13 @@ export class Sprite {
   lastFrame: number;
   size: number;
 
-  constructor(
-    sprite: string,
-    size: number,
-    rows: number,
-    columns: number,
-    maxCount?: number
-  ) {
+  constructor({
+    sprite,
+    size,
+    rows,
+    columns,
+    maxCount
+  }: constructorType) {
     this.source = new Image();
     this.source.src = sprite;
     this.size = size;

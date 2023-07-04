@@ -16,6 +16,17 @@ function getDp(direction: string): quad {
     default: return [0, 0];
   }
 }
+
+type constructorType = {
+  name: string;
+  spriteSrc: string;
+  position: coordinate;
+  speed: number;
+  size: number;
+  animationPeriod: number;
+  feetOffset: coordinate;
+}
+
 export class Player {
   name: FloatingText;
   sprite: Sprite;
@@ -31,15 +42,15 @@ export class Player {
   allowedDirections = ['right', 'down', 'up', 'left'];
   whoMoves: 'player' | 'scene';
 
-  constructor(
-    name: string,
-    spriteSrc: string,
-    position: coordinate,
-    speed: number,
-    size: number,
-    animationPeriod: number,
-    feetOffset: coordinate,
-  ) {
+  constructor({
+    name,
+    spriteSrc,
+    position,
+    speed,
+    size,
+    animationPeriod,
+    feetOffset,
+  }: constructorType) {
     this.name = new FloatingText({text: name, iconSprite: null});
     this.speed = speed;
     this.size = size;
@@ -47,7 +58,7 @@ export class Player {
     this.dp = [1, 1];
     this.movementLeft = {x: 0, y: 0};    
     this.feetOffset = feetOffset;
-    this.sprite = new Sprite(spriteSrc, size, 4, 2, animationPeriod);
+    this.sprite = new Sprite({ sprite: spriteSrc, size, rows: 4, columns: 2, maxCount: animationPeriod });
     this.items = [];
     this.interactingWithFragment = false;
   }

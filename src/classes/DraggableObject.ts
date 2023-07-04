@@ -20,8 +20,14 @@ export class DraggableObject {
 
   constructor({spriteSrc, size, name, sound, position}: constructorType) {
     this.size = size;
-    this.sound = new Sound(sound);
-    this.sprite = new Sprite(spriteSrc, size, 1, 1, 0);
+    this.sound = new Sound({source: sound});
+    this.sprite = new Sprite({
+      sprite: spriteSrc,
+      size,
+      rows: 1,
+      columns: 1,
+      maxCount: 0
+    });
     this.name = name;
     this.position = (position)? position : null;
   }
