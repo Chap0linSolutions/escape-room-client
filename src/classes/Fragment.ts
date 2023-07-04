@@ -5,7 +5,6 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH, SHOW_HITBOX } from '../constants';
 import { InteractiveObject } from './InteractiveObject';
 import { FloatingText } from './FloatingText';
 import { Sprite } from './Sprite';
-import { Slot } from './Slot';
 import eKey from '../assets/icons/e-key.png';
 import cursorKey from '../assets/icons/cursor.png';
 import { InventoryItem } from './InventoryItem';
@@ -120,7 +119,7 @@ export class Fragment {
                 this.sprite.setQuad(this.sprite.nextSprite());
                 this.isOpen = !this.isOpen;
                 this.object.toggleState()
-                return { hasInteracted: true, slot: null };
+                return { hasInteracted: true };
             }
         }
         if(this.isOpen){

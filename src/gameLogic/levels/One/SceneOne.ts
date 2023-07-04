@@ -13,7 +13,6 @@ import {
   InteractiveObject,
   InventoryItem,
   Floor,
-  Slot,
 } from '../../../classes';
 import {
   CANVAS_WIDTH,
@@ -61,12 +60,6 @@ const objects = [
             tiles: [{x: 0, y: 0}, {x: DX, y: -DY}],
             hitboxes: [{x: DX, y: DY}, {x: 2*DX, y: 0}],
         },
-        [
-            new Slot({
-                position: { x: DRAWER_SIZE / 2 - 10, y: (DRAWER_SIZE / 2 - 10) },
-                object: new InventoryItem(bottleSprite, 18, 'garrafa', glassSound)
-            }),
-        ],
         false,
         ['left'],
         {
@@ -85,12 +78,6 @@ const objects = [
             tiles: [{x: 0, y: 0}, {x: DX, y: DY}, {x: 2*DX, y: 2*DY}],
             hitboxes: [{x: -DX, y: DY}, {x: 0, y: 2*DY}, {x: DX, y: 3*DY}],
         },
-        [
-            new Slot({
-                position: { x: DESK_SIZE * 0.55, y: DESK_SIZE * 0.4 },
-                object: new InventoryItem(paperSprite, 70, 'papel', paperSound)
-            }),
-        ],
         false,
         ['up'],
         {
@@ -115,11 +102,6 @@ const objects = [
                 {x: 4*DX, y: 0}, {x: 5*DX, y: -DY},
             ],
         },
-        [
-            new Slot({ position: { x: V_DESK_SIZE * 0.18, y: V_DESK_SIZE * 0.04 }}),
-            new Slot({ position: { x: V_DESK_SIZE * 0.5, y: V_DESK_SIZE * 0.2 }}),
-            new Slot({ position: { x: V_DESK_SIZE * 0.8, y: V_DESK_SIZE * 0.04 }}),
-        ],
         true,
         ['down', 'right'],
     ),
