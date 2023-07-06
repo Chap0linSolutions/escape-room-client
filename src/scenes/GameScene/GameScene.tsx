@@ -70,7 +70,7 @@ export function GameScene() {
       </div>
       <ToastNotification
         toastList={toastList}
-        //hard coding position color and time for now
+        //hard coding position and time for now
         position={'top-right'}
         autoDelete={true}
         autoDeleteTime={3000}
