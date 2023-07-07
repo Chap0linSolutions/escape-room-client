@@ -1,5 +1,5 @@
-import { buildTileMap } from "../../../functions/Builder";
+import { buildTileMap } from '../../../functions/Builder';
 
-const tileMap = buildTileMap({x: 16, y: 10});
+const tileMap = buildTileMap({ x: 16, y: 10 });
 
-export { tileMap }; 
+export { tileMap };

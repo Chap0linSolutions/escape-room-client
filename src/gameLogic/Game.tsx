@@ -2,11 +2,7 @@ import { InputHandler } from '../events/InputHandler';
 import { buildScene, spawnPlayer } from '../functions/Builder';
 import RenderAll from '../functions/Renderer';
 import UpdateAll from '../functions/Updater';
-import {
-  CANVAS_WIDTH,
-  CANVAS_HEIGHT,
-  SCENE,
-} from '../constants';
+import { CANVAS_WIDTH, CANVAS_HEIGHT, SCENE } from '../constants';
 import { GameCallbacks, coordinate } from '../types';
 import { TestFragment } from './fragments/testFragment';
 
@@ -48,12 +44,12 @@ export class Game {
     const inputHandler = new InputHandler();
     inputHandler.subscribe('keyDown', 'GameKeyDown', this.setKey.bind(this));
     inputHandler.subscribe('keyUp', 'GameKeyUp', this.resetKey.bind(this));
-    this.key = {}
+    this.key = {};
     this.callbacks = gameCallbacks;
   }
 
   initialSetup = async () => {
-    const {objects, floor, playerOrigin} = await buildScene(SCENE);
+    const { objects, floor, playerOrigin } = await buildScene(SCENE);
     this.players = spawnPlayer(playerOrigin);
     this.objects = objects;
     this.floor = floor;
@@ -76,7 +72,10 @@ export class Game {
     //console.log(this.key);
     UpdateAll({
       dt,
-      key: this.key.lastKey && this.key[this.key.lastKey] ? this.key.lastKey : undefined,
+      key:
+        this.key.lastKey && this.key[this.key.lastKey]
+          ? this.key.lastKey
+          : undefined,
       floor: this.floor,
       objects: this.objects,
       players: this.players,

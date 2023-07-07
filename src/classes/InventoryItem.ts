@@ -3,14 +3,13 @@ import { Sprite } from './Sprite';
 import Sound from './Sound';
 import { isInsideBox } from '../functions/Metrics';
 
-
 type InventoryItemParams = {
   spriteSrc: string;
   size: number;
   name: string;
   sound: string;
   position?: coordinate;
-}
+};
 export class InventoryItem {
   name: string;
   size: number;
@@ -18,25 +17,25 @@ export class InventoryItem {
   sound: Sound;
   position: coordinate | null;
 
-  constructor({spriteSrc, size, name, sound, position}: InventoryItemParams) {
+  constructor({ spriteSrc, size, name, sound, position }: InventoryItemParams) {
     this.size = size;
-    this.sound = new Sound({source: sound});
+    this.sound = new Sound({ source: sound });
     this.sprite = new Sprite({
       sprite: spriteSrc,
       size,
       rows: 1,
       columns: 1,
-      maxCount: 0
+      maxCount: 0,
     });
     this.name = name;
-    this.position = (position)? position : null;
+    this.position = position ? position : null;
   }
 
-  setPosition(newPos: coordinate){
+  setPosition(newPos: coordinate) {
     this.position = newPos;
   }
 
-  getPosition(){
+  getPosition() {
     return this.position;
   }
 
@@ -48,13 +47,13 @@ export class InventoryItem {
     return this.size;
   }
 
-  getAllDimensions(){
-    const {width, height} = this.sprite.getAllDimensions();
+  getAllDimensions() {
+    const { width, height } = this.sprite.getAllDimensions();
     return {
       position: this.position,
-      width, 
+      width,
       height,
-    }
+    };
   }
 
   setSize(newSize: number) {
@@ -62,7 +61,7 @@ export class InventoryItem {
     this.sprite.setSize(newSize);
   }
 
-  isInside(target: coordinate){
+  isInside(target: coordinate) {
     const { position, width, height } = this.getAllDimensions();
     return isInsideBox(target, position, width, height);
   }

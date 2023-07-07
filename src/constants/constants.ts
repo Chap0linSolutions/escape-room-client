@@ -16,13 +16,12 @@ export const ACTION_KEYS: keyAndIcon[] = [
   //demais ações...
 ];
 
-
 export const CANVAS_WIDTH = 1000;
 export const CANVAS_HEIGHT = 700;
 export const FLOOR_PADDING = 5;
 export const FLOOR_TOP_Y = 100;
 export const PLAYER_SIZE = 100;
-export const PLAYER_FEET_OFFSET = {x: 0, y: -20};
+export const PLAYER_FEET_OFFSET = { x: 0, y: -20 };
 
 export const DRAWER_SIZE = 225;
 export const DESK_SIZE = 200;

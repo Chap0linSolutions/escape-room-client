@@ -2,7 +2,7 @@ import drawerFragment from '../../../assets/fragments/drawerFragment.png';
 import floorSprite from '../../../assets/floor3.png';
 import drawerSprite from '../../../assets/drawer.png';
 import deskSprite from '../../../assets/desk.png';
-import sofaSprite from '../../../assets/sofa_raw.png'
+import sofaSprite from '../../../assets/sofa_raw.png';
 import vDeskSprite from '../../../assets/v-desk.png';
 import bottleSprite from '../../../assets/bottle.png';
 import paperSprite from '../../../assets/paper.png';
@@ -11,11 +11,7 @@ import wooshSound from '../../../assets/sounds/woosh1.mp3';
 import glassSound from '../../../assets/sounds/glass.mp3';
 import paperSound from '../../../assets/sounds/paper.mp3';
 import { tileMap } from './TileMap';
-import {
-  InteractiveObject,
-  InventoryItem,
-  Floor,
-} from '../../../classes';
+import { InteractiveObject, InventoryItem, Floor } from '../../../classes';
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
@@ -30,52 +26,58 @@ import { SofaFragment } from '../../fragments/SofaFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOrigin = {
-    x: FLOOR_PADDING,
-    y: 0.75 * CANVAS_HEIGHT,
+  x: FLOOR_PADDING,
+  y: 0.75 * CANVAS_HEIGHT,
 };
 
 const playerOrigin = {
-    x: mapOrigin.x + 9*DX,
-    y: mapOrigin.y,
-}
+  x: mapOrigin.x + 9 * DX,
+  y: mapOrigin.y,
+};
 
 //CHÃO/////////////////////////////////////////////////////////////////////////////////
-const floor = new Floor(
-    {
-        tileMap,
-        spriteSrc: floorSprite,
-        size: 1.4*CANVAS_WIDTH,
-        position: { 
-            canvas: {x: FLOOR_PADDING, y: -20},
-            map: mapOrigin,
-        },
-    }
-);
+const floor = new Floor({
+  tileMap,
+  spriteSrc: floorSprite,
+  size: 1.4 * CANVAS_WIDTH,
+  position: {
+    canvas: { x: FLOOR_PADDING, y: -20 },
+    map: mapOrigin,
+  },
+});
 
 const objects = [
   new InteractiveObject({
     spriteSrc: sofaSprite,
     size: 225,
     position: {
-      canvas: { x: 95, y: 310},
-      map: {x: mapOrigin.x + 3*DX, y: mapOrigin.y - 2*DY},
-      tiles: [{x: 0, y: 0}, {x: DX, y: -DY}, {x: 2*DX, y: -2*DY}],
-      hitboxes: [{x: DX, y: DY}, {x: 2*DX, y: 0}, {x: 3*DX, y: -DY}],
+      canvas: { x: 95, y: 310 },
+      map: { x: mapOrigin.x + 3 * DX, y: mapOrigin.y - 2 * DY },
+      tiles: [
+        { x: 0, y: 0 },
+        { x: DX, y: -DY },
+        { x: 2 * DX, y: -2 * DY },
+      ],
+      hitboxes: [
+        { x: DX, y: DY },
+        { x: 2 * DX, y: 0 },
+        { x: 3 * DX, y: -DY },
+      ],
     },
     allowedDirections: ['left'],
     action: {
-      texts: ['interagir']
+      texts: ['interagir'],
     },
-    fragment: SofaFragment
-  })
-]
+    fragment: SofaFragment,
+  }),
+];
 
 // const objects2 = [
-//     //ARMÁRIO///////////////////////////////////////////////////////////////////////////   
+//     //ARMÁRIO///////////////////////////////////////////////////////////////////////////
 //     new InteractiveObject({
 //         spriteSrc: drawerSprite,
 //         size: DRAWER_SIZE,
-//         position: { 
+//         position: {
 //             canvas: {x: 95, y: 90},
 //             map: {x: mapOrigin.x + 3*DX, y: mapOrigin.y - 2*DY},
 //             tiles: [{x: 0, y: 0}, {x: DX, y: -DY}],
@@ -119,7 +121,7 @@ const objects = [
 //     new InteractiveObject({
 //         spriteSrc: deskSprite,
 //         size: DESK_SIZE,
-//         position: { 
+//         position: {
 //             canvas: {x: 640, y: 280},
 //             map: {x: mapOrigin.x + 13*DX, y: mapOrigin.y + 2*DY},
 //             tiles: [{x: 0, y: 0}, {x: DX, y: DY}, {x: 2*DX, y: 2*DY}],
@@ -137,7 +139,7 @@ const objects = [
 //     new InteractiveObject({
 //         spriteSrc: vDeskSprite,
 //         size: V_DESK_SIZE,
-//         position: { 
+//         position: {
 //             canvas: {x: 680, y: 640},
 //             map: {x: mapOrigin.x + 13*DX, y: mapOrigin.y + 12*DY},
 //             tiles: [

@@ -5,15 +5,26 @@ import { Sprite } from './Sprite';
 import { InventoryItem } from './InventoryItem';
 import { Floor } from './Floor';
 import { isInsideAllowedSpace, renderHitbox } from '../functions/Metrics';
-import { ACTION_KEYS, ISOMETRIC_RATIO, SHOW_HITBOX, DX, DY } from '../constants';
+import {
+  ACTION_KEYS,
+  ISOMETRIC_RATIO,
+  SHOW_HITBOX,
+  DX,
+  DY,
+} from '../constants';
 
 function getDp(direction: string): quad {
   switch (direction) {
-    case 'up': return [1, -1];
-    case 'down': return [-1, 1];
-    case 'left': return [-1, -1];
-    case 'right': return [1, 1];
-    default: return [0, 0];
+    case 'up':
+      return [1, -1];
+    case 'down':
+      return [-1, 1];
+    case 'left':
+      return [-1, -1];
+    case 'right':
+      return [1, 1];
+    default:
+      return [0, 0];
   }
 }
 
@@ -25,7 +36,7 @@ type PlayerParams = {
   size: number;
   animationPeriod: number;
   feetOffset: coordinate;
-}
+};
 
 export class Player {
   name: FloatingText;
@@ -51,51 +62,68 @@ export class Player {
     animationPeriod,
     feetOffset,
   }: PlayerParams) {
-    this.name = new FloatingText({text: name, iconSprite: null});
+    this.name = new FloatingText({ text: name, iconSprite: null });
     this.speed = speed;
     this.size = size;
     this.position = position;
     this.dp = [1, 1];
-    this.movementLeft = {x: 0, y: 0};    
+    this.movementLeft = { x: 0, y: 0 };
     this.feetOffset = feetOffset;
-    this.sprite = new Sprite({ sprite: spriteSrc, size, rows: 4, columns: 2, maxCount: animationPeriod });
+    this.sprite = new Sprite({
+      sprite: spriteSrc,
+      size,
+      rows: 4,
+      columns: 2,
+      maxCount: animationPeriod,
+    });
     this.items = [];
     this.interactingWithFragment = false;
   }
 
-  private incrementalMoveTo(delta: coordinate){
+  private incrementalMoveTo(delta: coordinate) {
     this.position = {
       x: this.position.x + delta.x * this.dp[0],
       y: this.position.y + delta.y * this.dp[1],
-    }
+    };
   }
 
-  private incrementalMoveSceneTo(delta: coordinate, objects: InteractiveObject[], map: Floor){
+  private incrementalMoveSceneTo(
+    delta: coordinate,
+    objects: InteractiveObject[],
+    map: Floor
+  ) {
     const deltaWithDirection = {
-      x: delta.x * (-this.dp[0]),
-      y: delta.y * (-this.dp[1]),
-    }
-    objects.forEach(o => o.incrementalMoveTo(deltaWithDirection));
+      x: delta.x * -this.dp[0],
+      y: delta.y * -this.dp[1],
+    };
+    objects.forEach((o) => o.incrementalMoveTo(deltaWithDirection));
     map.incrementalMoveTo(deltaWithDirection);
   }
 
-  private checkForMoves(direction: string, map: Floor, objects: InteractiveObject[]){
+  private checkForMoves(
+    direction: string,
+    map: Floor,
+    objects: InteractiveObject[]
+  ) {
     const dir = this.allowedDirections.indexOf(direction);
     if (dir < 0 || this.interactingWithFragment) return;
     this.sprite.setQuad([0, dir]);
-    if(this.canMove(direction, map, objects)){
+    if (this.canMove(direction, map, objects)) {
       this.dp = getDp(direction);
-      this.movementLeft = {x: DX, y: DY};
+      this.movementLeft = { x: DX, y: DY };
     }
   }
 
-  private checkInteractions(objects: InteractiveObject[], keyPressed: string | undefined){
+  private checkInteractions(
+    objects: InteractiveObject[],
+    keyPressed: string | undefined
+  ) {
     const myDirection = this.allowedDirections[this.sprite.getQuad()[1]];
-    for(let i = 0; i < objects.length; i++){
-      if(objects[i].isInside('hitbox', this.position)){
+    for (let i = 0; i < objects.length; i++) {
+      if (objects[i].isInside('hitbox', this.position)) {
         this.interactingWithFragment = objects[i].isBeingInteractedWith();
         objects[i].isAllowedToInteract(myDirection) &&
-        objects[i].interact(this, keyPressed);
+          objects[i].interact(this, keyPressed);
         objects[i].setHighlight(true);
         return;
       }
@@ -103,43 +131,41 @@ export class Player {
     }
   }
 
-  private isThereAnyMovementLeft(){
-    return (this.movementLeft.x > 0);
+  private isThereAnyMovementLeft() {
+    return this.movementLeft.x > 0;
   }
 
-  private hasMovedBeyondDestination(delta: coordinate){
+  private hasMovedBeyondDestination(delta: coordinate) {
     return (
-      (this.movementLeft.x - delta.x < 0) ||
-      (this.movementLeft.y - delta.y < 0)
-    )
+      this.movementLeft.x - delta.x < 0 || this.movementLeft.y - delta.y < 0
+    );
   }
 
-  private canMove(direction: string, map: Floor, objects: InteractiveObject[]){
+  private canMove(direction: string, map: Floor, objects: InteractiveObject[]) {
     const delta = getDp(direction);
     const destination = {
-      x: this.position.x + DX*delta[0],
-      y: this.position.y + DY*delta[1],
+      x: this.position.x + DX * delta[0],
+      y: this.position.y + DY * delta[1],
+    };
+    for (let i = 0; i < objects.length; i++) {
+      if (objects[i].isInside('object', destination)) return false;
     }
-    for(let i = 0; i < objects.length; i++){
-      if(objects[i].isInside('object', destination)) return false;
+    if (map.isInsideTileMap(destination)) {
+      this.whoMoves = isInsideAllowedSpace(destination) ? 'player' : 'scene';
+      return true;
     }
-    if(map.isInsideTileMap(destination)){
-      this.whoMoves = isInsideAllowedSpace(destination)
-      ? 'player' : 'scene';
-      return true;  
-    } 
     return false;
   }
 
-  private move(dt: number, objects: InteractiveObject[], map: Floor){
+  private move(dt: number, objects: InteractiveObject[], map: Floor) {
     let delta = {
       x: dt * this.speed,
       y: dt * this.speed * ISOMETRIC_RATIO,
-    }
-    if(this.hasMovedBeyondDestination(delta)){
+    };
+    if (this.hasMovedBeyondDestination(delta)) {
       delta = this.movementLeft;
     }
-    if(this.whoMoves === 'player'){
+    if (this.whoMoves === 'player') {
       this.incrementalMoveTo(delta);
     } else {
       this.incrementalMoveSceneTo(delta, objects, map);
@@ -153,16 +179,16 @@ export class Player {
     this.sprite.reset();
   }
 
-  getPosition(){
+  getPosition() {
     return this.position;
   }
 
-  getTopLeftCorner(){
-    const {x, y, width, height, feetOffset} = this.getAllDimensions();
+  getTopLeftCorner() {
+    const { x, y, width, height, feetOffset } = this.getAllDimensions();
     return {
-      x: (x - (width + feetOffset.x)/2),
-      y: (y - (height + feetOffset.y)),
-    }
+      x: x - (width + feetOffset.x) / 2,
+      y: y - (height + feetOffset.y),
+    };
   }
 
   getSize() {
@@ -198,8 +224,13 @@ export class Player {
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  update(dt: number, map: Floor, objects: InteractiveObject[], keyPressed: string | undefined) {
-    if(this.isThereAnyMovementLeft()) {
+  update(
+    dt: number,
+    map: Floor,
+    objects: InteractiveObject[],
+    keyPressed: string | undefined
+  ) {
+    if (this.isThereAnyMovementLeft()) {
       this.move(dt, objects, map);
       this.sprite.update(dt);
     } else if (keyPressed) {
@@ -219,9 +250,15 @@ export class Player {
       y: topLeftCorner.y - 5,
     });
 
-    SHOW_HITBOX && renderHitbox(canvas, {
-      x: this.position.x + this.movementLeft.x * this.dp[0],
-      y: this.position.y + this.movementLeft.y * this.dp[1],
-    }, 5, 'firebrick');
+    SHOW_HITBOX &&
+      renderHitbox(
+        canvas,
+        {
+          x: this.position.x + this.movementLeft.x * this.dp[0],
+          y: this.position.y + this.movementLeft.y * this.dp[1],
+        },
+        5,
+        'firebrick'
+      );
   }
 }

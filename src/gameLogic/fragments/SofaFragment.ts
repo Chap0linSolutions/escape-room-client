@@ -1,22 +1,26 @@
 import { Sprite, InventoryItem, Fragment, FragmentParams } from '../../classes';
 // import { renderHitbox } from '../../functions/Metrics';
-import { InputHandler } from "../../events/InputHandler";
+import { InputHandler } from '../../events/InputHandler';
 import { State } from '../../gameLogic/state';
-import sofaSprite from "../../assets/sofa_frag.png"
+import sofaSprite from '../../assets/sofa_frag.png';
 import paperSound from '../../assets/sounds/paper.mp3';
 import paperSprite from '../../assets/paper.png';
 
-
-import { coordinate } from "../../types";
+import { coordinate } from '../../types';
 
 export class SofaFragment extends Fragment {
   interactions;
   sprite: Sprite;
   leftPillowUp = false;
   rightPillowUp = false;
-  constructor({object}: FragmentParams) {
-    super({object});
-    this.sprite = new Sprite({sprite: sofaSprite, size: 600, rows: 3, columns: 1});
+  constructor({ object }: FragmentParams) {
+    super({ object });
+    this.sprite = new Sprite({
+      sprite: sofaSprite,
+      size: 600,
+      rows: 3,
+      columns: 1,
+    });
 
     this.items = [
       new InventoryItem({
@@ -24,30 +28,32 @@ export class SofaFragment extends Fragment {
         size: 90,
         name: 'papel',
         sound: paperSound,
-        position: {x: 400, y: 370}
+        position: { x: 400, y: 370 },
       }),
     ];
     this.interactions = {
-      left: {coordinate: {x: 150, y: 365}, radius: 40},
-      right: {coordinate: {x: 440, y: 365}, radius: 40}
+      left: { coordinate: { x: 150, y: 365 }, radius: 40 },
+      right: { coordinate: { x: 440, y: 365 }, radius: 40 },
     };
     const inputHandler = new InputHandler();
-    inputHandler.subscribe("mouseDown", "sofaFragmentMouseDown", (pos) => this.interact(pos))
+    inputHandler.subscribe('mouseDown', 'sofaFragmentMouseDown', (pos) =>
+      this.interact(pos)
+    );
   }
   interact(clickCoords: coordinate): void {
     if (!this.isVisible()) return;
     const noPillowUp = !this.rightPillowUp && !this.leftPillowUp;
-    if(noPillowUp &&  this.isWithin(this.interactions.left, clickCoords)){
+    if (noPillowUp && this.isWithin(this.interactions.left, clickCoords)) {
       this.leftPillowUp = true;
-      return this.sprite.setQuad([0, 1])
+      return this.sprite.setQuad([0, 1]);
     }
-    if(noPillowUp && this.isWithin(this.interactions.right, clickCoords)){
+    if (noPillowUp && this.isWithin(this.interactions.right, clickCoords)) {
       this.rightPillowUp = true;
-      return this.sprite.setQuad([0, 2])
+      return this.sprite.setQuad([0, 2]);
     }
-    if(this.rightPillowUp && this.items.length > 0) {
-      const state = new State()
-      if(this.items[0].isInside(clickCoords)){
+    if (this.rightPillowUp && this.items.length > 0) {
+      const state = new State();
+      if (this.items[0].isInside(clickCoords)) {
         this.items[0].sound.play();
         state.addItem(this.items[0]);
         this.removeItem(this.items[0]);
@@ -59,10 +65,9 @@ export class SofaFragment extends Fragment {
       this.rightPillowUp = false;
       this.sprite.setQuad([0, 0]);
     }
-    
   }
   drawItems(canvas: CanvasRenderingContext2D) {
-    this.rightPillowUp && this.items.forEach(item => item.render(canvas));
+    this.rightPillowUp && this.items.forEach((item) => item.render(canvas));
   }
 
   // drawHitboxes(canvas: CanvasRenderingContext2D){

@@ -8,7 +8,7 @@ type FloatingTextParams = {
   background?: string;
   padding?: coordinate;
   style?: string;
-}
+};
 export class FloatingText {
   //classe para representar os textos flutuantes (nomes de personagens, ações em objetos, etc)
   text: string; //as variáveis aqui são bem diretas (acho eu) em relação ao que armazenam.
@@ -24,15 +24,21 @@ export class FloatingText {
     color,
     background,
     padding,
-    style
+    style,
   }: FloatingTextParams) {
     this.text = text;
     this.color = color ? color : '#cccccc';
     this.background = background ? background : '#222222CC';
     this.padding = padding ? padding : { x: 5, y: 5 };
     this.style = style ? style : '16px Segoe UI';
-    this.icon = iconSprite ? 
-      new Sprite({sprite: iconSprite, size: 20, rows: 1, columns: 1, maxCount: 0}) 
+    this.icon = iconSprite
+      ? new Sprite({
+          sprite: iconSprite,
+          size: 20,
+          rows: 1,
+          columns: 1,
+          maxCount: 0,
+        })
       : null;
   }
 
@@ -95,22 +101,30 @@ export class FloatingText {
       });
   }
 
-  private drawText(canvas: CanvasRenderingContext2D, coordinate: coordinate, alignLeft?: boolean) {
-    canvas.textAlign = (alignLeft)? 'left' : 'center';
+  private drawText(
+    canvas: CanvasRenderingContext2D,
+    coordinate: coordinate,
+    alignLeft?: boolean
+  ) {
+    canvas.textAlign = alignLeft ? 'left' : 'center';
     canvas.font = this.style;
     canvas.fillStyle = this.color;
     canvas.fillText(this.text, coordinate.x, coordinate.y);
   }
 
-  private getIconSize(textHeight: number){
-    if(!this.icon) return 0;
-    if(this.icon && this.icon.getSize() === 0) {
+  private getIconSize(textHeight: number) {
+    if (!this.icon) return 0;
+    if (this.icon && this.icon.getSize() === 0) {
       this.icon.setSize(textHeight);
     }
     return this.icon.getSize();
   }
 
-  render(canvas: CanvasRenderingContext2D, coordinate: coordinate, alignLeft?: boolean) {
+  render(
+    canvas: CanvasRenderingContext2D,
+    coordinate: coordinate,
+    alignLeft?: boolean
+  ) {
     //desenha o fundo, o ícone (caso esteja definido) e o texto em si
 
     const textProps = canvas.measureText(this.text);
@@ -119,17 +133,17 @@ export class FloatingText {
     const iconOffset = this.getIconSize(textHeight);
 
     const offset = {
-      x: iconOffset + 2*this.padding.x,
+      x: iconOffset + 2 * this.padding.x,
       y: this.padding.y + textHeight / 1.25,
-    }
+    };
 
-    const x = coordinate.x - ((alignLeft)? 0 : offset.x + textWidth / 2);
+    const x = coordinate.x - (alignLeft ? 0 : offset.x + textWidth / 2);
     const y = coordinate.y - offset.y;
-    
+
     const textCoordinate = {
-      x: coordinate.x + (alignLeft? offset.x : 0),
+      x: coordinate.x + (alignLeft ? offset.x : 0),
       y: coordinate.y,
-    }
+    };
 
     this.drawBackground(canvas, x, y, textWidth, textHeight, iconOffset, 10);
     this.drawIcon(canvas, x, y);

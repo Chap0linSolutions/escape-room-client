@@ -6,7 +6,7 @@ type SpriteParams = {
   rows: number;
   columns: number;
   maxCount?: number;
-}
+};
 
 export class Sprite {
   source: HTMLImageElement;
@@ -18,19 +18,13 @@ export class Sprite {
   lastFrame: number;
   size: number;
 
-  constructor({
-    sprite,
-    size,
-    rows,
-    columns,
-    maxCount
-  }: SpriteParams) {
+  constructor({ sprite, size, rows, columns, maxCount }: SpriteParams) {
     this.source = new Image();
     this.source.src = sprite;
     this.size = size;
     this.quad = [0, 0];
     this.count = 0;
-    this.maxCount = (maxCount)? maxCount : 0;
+    this.maxCount = maxCount ? maxCount : 0;
     this.columns = columns;
     this.rows = rows;
     this.lastFrame = 0;
@@ -48,7 +42,7 @@ export class Sprite {
     return this.size;
   }
 
-  getAllDimensions(){
+  getAllDimensions() {
     const sourceH = this.source.height;
     const sourceW = this.source.width;
     const ratio = sourceH / this.rows / (sourceW / this.columns);
@@ -58,7 +52,7 @@ export class Sprite {
       sourceH,
       width: this.size,
       height: this.size * ratio,
-    }
+    };
   }
 
   getQuad() {
@@ -70,9 +64,7 @@ export class Sprite {
   }
 
   setQuad(newQuad: number | quad) {
-    this.quad = (typeof newQuad === 'number')
-    ? [newQuad, this.quad[1]]
-    : newQuad;
+    this.quad = typeof newQuad === 'number' ? [newQuad, this.quad[1]] : newQuad;
   }
 
   nextSprite() {
@@ -91,7 +83,7 @@ export class Sprite {
   }
 
   render(canvas: CanvasRenderingContext2D, position: coordinate) {
-    const {sourceW, sourceH, width, height} = this.getAllDimensions();
+    const { sourceW, sourceH, width, height } = this.getAllDimensions();
 
     canvas.drawImage(
       this.source, // src da imagem a ser desenhada

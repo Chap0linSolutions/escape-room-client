@@ -28,7 +28,10 @@ export class State {
 
   addItem(item: InventoryItem) {
     this.inventory.unshift(item);
-    console.log('itens com o jogador:', this.inventory.map(item => item.name));
+    console.log(
+      'itens com o jogador:',
+      this.inventory.map((item) => item.name)
+    );
   }
 
   removeItem() {

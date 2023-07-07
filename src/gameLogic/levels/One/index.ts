@@ -1,1 +1,1 @@
-export * from "./SceneOne";
+export * from './SceneOne';

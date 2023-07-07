@@ -23,7 +23,7 @@ export class InputHandler {
     mouseDown: [],
     mouseUp: [],
   };
-  canvasRef: MutableRefObject<HTMLCanvasElement>
+  canvasRef: MutableRefObject<HTMLCanvasElement>;
 
   constructor(canvasRef = null) {
     if (!!InputHandler.instance) {
@@ -40,9 +40,18 @@ export class InputHandler {
 
     document.addEventListener('keydown', this.handleKeydown.bind(this));
     document.addEventListener('keyup', this.handleKeyUp.bind(this));
-    InputHandler.canvasRef.current.addEventListener('mousemove', this.handleMouseMove.bind(this));
-    InputHandler.canvasRef.current.addEventListener('mousedown', this.handleMouseDown.bind(this));
-    InputHandler.canvasRef.current.addEventListener('mouseup', this.handleMouseUp.bind(this));
+    InputHandler.canvasRef.current.addEventListener(
+      'mousemove',
+      this.handleMouseMove.bind(this)
+    );
+    InputHandler.canvasRef.current.addEventListener(
+      'mousedown',
+      this.handleMouseDown.bind(this)
+    );
+    InputHandler.canvasRef.current.addEventListener(
+      'mouseup',
+      this.handleMouseUp.bind(this)
+    );
   }
 
   isTopic(topic: keyof EventObservers) {
@@ -85,10 +94,10 @@ export class InputHandler {
   }
 
   handleMouseDown(evt: MouseEvent) {
-    this.notifyAll('mouseDown', { x: evt.offsetX, y: evt.offsetY});
+    this.notifyAll('mouseDown', { x: evt.offsetX, y: evt.offsetY });
   }
 
   handleMouseUp(evt: MouseEvent) {
-    this.notifyAll('mouseUp', { x: evt.offsetX, y: evt.offsetY});
+    this.notifyAll('mouseUp', { x: evt.offsetX, y: evt.offsetY });
   }
 }

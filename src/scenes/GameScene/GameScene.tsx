@@ -18,7 +18,7 @@ export function GameScene() {
   }, [popupOpened]);
 
   const handleStartGame = () => {
-    new InputHandler(canvasRef)
+    new InputHandler(canvasRef);
     startGame(canvasRef);
   };
 
@@ -31,8 +31,7 @@ export function GameScene() {
         style={{ border: '1px solid gold' }}
         ref={canvasRef}
         width={CANVAS_WIDTH}
-        height={CANVAS_HEIGHT}
-      ></canvas>
+        height={CANVAS_HEIGHT}></canvas>
       <Button onClick={handleStartGame}>Start</Button>
     </div>
   );

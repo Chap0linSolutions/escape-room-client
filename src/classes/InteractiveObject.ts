@@ -1,21 +1,34 @@
-import { actionType, coordinate, interactiveCoords, positionType } from '../types';
+import {
+  actionType,
+  coordinate,
+  interactiveCoords,
+  positionType,
+} from '../types';
 import { ACTION_KEYS, SHOW_HITBOX } from '../constants';
-import { FloatingText, Fragment, FragmentParams, Player, InventoryItem, Sprite  } from '../classes';
+import {
+  FloatingText,
+  Fragment,
+  FragmentParams,
+  Player,
+  InventoryItem,
+  Sprite,
+} from '../classes';
 import { getDistance, renderHitbox } from '../functions/Metrics';
 import Sound from './Sound';
 
-type Action = { //ação que o objeto pode responder
+type Action = {
+  //ação que o objeto pode responder
   sound: Sound; //qual som é feito quando a ação dispara
   description: FloatingText; //objeto de texto a ser exibido
   options: string[]; //opções de texto a serem exibidas no objeto
-}
+};
 
 type Frag = {
   sprite: string;
   size: number;
   items: InventoryItem[];
   interactionCoordinates?: interactiveCoords;
-}
+};
 
 type InteractiveObjectParams = {
   spriteSrc: string;
@@ -24,7 +37,7 @@ type InteractiveObjectParams = {
   allowedDirections: string[];
   fragment?: new (params: FragmentParams) => Fragment;
   action?: actionType;
-}
+};
 
 export class InteractiveObject {
   //clase para representar os objetos que o usuário pode interagir
@@ -48,7 +61,13 @@ export class InteractiveObject {
     action,
   }: InteractiveObjectParams) {
     this.canBeOpened = action ? true : false;
-    this.sprite = new Sprite({ sprite: spriteSrc, size, rows: 2, columns: action && action.texts.length > 1 ? 2 : 1, maxCount: 0 });
+    this.sprite = new Sprite({
+      sprite: spriteSrc,
+      size,
+      rows: 2,
+      columns: action && action.texts.length > 1 ? 2 : 1,
+      maxCount: 0,
+    });
     this.size = size;
     this.position = position;
     this.isHighlighted = false;
@@ -57,29 +76,30 @@ export class InteractiveObject {
       ? {
           options: action.texts,
           sound: new Sound({ source: action.sound }),
-          description: new FloatingText({text: 'interagir', iconSprite: ACTION_KEYS[0].icon}),
+          description: new FloatingText({
+            text: 'interagir',
+            iconSprite: ACTION_KEYS[0].icon,
+          }),
         }
       : undefined;
     this.allowedDirections = allowedDirections;
 
-    this.fragment = fragment ? new fragment({object: this}) : null
+    this.fragment = fragment ? new fragment({ object: this }) : null;
   }
 
-  isAllowedToInteract(invaderDirection: string){
+  isAllowedToInteract(invaderDirection: string) {
     return this.allowedDirections.includes(invaderDirection);
   }
 
-  isInside(where: 'object' | 'hitbox', invader: coordinate){
-    const w = (where === 'object')
-    ? this.position.tiles
-    : this.position.hitboxes;
-    
-    for(let i = 0; i < w.length; i++){
+  isInside(where: 'object' | 'hitbox', invader: coordinate) {
+    const w = where === 'object' ? this.position.tiles : this.position.hitboxes;
+
+    for (let i = 0; i < w.length; i++) {
       const absolutePosition = {
         x: this.position.map.x + w[i].x,
         y: this.position.map.y + w[i].y,
-      }
-      if(getDistance(invader, absolutePosition) < 5) return true;
+      };
+      if (getDistance(invader, absolutePosition) < 5) return true;
     }
     return false;
   }
@@ -93,7 +113,7 @@ export class InteractiveObject {
     this.sprite.setSize(newSize);
   }
 
-  incrementalMoveTo(delta: coordinate){
+  incrementalMoveTo(delta: coordinate) {
     this.position.canvas.x += delta.x;
     this.position.canvas.y += delta.y;
     this.position.map.x += delta.x;
@@ -104,19 +124,19 @@ export class InteractiveObject {
     const diff = {
       x: this.position.canvas.x - this.position.map.x,
       y: this.position.canvas.y - this.position.map.y,
-    }
-    if(ofWhat === 'canvas'){
+    };
+    if (ofWhat === 'canvas') {
       this.position.canvas = pos;
       this.position.map = {
         x: pos.x - diff.x,
         y: pos.y - diff.y,
-      }
+      };
     } else {
       this.position.map = pos;
       this.position.canvas = {
         x: pos.x + diff.x,
         y: pos.y + diff.y,
-      }
+      };
     }
   }
 
@@ -138,7 +158,7 @@ export class InteractiveObject {
       width: this.size,
       height: this.size * ratio,
     };
-  } 
+  }
 
   getFragment() {
     return this.fragment;
@@ -148,22 +168,22 @@ export class InteractiveObject {
     this.fragment = newFrag;
   }
 
-  isBeingInteractedWith(){
+  isBeingInteractedWith() {
     return this.fragment && this.fragment.isVisible();
   }
 
-  interact(player: Player, key: string | undefined){
+  interact(player: Player, key: string | undefined) {
     this.updateKey(key);
   }
 
   toggleState() {
     this.state = !this.state;
-    this.action.sound.play()
+    this.action.sound.play();
   }
 
   private drawTexts(canvas: CanvasRenderingContext2D) {
     if (!this.isHighlighted || !this.action) return;
-    if(this.fragment && this.fragment.isVisible()) return;
+    if (this.fragment && this.fragment.isVisible()) return;
 
     const pos = {
       x: this.position.canvas.x + this.size / 2,
@@ -177,34 +197,37 @@ export class InteractiveObject {
   }
 
   private drawItems(canvas: CanvasRenderingContext2D) {
-    if(!this.fragment || !this.state) return;
-    const items = this.fragment.getItems().map(item => item.sprite);
-    items.forEach(item => {
-      item.setSize(0.5*item.getSize());
-      item.render(canvas, {x: this.position.canvas.x + 0.5*this.size, y: this.position.canvas.y + 0.5*this.size});    //TODO melhorar o posicionamento
+    if (!this.fragment || !this.state) return;
+    const items = this.fragment.getItems().map((item) => item.sprite);
+    items.forEach((item) => {
+      item.setSize(0.5 * item.getSize());
+      item.render(canvas, {
+        x: this.position.canvas.x + 0.5 * this.size,
+        y: this.position.canvas.y + 0.5 * this.size,
+      }); //TODO melhorar o posicionamento
     });
   }
 
-  private drawHitboxes(canvas: CanvasRenderingContext2D){
-    this.position.tiles.forEach((tile => {
+  private drawHitboxes(canvas: CanvasRenderingContext2D) {
+    this.position.tiles.forEach((tile) => {
       const absolutePosition = {
         x: this.position.map.x + tile.x,
         y: this.position.map.y + tile.y,
-      }
+      };
       renderHitbox(canvas, absolutePosition, 10, 'firebrick');
-    }));
+    });
 
-    this.position.hitboxes.forEach((hitbox => {
+    this.position.hitboxes.forEach((hitbox) => {
       const absolutePosition = {
         x: this.position.map.x + hitbox.x,
         y: this.position.map.y + hitbox.y,
-      }
+      };
       renderHitbox(canvas, absolutePosition, 10, 'gold');
-    }));
+    });
   }
 
-  private updateKey(key: string | undefined){
-    if (key === ACTION_KEYS[0].key && this.action){
+  private updateKey(key: string | undefined) {
+    if (key === ACTION_KEYS[0].key && this.action) {
       if (!this.lastKeyPressed && this.isHighlighted) {
         this.fragment && this.fragment.toggleVisibility();
       }
@@ -212,12 +235,11 @@ export class InteractiveObject {
     this.lastKeyPressed = key;
   }
 
-
   ////////////////////////////////////////////////////////////////////////////////
 
   update() {
-    if (this.state && this.action.options.length > 1){
-      this.sprite.setQuad([1 , this.isHighlighted ? 1 : 0]);
+    if (this.state && this.action.options.length > 1) {
+      this.sprite.setQuad([1, this.isHighlighted ? 1 : 0]);
     } else {
       this.sprite.setQuad([0, this.isHighlighted ? 1 : 0]);
     }
@@ -230,8 +252,7 @@ export class InteractiveObject {
     SHOW_HITBOX && this.drawHitboxes(canvas);
   }
 
-  renderFragment(canvas: CanvasRenderingContext2D){
-    this.fragment &&
-    this.fragment.render(canvas);
+  renderFragment(canvas: CanvasRenderingContext2D) {
+    this.fragment && this.fragment.render(canvas);
   }
 }
