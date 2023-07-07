@@ -1,72 +1,35 @@
 import { clickableArea, coordinate, interactiveCoords } from '../types';
-import { getDistance, renderHitbox } from '../functions/Metrics';
-import { InputHandler } from "../events/InputHandler";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, SHOW_HITBOX } from '../constants';
+import { getDistance } from '../functions/Metrics';
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../constants';
 import { InteractiveObject } from './InteractiveObject';
 import { FloatingText } from './FloatingText';
-import { Sprite } from './Sprite';
 import eKey from '../assets/icons/e-key.png';
 import cursorKey from '../assets/icons/cursor.png';
 import { InventoryItem } from './InventoryItem';
-import { State } from '../gameLogic/state';
 
-type FragmentParams = {
-    sprite: string;
-    size: number;
-    items: InventoryItem[];
-    interactionCoordinates?: interactiveCoords;
+export type FragmentParams = {
     object?: InteractiveObject;
 }
 
-export class Fragment {
-    sprite: Sprite;
+export abstract class Fragment {
+    abstract interactions: any;
     position: coordinate | null;
-    interactions: interactiveCoords | null;
     visible: boolean;
     object: InteractiveObject;
     leaveText: FloatingText;
     interactText: FloatingText;
     items: InventoryItem[];
-    isOpen: boolean;
 
-    constructor({sprite, size, interactionCoordinates, object, items}: FragmentParams) {
-        this.sprite = new Sprite({sprite, size, rows: 1, columns: 2});
-        this.interactions = (interactionCoordinates)? interactionCoordinates : null;
+    constructor({object}: FragmentParams) {
         this.visible = false;
         this.object = (object)? object : null;
         this.leaveText = new FloatingText({text: 'sair', iconSprite: eKey});
         this.interactText = new FloatingText({text: 'interagir', iconSprite: cursorKey});
-        this.items = items;
-        const inputHandler = new InputHandler();
-        inputHandler.subscribe("mouseDown", "fragmentMouseDown", (pos) => this.interact(pos))
+        this.items = [];
     }
 
-    private getAbsoluteCoords(coords: coordinate){
-        return {
-            x: this.position.x + coords.x,
-            y: this.position.y + coords.y,
-        }
-    }
-
-    private isWithin(what: clickableArea, target: coordinate){
-        const w = this.getAbsoluteCoords(what.coordinate);
-        return (getDistance(w, target) < what.radius);
-    }
-
-    private setPosition(width: number, height: number){       //deve rodar apenas no 1o ciclo de render do fragmento (precisamos do width e height do fragmento para calcular a posição)        
-        this.position = {
-            x: (CANVAS_WIDTH - width) / 2,
-            y: (CANVAS_HEIGHT - height) / 2,
-        }
-
-        this.items.forEach(item => {                          //no primeiro render os items ainda estarão em posição relativa ao canvas como um todo, e não ao fragmento.
-            const relativePos = item.getPosition();           //aqui corrigimos isso
-            item.setPosition({
-                x: this.position.x + relativePos.x,
-                y: this.position.y + relativePos.y,
-            })
-        })
-    }
+    abstract interact(clickCoords: coordinate): void;
+    abstract render(canvas: CanvasRenderingContext2D): void;
 
     setItems(newItems: InventoryItem[]){
         this.items = newItems;
@@ -108,35 +71,7 @@ export class Fragment {
         return this.visible;
     }
 
-    interact(clickCoords: coordinate){
-        if(!this.position) return;
-
-        const state = new State()
-        if(!this.interactions || !clickCoords) return { hasInteracted: false, item: null };
-        const interaction = (this.isOpen)? this.interactions.close : this.interactions.open;
-        for(let i = 0; i < interaction.length; i++){                    //verifica se o jogador está tentando abrir/fechar o fragmento (ex.: portas de um armário)
-            if(this.isWithin(interaction[i], clickCoords)){
-                this.sprite.setQuad(this.sprite.nextSprite());
-                this.isOpen = !this.isOpen;
-                this.object.toggleState()
-                return { hasInteracted: true };
-            }
-        }
-        if(this.isOpen){
-            for(let i = 0; i < this.items.length; i++){
-                const item = this.items[i];
-                if(item.isInside(clickCoords)){
-                    this.removeItem(item);
-                    state.addItem(item);
-                    item.sound.play();
-                    return { hasInteracted: true, item };
-                }
-            }
-        }
-        return { hasInteracted: false, item: null };
-    }
-
-    private drawBackground(canvas: CanvasRenderingContext2D, width: number, height: number, margin: number){
+    drawBackground(canvas: CanvasRenderingContext2D, width: number, height: number, margin: number){
         const fill = canvas.fillStyle;
         canvas.fillStyle = '#000000AA';
         canvas.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -147,30 +82,31 @@ export class Fragment {
         this.interactText.render(canvas, {x: this.position.x, y: this.position.y - margin - 10}, true);
     }
 
-    private drawFragment(canvas: CanvasRenderingContext2D){
-        const { width, height } = this.sprite.getAllDimensions();
-        if(!this.position) this.setPosition(width, height);
-        this.visible && this.drawBackground(canvas, width, height, 2);
-        this.visible && this.sprite.render(canvas, this.position);
-    }
-
-    private drawItems(canvas: CanvasRenderingContext2D){
-        this.visible && this.items.forEach(item => item.render(canvas));
-    }
-
-    private drawHitboxes(canvas: CanvasRenderingContext2D){
-        if (this.sprite.getQuad()[0] === 0){
-            this.interactions.open.forEach(o => renderHitbox(canvas, this.getAbsoluteCoords(o.coordinate), o.radius))
-        } else {
-            this.interactions.close.forEach(o => renderHitbox(canvas, this.getAbsoluteCoords(o.coordinate), o.radius, '#800080'));
+    getAbsoluteCoords(coords: coordinate){
+        return {
+            x: this.position.x + coords.x,
+            y: this.position.y + coords.y,
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-
-    render(canvas: CanvasRenderingContext2D, showItems: boolean){
-        this.drawFragment(canvas);
-        showItems && this.drawItems(canvas);
-        SHOW_HITBOX && this.drawHitboxes(canvas);
+    isWithin(what: clickableArea, target: coordinate){
+        const w = this.getAbsoluteCoords(what.coordinate);
+        return (getDistance(w, target) < what.radius);
     }
+
+    setPosition(width: number, height: number){       //deve rodar apenas no 1o ciclo de render do fragmento (precisamos do width e height do fragmento para calcular a posição)        
+        this.position = {
+            x: (CANVAS_WIDTH - width) / 2,
+            y: (CANVAS_HEIGHT - height) / 2,
+        }
+
+        this.items.forEach(item => {                          //no primeiro render os items ainda estarão em posição relativa ao canvas como um todo, e não ao fragmento.
+            const relativePos = item.getPosition();           //aqui corrigimos isso
+            item.setPosition({
+                x: this.position.x + relativePos.x,
+                y: this.position.y + relativePos.y,
+            })
+        })
+    }
+
 }

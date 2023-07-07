@@ -45,11 +45,11 @@ export function buildTileMap({x, y}: {x: number, y: number}): coordinate[][] {
 
 
 export async function buildScene(s: number) {
-  const {sceneOne} = await import("../gameLogic/levels/One");
+  // const {sceneOne} = await import("../gameLogic/levels/One");
   const {sceneTwo} = await import("../gameLogic/levels/Two");
   const {sceneThree} = await import("../gameLogic/levels/Three");
 
-  const scenes = [sceneOne, sceneTwo, sceneThree];  //new scenes must be added to this array
+  const scenes = [sceneTwo, sceneThree];  //new scenes must be added to this array
 
   const objects = scenes[s].objects;
   const floor = scenes[s].floor;

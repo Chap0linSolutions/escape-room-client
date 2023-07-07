@@ -1,10 +1,6 @@
 import { actionType, coordinate, interactiveCoords, positionType } from '../types';
-import { Sprite } from './Sprite';
 import { ACTION_KEYS, SHOW_HITBOX } from '../constants';
-import { FloatingText } from './FloatingText';
-import { Player } from './Player';
-import { Fragment } from './Fragment';
-import { InventoryItem } from './InventoryItem';
+import { FloatingText, Fragment, FragmentParams, Player, InventoryItem, Sprite  } from '../classes';
 import { getDistance, renderHitbox } from '../functions/Metrics';
 import Sound from './Sound';
 
@@ -26,7 +22,7 @@ type InteractiveObjectParams = {
   size: number;
   position: positionType;
   allowedDirections: string[];
-  fragment: Frag | null;
+  fragment?: new (params: FragmentParams) => Fragment;
   action?: actionType;
 }
 
@@ -52,7 +48,7 @@ export class InteractiveObject {
     action,
   }: InteractiveObjectParams) {
     this.canBeOpened = action ? true : false;
-    this.sprite = new Sprite({ sprite: spriteSrc, size, rows: 2, columns: action ? 2 : 1, maxCount: 0 });
+    this.sprite = new Sprite({ sprite: spriteSrc, size, rows: 2, columns: action && action.texts.length > 1 ? 2 : 1, maxCount: 0 });
     this.size = size;
     this.position = position;
     this.isHighlighted = false;
@@ -66,11 +62,7 @@ export class InteractiveObject {
       : undefined;
     this.allowedDirections = allowedDirections;
 
-    this.fragment = (fragment)
-    ? new Fragment({
-      ...fragment,
-      object: this,
-    }) : null;
+    this.fragment = fragment ? new fragment({object: this}) : null
   }
 
   isAllowedToInteract(invaderDirection: string){
@@ -224,7 +216,11 @@ export class InteractiveObject {
   ////////////////////////////////////////////////////////////////////////////////
 
   update() {
-    this.sprite.setQuad([this.state ? 1 : 0, this.isHighlighted ? 1 : 0]);
+    if (this.state && this.action.options.length > 1){
+      this.sprite.setQuad([1 , this.isHighlighted ? 1 : 0]);
+    } else {
+      this.sprite.setQuad([0, this.isHighlighted ? 1 : 0]);
+    }
   }
 
   render(canvas: CanvasRenderingContext2D) {
@@ -236,6 +232,6 @@ export class InteractiveObject {
 
   renderFragment(canvas: CanvasRenderingContext2D){
     this.fragment &&
-    this.fragment.render(canvas, this.state);
+    this.fragment.render(canvas);
   }
 }

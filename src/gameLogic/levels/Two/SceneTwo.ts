@@ -1,18 +1,12 @@
-import drawerFragment from '../../../assets/fragments/drawerFragment.png';
 import floorSprite from '../../../assets/floor2.png';
 import drawerSprite from '../../../assets/drawer.png';
 import deskSprite from '../../../assets/desk.png';
 import vDeskSprite from '../../../assets/v-desk.png';
-import bottleSprite from '../../../assets/bottle.png';
-import paperSprite from '../../../assets/paper.png';
 import doorSound from '../../../assets/sounds/door.mp3';
 import wooshSound from '../../../assets/sounds/woosh1.mp3';
-import glassSound from '../../../assets/sounds/glass.mp3';
-import paperSound from '../../../assets/sounds/paper.mp3';
 import { tileMap } from './TileMap';
 import {
   InteractiveObject,
-  InventoryItem,
   Floor,
 } from '../../../classes';
 import {
@@ -25,6 +19,7 @@ import {
   DX,
   DY,
 } from '../../../constants';
+import { ArmarioFragment } from '../../fragments/ArmarioFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOrigin = {
@@ -62,33 +57,7 @@ const objects = [
             hitboxes: [{x: DX, y: DY}, {x: 2*DX, y: 0}],
         },
         allowedDirections: ['left'],
-        fragment: {
-            size: 600,
-            sprite: drawerFragment,
-            interactionCoordinates: {
-                open: [{coordinate: {x: 300, y: 300}, radius: 50}],
-                close: [
-                    {coordinate: {x: 160, y: 300}, radius: 50},
-                    {coordinate: {x: 440, y: 300}, radius: 50},
-                ],
-            },
-            items: [
-                new InventoryItem({
-                    spriteSrc: bottleSprite,
-                    size: 28,
-                    name: 'garrafa',
-                    sound: glassSound,
-                    position: {x: 300, y: 200}
-                }),
-                new InventoryItem({
-                    spriteSrc: paperSprite,
-                    size: 90,
-                    name: 'papel',
-                    sound: paperSound,
-                    position: {x: 260, y: 330}
-                }),
-            ]
-        },
+        fragment: ArmarioFragment,
         action: {
             sound: doorSound,
             texts: ['abrir o armário', 'fechar o armário'],
