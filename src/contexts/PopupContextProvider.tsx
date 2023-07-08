@@ -1,16 +1,27 @@
 import React, { ReactNode, createContext, useContext, useState } from 'react';
-import { PopupFragment } from '../components';
+import { PopupFragment, ToastNotification } from '../components';
+import toastIcon from '../assets/icons/bulb.svg';
+
+type ToastProperties = {
+  id: number;
+  title: string;
+  description: string;
+  backgroundColor: string;
+  icon: string;
+};
 
 interface PopupContextValue {
   showPopup: (fragmentPiece: ReactNode) => void;
   closePopup: () => void;
   popupOpened: boolean;
+  showToast: (params: Partial<ToastProperties>) => void;
 }
 
 const initialValues: PopupContextValue = {
   showPopup: () => null,
   closePopup: () => null,
   popupOpened: false,
+  showToast: () => null,
 };
 
 const PopupContext = createContext<PopupContextValue>(initialValues);
@@ -24,6 +35,7 @@ export const PopupContextProvider = ({
 }: PopupContextProviderProps) => {
   const [show, setShow] = useState(false);
   const [fragment, setFragment] = useState<ReactNode | null>(null);
+  const [toastList, setToastList] = useState<ToastProperties[]>([]);
 
   const showPopup = (fragmentPiece: ReactNode) => {
     setFragment(fragmentPiece);
@@ -35,10 +47,25 @@ export const PopupContextProvider = ({
     setFragment(null);
   };
 
+  const showToast = (params: Partial<ToastProperties>) => {
+    setToastList((previousItems) => [
+      ...previousItems,
+      {
+        id: Math.floor(Math.random() * 101 + 1),
+        title: 'Toast Notification',
+        description: 'Description Here',
+        backgroundColor: '#ccc',
+        icon: toastIcon,
+        ...params,
+      },
+    ]);
+  };
+
   const value: PopupContextValue = {
     showPopup,
     closePopup,
     popupOpened: show,
+    showToast,
   };
 
   return (
@@ -54,6 +81,13 @@ export const PopupContextProvider = ({
         }}>
         {children}
       </div>
+      <ToastNotification
+        toastList={toastList}
+        //hard coding position and time for now
+        position={'top-right'}
+        autoDelete={true}
+        autoDeleteTime={3000}
+      />
     </PopupContext.Provider>
   );
 };
