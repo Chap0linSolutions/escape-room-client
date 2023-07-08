@@ -83,8 +83,6 @@ export const PopupContextProvider = ({
       </div>
       <ToastNotification
         toastList={toastList}
-        //hard coding position and time for now
-        position={'top-right'}
         autoDelete={true}
         autoDeleteTime={3000}
       />
