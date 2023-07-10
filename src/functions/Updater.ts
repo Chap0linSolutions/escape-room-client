@@ -1,6 +1,7 @@
 import { InteractiveObject } from '../classes/InteractiveObject';
 import { Player } from '../classes/Player';
 import { Floor } from '../classes/Floor';
+import { coordinate } from '../types';
 
 interface UpdaterProps {
   dt: number;
@@ -20,10 +21,10 @@ export default function UpdateAll({
   floor && floor.update();
 
   objects.forEach((o) => {
-    o.update(key);
+    o.update();
   });
 
   players.forEach((p) => {
-    p.update(dt, objects, key);
+    p.update(dt, floor, objects, key);
   });
 }
