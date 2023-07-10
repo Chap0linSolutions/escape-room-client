@@ -1,3 +1,5 @@
+import { MutableRefObject } from 'react';
+
 export type Observer = {
   name: string;
   observerFunction: any;
@@ -7,23 +9,28 @@ export type EventObservers = {
   keyDown: Observer[];
   keyUp: Observer[];
   mouseMove: Observer[];
-  mouseClick: Observer[];
+  mouseDown: Observer[];
+  mouseUp: Observer[];
 };
 
 export class InputHandler {
   private static instance: InputHandler;
+  private static canvasRef: MutableRefObject<HTMLCanvasElement>;
   observers: EventObservers = {
     keyDown: [],
     keyUp: [],
     mouseMove: [],
-    mouseClick: [],
+    mouseDown: [],
+    mouseUp: [],
   };
+  canvasRef: MutableRefObject<HTMLCanvasElement>;
 
-  constructor() {
+  constructor(canvasRef = null) {
     if (!!InputHandler.instance) {
       return InputHandler.instance;
     }
     InputHandler.instance = this;
+    InputHandler.canvasRef = canvasRef;
 
     // Right now these listeners are set to get the whole document
     // Maybe we want to define listeners only on the canvas for something
@@ -33,8 +40,18 @@ export class InputHandler {
 
     document.addEventListener('keydown', this.handleKeydown.bind(this));
     document.addEventListener('keyup', this.handleKeyUp.bind(this));
-    document.addEventListener('mousemove', this.handleMouseMove.bind(this));
-    document.addEventListener('mousedown', this.handleMouseDown.bind(this));
+    InputHandler.canvasRef.current.addEventListener(
+      'mousemove',
+      this.handleMouseMove.bind(this)
+    );
+    InputHandler.canvasRef.current.addEventListener(
+      'mousedown',
+      this.handleMouseDown.bind(this)
+    );
+    InputHandler.canvasRef.current.addEventListener(
+      'mouseup',
+      this.handleMouseUp.bind(this)
+    );
   }
 
   isTopic(topic: keyof EventObservers) {
@@ -77,6 +94,10 @@ export class InputHandler {
   }
 
   handleMouseDown(evt: MouseEvent) {
-    this.notifyAll('mouseClick', evt);
+    this.notifyAll('mouseDown', { x: evt.offsetX, y: evt.offsetY });
+  }
+
+  handleMouseUp(evt: MouseEvent) {
+    this.notifyAll('mouseUp', { x: evt.offsetX, y: evt.offsetY });
   }
 }

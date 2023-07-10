@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import { usePopupContext } from '../../contexts';
 import { useGameLoop, useGameState } from '../../hooks';
+import { InputHandler } from '../../events/InputHandler';
 import { Button } from './GameScene.style';
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../../constants';
 
 export function GameScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -16,6 +18,7 @@ export function GameScene() {
   }, [popupOpened]);
 
   const handleStartGame = () => {
+    new InputHandler(canvasRef);
     startGame(canvasRef);
   };
 
@@ -35,8 +38,8 @@ export function GameScene() {
         <canvas
           style={{ border: '1px solid gold' }}
           ref={canvasRef}
-          width={1280}
-          height={720}></canvas>
+          width={CANVAS_WIDTH}
+          height={CANVAS_HEIGHT}></canvas>
         <div>
           <Button onClick={handleStartGame}>Start</Button>
           <button onClick={callToast}>Click me!</button>
