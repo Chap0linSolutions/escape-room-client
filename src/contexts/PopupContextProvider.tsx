@@ -1,4 +1,10 @@
-import React, { ReactNode, createContext, useContext, useState } from 'react';
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useRef,
+} from 'react';
 import { PopupFragment, ToastNotification } from '../components';
 import toastIcon from '../assets/icons/bulb.svg';
 
@@ -36,6 +42,7 @@ export const PopupContextProvider = ({
   const [show, setShow] = useState(false);
   const [fragment, setFragment] = useState<ReactNode | null>(null);
   const [toastList, setToastList] = useState<ToastProperties[]>([]);
+  const toastIdCount = useRef(1);
 
   const showPopup = (fragmentPiece: ReactNode) => {
     setFragment(fragmentPiece);
@@ -47,11 +54,12 @@ export const PopupContextProvider = ({
     setFragment(null);
   };
 
-  const showToast = (params: Partial<ToastProperties>) => {
-    setToastList((previousItems) => [
+  const showToast = async (params: Partial<ToastProperties>) => {
+    const newId = toastIdCount.current;
+    await setToastList((previousItems) => [
       ...previousItems,
       {
-        id: Math.floor(Math.random() * 101 + 1),
+        id: newId,
         title: 'Toast Notification',
         description: 'Description Here',
         backgroundColor: '#ccc',
@@ -59,6 +67,14 @@ export const PopupContextProvider = ({
         ...params,
       },
     ]);
+    setTimeout(() => {
+      deleteToast(newId);
+    }, 3000);
+    toastIdCount.current += 1;
+  };
+
+  const deleteToast = (id: number) => {
+    setToastList((pList) => pList.filter((item) => item.id !== id));
   };
 
   const value: PopupContextValue = {
@@ -81,11 +97,7 @@ export const PopupContextProvider = ({
         }}>
         {children}
       </div>
-      <ToastNotification
-        toastList={toastList}
-        autoDelete={true}
-        autoDeleteTime={3000}
-      />
+      <ToastNotification toastList={toastList} deleteToast={deleteToast} />
     </PopupContext.Provider>
   );
 };
