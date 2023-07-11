@@ -28,12 +28,12 @@ export const DESK_SIZE = 200;
 export const V_DESK_SIZE = 380;
 export const PLAYER_SPEED = 0.4;
 export const ANIMATION_PERIOD = 100;
-export const WALK_TOGGLE_PADDING = 200;
+export const WALK_TOGGLE_PADDING = 250;
 export const ISOMETRIC_ANGLE = Math.PI / 6;
 export const ISOMETRIC_RATIO =
-  Math.cos(Math.PI / 4) * Math.cos(ISOMETRIC_ANGLE); //o ângulo de visualização do mapa é de 30° de inclinação, por isso esta constante
+  Math.cos(0.305 * Math.PI) * Math.cos(ISOMETRIC_ANGLE); //o ângulo de visualização do mapa é de 30° de inclinação, por isso esta constante
 
-export const TILE_SIZE = 52;
+export const TILE_SIZE = 50;
 export const DX = TILE_SIZE;
 export const DY = TILE_SIZE * ISOMETRIC_RATIO;
 
@@ -43,5 +43,5 @@ export const SHOW_TILEMAP = false;
 export const SHOW_DISTANCE_TO_BOTTOM_CORNER = false;
 export const SHOW_WALK_TOGGLE_PADDING = false;
 
-//what's this?
-export const SCENE = 1;
+//scene to be rendered
+export const SCENE = 0;
