@@ -1,14 +1,11 @@
 import { InputHandler } from '../events/InputHandler';
+import { State } from './state';
 import { buildScene, spawnPlayer } from '../functions/Builder';
 import RenderAll from '../functions/Renderer';
 import UpdateAll from '../functions/Updater';
 import { CANVAS_WIDTH, CANVAS_HEIGHT, SCENE } from '../constants';
-import { GameCallbacks, coordinate } from '../types';
+import { GameCallbacks } from '../types';
 import { TestFragment } from './fragments/testFragment';
-
-// const inputHandler = new InputHandler();
-// const state = new State();
-// inputHandler.subscribe("keyDown", "jump", handleJump.bind(this))
 
 const mapKeys = (key: string) => {
   switch (key) {
@@ -41,6 +38,9 @@ export class Game {
   callbacks: GameCallbacks;
 
   constructor({ gameCallbacks }: GameProps) {
+    const state = new State();
+    state.setGameCallbacks(gameCallbacks);
+
     const inputHandler = new InputHandler();
     inputHandler.subscribe('keyDown', 'GameKeyDown', this.setKey.bind(this));
     inputHandler.subscribe('keyUp', 'GameKeyUp', this.resetKey.bind(this));

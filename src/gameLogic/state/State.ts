@@ -1,6 +1,9 @@
 import { InventoryItem } from '../../classes';
+import { GameCallbacks } from '../../types';
+
 export class State {
   private static instance: State;
+  cb: GameCallbacks;
   paused = false;
   key = undefined;
   currentPlayer = '';
@@ -24,6 +27,10 @@ export class State {
     }
     State.instance = this;
     console.log('State created');
+  }
+
+  setGameCallbacks(gameCallbacks: GameCallbacks) {
+    this.cb = gameCallbacks;
   }
 
   addItem(item: InventoryItem) {

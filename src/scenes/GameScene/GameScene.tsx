@@ -8,7 +8,7 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../../constants';
 export function GameScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { showPopup, popupOpened, showToast } = usePopupContext();
-  const { startGame } = useGameLoop({ showPopup });
+  const { startGame } = useGameLoop({ showPopup, showToast });
   const { resumeGame } = useGameState();
 
   useEffect(() => {
