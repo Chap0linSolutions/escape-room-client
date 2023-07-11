@@ -9,7 +9,7 @@ import {
   Title,
   Message,
 } from './ToastNotification.style';
-import './ToastNotification.css';
+//import './ToastNotification.css';
 
 type ToastProps = {
   toastList: {

@@ -1,4 +1,4 @@
-import playerSprite from '../assets/player.png';
+import playerSprite from '../assets/isometric/player.png';
 import { coordinate } from '../types';
 import { Player } from '../classes';
 import {
@@ -47,11 +47,9 @@ export function buildTileMap({
 }
 
 export async function buildScene(s: number) {
-  // const {sceneOne} = await import("../gameLogic/levels/One");
-  const { sceneTwo } = await import('../gameLogic/levels/Two');
-  const { sceneThree } = await import('../gameLogic/levels/Three');
+  const {sceneOne} = await import("../gameLogic/levels/One");
 
-  const scenes = [sceneTwo, sceneThree]; //new scenes must be added to this array
+  const scenes = [sceneOne]; //new scenes must be added to this array
 
   const objects = scenes[s].objects;
   const floor = scenes[s].floor;
