@@ -6,15 +6,8 @@ import React, {
   useRef,
 } from 'react';
 import { PopupFragment, ToastNotification } from '../components';
+import { ToastProperties } from '../types';
 import toastIcon from '../assets/icons/bulb.svg';
-
-type ToastProperties = {
-  id: number;
-  title: string;
-  description: string;
-  backgroundColor: string;
-  icon: string;
-};
 
 interface PopupContextValue {
   showPopup: (fragmentPiece: ReactNode) => void;
