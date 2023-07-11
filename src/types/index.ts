@@ -32,8 +32,17 @@ export type hitbox = {
   size: number;
 };
 
+export type ToastProperties = {
+  id: number;
+  title: string;
+  description: string;
+  backgroundColor: string;
+  icon: string;
+};
+
 export type GameCallbacks = {
   showPopup: (fragment: any) => void;
+  showToast: (toastParams: Partial<ToastProperties>) => void;
 };
 
 export type clickableArea = {
