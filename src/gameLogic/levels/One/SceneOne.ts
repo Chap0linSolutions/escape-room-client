@@ -25,9 +25,9 @@ const playerOrigin = {
 const floor = new Floor({
   tileMap,
   spriteSrc: roomSprite,
-  size: 1.4 * CANVAS_WIDTH,
+  size: 2.05 * CANVAS_WIDTH,
   position: {
-    canvas: { x: mapOrigin.x, y: mapOrigin.y - 26*DY},
+    canvas: { x: mapOrigin.x - 35, y: mapOrigin.y - 39*DY},
     map: mapOrigin,
   },
 });

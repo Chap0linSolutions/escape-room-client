@@ -33,7 +33,7 @@ export const ISOMETRIC_ANGLE = Math.PI / 6;
 export const ISOMETRIC_RATIO =
   Math.cos(0.305 * Math.PI) * Math.cos(ISOMETRIC_ANGLE); //o ângulo de visualização do mapa é de 30° de inclinação, por isso esta constante
 
-export const TILE_SIZE = 52;
+export const TILE_SIZE = 50;
 export const DX = TILE_SIZE;
 export const DY = TILE_SIZE * ISOMETRIC_RATIO;
 
