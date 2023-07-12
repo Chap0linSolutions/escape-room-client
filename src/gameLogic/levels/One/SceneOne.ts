@@ -43,8 +43,8 @@ const tableStartY = 6;
 const tableSizeX = 5;
 const tableSizeY = 6;
 
-for(let i = tableStartX; i < tableSizeX + tableStartX; i += 1){
-  for(let j = tableStartY; j < tableSizeY + tableStartY; j += 1){
+for (let i = tableStartX; i < tableSizeX + tableStartX; i += 1) {
+  for (let j = tableStartY; j < tableSizeY + tableStartY; j += 1) {
     tableTiles = tableTiles.concat(easyCoords({ x: i, y: j }));
   }
 }
@@ -97,7 +97,7 @@ const objects = [
       texts: ['interagir'],
     },
     fragment: TableFragment,
-  })
+  }),
 ];
 
 const sceneOne = { playerOrigin, floor, objects };
