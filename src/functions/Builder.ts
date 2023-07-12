@@ -28,6 +28,19 @@ export const spawnPlayer = (origin) => {
   return players;
 };
 
+/** Easy Coords
+ *   x = top-right
+ *  /
+ * /
+ * \
+ *  \
+ *   y = bottom-right
+ **/
+
+export function easyCoords({ x, y }) {
+  return { x: (y + x) * DX, y: (y - x) * DY };
+}
+
 export function buildTileMap({
   x,
   y,
@@ -47,7 +60,7 @@ export function buildTileMap({
 }
 
 export async function buildScene(s: number) {
-  const {sceneOne} = await import("../gameLogic/levels/One");
+  const { sceneOne } = await import('../gameLogic/levels/One');
 
   const scenes = [sceneOne]; //new scenes must be added to this array
 

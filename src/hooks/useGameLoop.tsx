@@ -1,5 +1,5 @@
 import { RefObject, useRef } from 'react';
-import { GameCallbacks, coordinate } from '../types';
+import { GameCallbacks } from '../types';
 import { Game } from '../gameLogic/Game';
 
 export const useGameLoop = (gameCallbacks: GameCallbacks) => {
