@@ -3,7 +3,9 @@ import { InputHandler } from '../../events/InputHandler';
 import tableSprite from '../../assets/fragments/tableFragment.png';
 
 import { coordinate } from '../../types';
-import { renderHitbox } from '../../functions/Metrics';
+import { getDistance, renderHitbox } from '../../functions/Metrics';
+
+import { State } from '../state';
 
 export class TableFragment extends Fragment {
     interactions;
@@ -28,9 +30,16 @@ export class TableFragment extends Fragment {
     }
     interact(clickCoords: coordinate): void {
         if (!this.isVisible()) return;
+        const dist = getDistance(this.interactions.bottle.coordinate, clickCoords);
+        if (dist > this.interactions.bottle.radius) return;
 
-        // TODO: bottle flip animation in another pop up OU toast
-        
+        // TODO: bottle flip animation in another pop up
+        const state = new State();
+        state.cb.showToast({
+            title: "Garrafa d'água",
+            description: 'Agora não é hora de matar a sede!',
+            backgroundColor: '#558296',
+        })
 
     }
     drawItems(canvas: CanvasRenderingContext2D) {

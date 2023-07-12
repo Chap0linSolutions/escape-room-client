@@ -1,5 +1,6 @@
 import roomSprite from '../../../assets/isometric/room.png';
 import sofaSprite from '../../../assets/sofa_raw.png';
+import tableSprite from '../../../assets/meeting_table.png';
 import { tileMap } from './TileMap';
 import { InteractiveObject, Floor } from '../../../classes';
 import {
@@ -11,6 +12,8 @@ import {
 } from '../../../constants';
 import { easyCoords } from '../../../functions/Builder';
 import { SofaFragment } from '../../fragments/SofaFragment';
+import { coordinate } from '../../../types';
+import { TableFragment } from '../../fragments/TableFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOrigin = {
@@ -33,6 +36,18 @@ const floor = new Floor({
     map: mapOrigin,
   },
 });
+
+let tableTiles = <coordinate[]>[];
+const tableStartX = 2;
+const tableStartY = 6;
+const tableSizeX = 5;
+const tableSizeY = 6;
+
+for(let i = tableStartX; i < tableSizeX + tableStartX; i += 1){
+  for(let j = tableStartY; j < tableSizeY + tableStartY; j += 1){
+    tableTiles = tableTiles.concat(easyCoords({ x: i, y: j }));
+  }
+}
 
 const objects = [
   //this array is where all the scene objects will be added.
@@ -61,6 +76,28 @@ const objects = [
     },
     fragment: null,
   }),
+  new InteractiveObject({
+    spriteSrc: tableSprite,
+    size: 450,
+    position: {
+      canvas: { x: 480, y: 450 },
+      map: { x: mapOrigin.x + DX, y: mapOrigin.y },
+      tiles: tableTiles,
+      hitboxes: [
+        easyCoords({ x: 1, y: 8 }),
+        easyCoords({ x: 1, y: 9 }),
+        easyCoords({ x: 1, y: 10 }),
+        easyCoords({ x: 7, y: 7 }),
+        easyCoords({ x: 7, y: 8 }),
+        easyCoords({ x: 7, y: 9 }),
+      ],
+    },
+    allowedDirections: ['up', 'down'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: TableFragment,
+  })
 ];
 
 const sceneOne = { playerOrigin, floor, objects };
