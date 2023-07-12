@@ -122,9 +122,10 @@ export class Player {
     for (let i = 0; i < objects.length; i++) {
       if (objects[i].isInside('hitbox', this.position)) {
         this.interactingWithFragment = objects[i].isBeingInteractedWith();
-        objects[i].isAllowedToInteract(myDirection) &&
+        if(objects[i].isAllowedToInteract(myDirection)){
           objects[i].interact(this, keyPressed);
-        objects[i].setHighlight(true);
+          objects[i].setHighlight(true);
+        }
         return;
       }
       objects[i].setHighlight(false);
