@@ -25,6 +25,7 @@ export type positionType = {
   map: coordinate; //coordinates relative to the tile map origin
   tiles?: coordinate[]; //coordinates relative to the 'map' attribute
   hitboxes?: coordinate[]; //hitbox relative to the 'map' attribute
+  referenceTile?: coordinate;
 };
 
 export type hitbox = {
