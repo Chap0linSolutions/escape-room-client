@@ -40,6 +40,7 @@ export const DY = TILE_SIZE * ISOMETRIC_RATIO;
 //debug
 export const SHOW_HITBOX = false;
 export const SHOW_TILEMAP = false;
+export const SHOW_REFERENCE_TILE = true;
 export const SHOW_DISTANCE_TO_BOTTOM_CORNER = false;
 export const SHOW_WALK_TOGGLE_PADDING = false;
 

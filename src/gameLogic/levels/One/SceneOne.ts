@@ -53,6 +53,7 @@ const objects = [
     interactible: true,
     size: 240,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 1073, y: -198 },
       map: { x: mapOneOrigin.x + 21 * DX, y: mapOneOrigin.y - 16 * DY},
       tiles: [],
@@ -73,6 +74,7 @@ const objects = [
     interactible: false,
     size: 80,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 0, y: 310 },
       map: { x: mapOneOrigin.x + DX, y: mapOneOrigin.y},
       tiles: [
@@ -90,6 +92,7 @@ const objects = [
     interactible: true,
     size: 395,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 105, y: 240 },
       map: { x: mapOneOrigin.x + 3 * DX, y: mapOneOrigin.y - 2 * DY },
       tiles: [
@@ -125,6 +128,7 @@ const objects = [
     interactible: true,
     size: 215,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: {x: 420, y: 105},
       map: {x: mapOneOrigin.x + 9*DX, y: mapOneOrigin.y - 8*DY},
       tiles: [
@@ -152,6 +156,7 @@ const objects = [
     interactible: true,
     size: 325,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 610, y: -70 },
       map: { x: mapOneOrigin.x + 13 * DX, y: mapOneOrigin.y - 12 * DY },
       tiles: [
@@ -187,6 +192,7 @@ const objects = [
     interactible: true,
     size: 620,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 280, y: 380 },
       map: { x: mapOneOrigin.x + 9 * DX, y: mapOneOrigin.y + 4 * DY },
       tiles: [
@@ -238,6 +244,7 @@ const objects = [
     interactible: true,
     size: 365,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 840, y: 680 },
       map: { x: mapOneOrigin.x + 18 * DX, y: mapOneOrigin.y + 15 * DY },
       tiles: [
@@ -272,6 +279,7 @@ const objects = [
     interactible: true,
     size: 355,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 1095, y: 565 },
       map: { x: mapOneOrigin.x + 23 * DX, y: mapOneOrigin.y + 10 * DY },
       tiles: [
@@ -305,6 +313,7 @@ const objects = [
     interactible: true,
     size: 345,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 1350, y: 435 },
       map: { x: mapOneOrigin.x + 28 * DX, y: mapOneOrigin.y + 5 * DY },
       tiles: [
@@ -338,6 +347,7 @@ const objects = [
     interactible: true,
     size: 345,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 1020, y: 275 },
       map: { x: mapOneOrigin.x + 21 * DX, y: mapOneOrigin.y - 2 * DY },
       tiles: [
@@ -371,6 +381,7 @@ const objects = [
     interactible: true,
     size: 345,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 1620, y:350 },
       map: { x: mapOneOrigin.x + 33 * DX, y: mapOneOrigin.y - 2 * DY },
       tiles: [
@@ -402,6 +413,7 @@ const objects = [
     interactible: true,
     size: 345,
     position: {
+      referenceTile: { x: 0.1, y: 0.1 },
       canvas: { x: 1320, y: 150 },
       map: { x: mapOneOrigin.x + 27 * DX, y: mapOneOrigin.y - 10 * DY },
       tiles: [

@@ -5,10 +5,11 @@ import { coordinate } from '../types';
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
+  SHOW_REFERENCE_TILE,
   SHOW_WALK_TOGGLE_PADDING,
   WALK_TOGGLE_PADDING,
 } from '../constants';
-import { getDistance } from './Metrics';
+import { getDistance, renderHitbox } from './Metrics';
 import { SHOW_DISTANCE_TO_BOTTOM_CORNER } from '../constants';
 
 interface RendererProps {
@@ -66,6 +67,15 @@ const renderDistance = (
   canvas.closePath();
 };
 
+const renderReferenceTile = (canvas: CanvasRenderingContext2D, object: ObjectAndDistance) => {
+  const location = {
+    x: object.origin.x + object.center.x,
+    y: object.origin.y + object.center.y,
+  }
+
+  renderHitbox(canvas, location, 10, 'dodgerblue');
+}
+
 export default function RenderAll({
   context,
   players,
@@ -116,6 +126,7 @@ export default function RenderAll({
   renderables.forEach((r) => {
     r.object.render(context);
     SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin, ground);
+    SHOW_REFERENCE_TILE && renderReferenceTile(context, r);
   });
 
   fragments.forEach((f) => f.renderFragment(context));
