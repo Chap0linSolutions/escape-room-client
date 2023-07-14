@@ -3,9 +3,14 @@ import waterDispenserSprite from '../../../assets/isometric/waterDispenser.png';
 import sofaOneSprite from '../../../assets/isometric/sofaOne.png';
 import sofaTwoSprite from '../../../assets/isometric/sofaTwo.png';
 import drawerSprite from '../../../assets/isometric/drawer.png';
+import doorSprite from '../../../assets/isometric/door.png';
 import meetingDeskSprite from '../../../assets/isometric/meetingDesk.png';
 import midLevelDeskSprite from '../../../assets/isometric/midLevelDesk.png';
 import seniorDeskSprite from '../../../assets/isometric/seniorDesk.png';
+import juniorDeskSprite from '../../../assets/isometric/juniorDesk.png';
+import internDeskSprite from '../../../assets/isometric/internDesk.png';
+import beanBagsSprite from '../../../assets/isometric/beanBags.png'; 
+import bookshelfSprite from '../../../assets/isometric/bookshelf.png';
 
 import { tileMap } from './TileMap';
 import { InteractiveObject, Floor } from '../../../classes';
@@ -26,8 +31,8 @@ const mapOrigin = {
 };
 
 const playerOrigin = {
-  x: mapOrigin.x + 9 * DX,
-  y: mapOrigin.y - 4 * DY,
+  x: mapOrigin.x + 12 * DX,
+  y: mapOrigin.y - 7 * DY,
 };
 
 //CHÃO/////////////////////////////////////////////////////////////////////////////////
@@ -42,6 +47,26 @@ const floor = new Floor({
 });
 
 const objects = [
+
+  new InteractiveObject({                 //porta
+    spriteSrc: doorSprite,
+    interactible: true,
+    size: 240,
+    position: {
+      canvas: { x: 1073, y: -198 },
+      map: { x: mapOrigin.x + 21 * DX, y: mapOrigin.y - 16 * DY},
+      tiles: [],
+      hitboxes: [
+        easyCoords({ x: 0, y: 0 }),
+        easyCoords({ x: 0, y: 1 }),
+        easyCoords({ x: 0, y: 2 }),
+        easyCoords({ x: 0, y: 3 }),
+      ],
+    },
+    allowedDirections: ['up'],
+    action: null,
+    fragment: null,
+  }),
 
   new InteractiveObject({                 //bebedouro
     spriteSrc: waterDispenserSprite,
@@ -247,7 +272,7 @@ const objects = [
     interactible: true,
     size: 355,
     position: {
-      canvas: { x: 1115, y: 565 },
+      canvas: { x: 1095, y: 565 },
       map: { x: mapOrigin.x + 23 * DX, y: mapOrigin.y + 10 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
@@ -269,6 +294,133 @@ const objects = [
       ],
     },
     allowedDirections: ['left'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: null,
+  }),
+
+  new InteractiveObject({                 //mesa do dev júnior
+    spriteSrc: juniorDeskSprite,
+    interactible: true,
+    size: 345,
+    position: {
+      canvas: { x: 1350, y: 435 },
+      map: { x: mapOrigin.x + 28 * DX, y: mapOrigin.y + 5 * DY },
+      tiles: [
+        easyCoords({ x: 0, y: 0}),
+        easyCoords({ x: 1, y: 0}),
+        easyCoords({ x: 2, y: 0}),
+        easyCoords({ x: 3, y: 0}),
+        easyCoords({ x: 1, y: 1}),
+        easyCoords({ x: 2, y: 1}),
+        easyCoords({ x: 3, y: 1}),
+        easyCoords({ x: 1, y: 2}),
+        easyCoords({ x: 2, y: 2}),
+        easyCoords({ x: 3, y: 2}),
+      ],
+      hitboxes: [
+        easyCoords({ x: 0, y: 1}),
+        easyCoords({ x: 0, y: 2}),
+        easyCoords({ x: 1, y: 3}),
+        easyCoords({ x: 2, y: 3}),
+      ],
+    },
+    allowedDirections: ['left'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: null,
+  }),
+
+  new InteractiveObject({                 //mesa do estagiário
+    spriteSrc: internDeskSprite,
+    interactible: true,
+    size: 345,
+    position: {
+      canvas: { x: 1020, y: 275 },
+      map: { x: mapOrigin.x + 21 * DX, y: mapOrigin.y - 2 * DY },
+      tiles: [
+        easyCoords({ x: 0, y: 0}),
+        easyCoords({ x: 1, y: 0}),
+        easyCoords({ x: 2, y: 0}),
+        easyCoords({ x: 3, y: 0}),
+        easyCoords({ x: 1, y: 1}),
+        easyCoords({ x: 2, y: 1}),
+        easyCoords({ x: 3, y: 1}),
+        easyCoords({ x: 1, y: 2}),
+        easyCoords({ x: 2, y: 2}),
+        easyCoords({ x: 3, y: 2}),
+      ],
+      hitboxes: [
+        easyCoords({ x: 0, y: 1}),
+        easyCoords({ x: 0, y: 2}),
+        easyCoords({ x: 1, y: 3}),
+        easyCoords({ x: 2, y: 3}),
+      ],
+    },
+    allowedDirections: ['left'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: null,
+  }),
+
+  new InteractiveObject({                 //pufes
+    spriteSrc: beanBagsSprite,
+    interactible: true,
+    size: 345,
+    position: {
+      canvas: { x: 1620, y:350 },
+      map: { x: mapOrigin.x + 33 * DX, y: mapOrigin.y - 2 * DY },
+      tiles: [
+        easyCoords({ x: 0, y: 0}),
+        easyCoords({ x: 1, y: 0}),
+        easyCoords({ x: 0, y: 1}),
+        easyCoords({ x: 1, y: 1}),
+        easyCoords({ x: 0, y: 2}),
+        easyCoords({ x: 1, y: 2}),
+        easyCoords({ x: 0, y: 3}),
+        easyCoords({ x: 1, y: 3}),
+        easyCoords({ x: 1, y: 4}),
+      ],
+      hitboxes: [
+        easyCoords({ x: -1, y: 1}),
+        easyCoords({ x: -1, y: 2}),
+        easyCoords({ x: -1, y: 3}),
+      ],
+    },
+    allowedDirections: ['up'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: null,
+  }),
+
+  new InteractiveObject({                 //estante com livros
+    spriteSrc: bookshelfSprite,
+    interactible: true,
+    size: 345,
+    position: {
+      canvas: { x: 1320, y: 150 },
+      map: { x: mapOrigin.x + 27 * DX, y: mapOrigin.y - 10 * DY },
+      tiles: [
+        easyCoords({ x: 0, y: 0}),
+        easyCoords({ x: 0, y: 1}),
+        easyCoords({ x: 0, y: 2}),
+        easyCoords({ x: 0, y: 3}),
+        easyCoords({ x: 0, y: 4}),
+        easyCoords({ x: 0, y: 5}),
+      ],
+      hitboxes: [
+        easyCoords({ x: -1, y: 0}),
+        easyCoords({ x: -1, y: 1}),
+        easyCoords({ x: -1, y: 2}),
+        easyCoords({ x: -1, y: 3}),
+        easyCoords({ x: -1, y: 4}),
+      ],
+    },
+    allowedDirections: ['up'],
     action: {
       texts: ['interagir'],
     },
