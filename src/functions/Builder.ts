@@ -10,7 +10,7 @@ import {
   DY,
 } from '../constants';
 
-export const spawnPlayer = (origin) => {
+export const spawnPlayer = (origin, mapOrigin) => {
   const playerOrigin = origin;
 
   const players = [
@@ -22,6 +22,7 @@ export const spawnPlayer = (origin) => {
       size: PLAYER_SIZE,
       animationPeriod: ANIMATION_PERIOD,
       feetOffset: PLAYER_FEET_OFFSET,
+      mapOrigin,
     }),
   ];
 
@@ -60,13 +61,15 @@ export function buildTileMap({
 }
 
 export async function buildScene(s: number) {
-  const { sceneOne } = await import('../gameLogic/levels/One');
+  const { sceneOne, mapOneOrigin } = await import('../gameLogic/levels/One');
 
   const scenes = [sceneOne]; //new scenes must be added to this array
+  const origins = [mapOneOrigin];
 
   const objects = scenes[s].objects;
   const floor = scenes[s].floor;
   const playerOrigin = scenes[s].playerOrigin;
+  const mapOrigin = origins[s];
 
-  return { objects, floor, playerOrigin };
+  return { objects, floor, playerOrigin, mapOrigin };
 }
