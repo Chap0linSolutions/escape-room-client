@@ -49,8 +49,8 @@ export class Game {
   }
 
   initialSetup = async () => {
-    const { objects, floor, playerOrigin } = await buildScene(SCENE);
-    this.players = spawnPlayer(playerOrigin);
+    const { objects, floor, playerOrigin, mapOrigin } = await buildScene(SCENE);
+    this.players = spawnPlayer(playerOrigin, mapOrigin);
     this.objects = objects;
     this.floor = floor;
   };

@@ -25,14 +25,14 @@ import {
 } from '../../../constants';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
-const mapOrigin = {
+const mapOneOrigin = {
   x: FLOOR_PADDING,
   y: 0.75 * CANVAS_HEIGHT,
 };
 
 const playerOrigin = {
-  x: mapOrigin.x + 12 * DX,
-  y: mapOrigin.y - 7 * DY,
+  x: mapOneOrigin.x + 9 * DX,
+  y: mapOneOrigin.y - 4 * DY,
 };
 
 //CHÃO/////////////////////////////////////////////////////////////////////////////////
@@ -41,8 +41,8 @@ const floor = new Floor({
   spriteSrc: roomSprite,
   size: 2.05 * CANVAS_WIDTH,
   position: {
-    canvas: { x: mapOrigin.x - 35, y: mapOrigin.y - 39 * DY },
-    map: mapOrigin,
+    canvas: { x: mapOneOrigin.x - 35, y: mapOneOrigin.y - 39 * DY },
+    map: mapOneOrigin,
   },
 });
 
@@ -54,7 +54,7 @@ const objects = [
     size: 240,
     position: {
       canvas: { x: 1073, y: -198 },
-      map: { x: mapOrigin.x + 21 * DX, y: mapOrigin.y - 16 * DY},
+      map: { x: mapOneOrigin.x + 21 * DX, y: mapOneOrigin.y - 16 * DY},
       tiles: [],
       hitboxes: [
         easyCoords({ x: 0, y: 0 }),
@@ -74,7 +74,7 @@ const objects = [
     size: 80,
     position: {
       canvas: { x: 0, y: 310 },
-      map: { x: mapOrigin.x + DX, y: mapOrigin.y},
+      map: { x: mapOneOrigin.x + DX, y: mapOneOrigin.y},
       tiles: [
         easyCoords({ x: 0, y: 0 }),
       ],
@@ -91,7 +91,7 @@ const objects = [
     size: 395,
     position: {
       canvas: { x: 105, y: 240 },
-      map: { x: mapOrigin.x + 3 * DX, y: mapOrigin.y - 2 * DY },
+      map: { x: mapOneOrigin.x + 3 * DX, y: mapOneOrigin.y - 2 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
         easyCoords({ x: 1, y: 0}),
@@ -126,7 +126,7 @@ const objects = [
     size: 215,
     position: {
       canvas: {x: 420, y: 105},
-      map: {x: mapOrigin.x + 9*DX, y: mapOrigin.y - 8*DY},
+      map: {x: mapOneOrigin.x + 9*DX, y: mapOneOrigin.y - 8*DY},
       tiles: [
         easyCoords({ x: 0, y: 0}),
         easyCoords({ x: 1, y: 0}),
@@ -153,7 +153,7 @@ const objects = [
     size: 325,
     position: {
       canvas: { x: 610, y: -70 },
-      map: { x: mapOrigin.x + 13 * DX, y: mapOrigin.y - 12 * DY },
+      map: { x: mapOneOrigin.x + 13 * DX, y: mapOneOrigin.y - 12 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
         easyCoords({ x: 1, y: 0}),
@@ -188,7 +188,7 @@ const objects = [
     size: 620,
     position: {
       canvas: { x: 280, y: 380 },
-      map: { x: mapOrigin.x + 9 * DX, y: mapOrigin.y + 4 * DY },
+      map: { x: mapOneOrigin.x + 9 * DX, y: mapOneOrigin.y + 4 * DY },
       tiles: [
         easyCoords({ x: -1, y: -1 }),
         easyCoords({ x: -2, y: 0 }),
@@ -239,7 +239,7 @@ const objects = [
     size: 365,
     position: {
       canvas: { x: 840, y: 680 },
-      map: { x: mapOrigin.x + 18 * DX, y: mapOrigin.y + 15 * DY },
+      map: { x: mapOneOrigin.x + 18 * DX, y: mapOneOrigin.y + 15 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
         easyCoords({ x: 1, y: 0}),
@@ -273,7 +273,7 @@ const objects = [
     size: 355,
     position: {
       canvas: { x: 1095, y: 565 },
-      map: { x: mapOrigin.x + 23 * DX, y: mapOrigin.y + 10 * DY },
+      map: { x: mapOneOrigin.x + 23 * DX, y: mapOneOrigin.y + 10 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
         easyCoords({ x: 1, y: 0}),
@@ -306,7 +306,7 @@ const objects = [
     size: 345,
     position: {
       canvas: { x: 1350, y: 435 },
-      map: { x: mapOrigin.x + 28 * DX, y: mapOrigin.y + 5 * DY },
+      map: { x: mapOneOrigin.x + 28 * DX, y: mapOneOrigin.y + 5 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
         easyCoords({ x: 1, y: 0}),
@@ -339,7 +339,7 @@ const objects = [
     size: 345,
     position: {
       canvas: { x: 1020, y: 275 },
-      map: { x: mapOrigin.x + 21 * DX, y: mapOrigin.y - 2 * DY },
+      map: { x: mapOneOrigin.x + 21 * DX, y: mapOneOrigin.y - 2 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
         easyCoords({ x: 1, y: 0}),
@@ -372,7 +372,7 @@ const objects = [
     size: 345,
     position: {
       canvas: { x: 1620, y:350 },
-      map: { x: mapOrigin.x + 33 * DX, y: mapOrigin.y - 2 * DY },
+      map: { x: mapOneOrigin.x + 33 * DX, y: mapOneOrigin.y - 2 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
         easyCoords({ x: 1, y: 0}),
@@ -403,7 +403,7 @@ const objects = [
     size: 345,
     position: {
       canvas: { x: 1320, y: 150 },
-      map: { x: mapOrigin.x + 27 * DX, y: mapOrigin.y - 10 * DY },
+      map: { x: mapOneOrigin.x + 27 * DX, y: mapOneOrigin.y - 10 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
         easyCoords({ x: 0, y: 1}),
@@ -429,4 +429,4 @@ const objects = [
 ];
 
 const sceneOne = { playerOrigin, floor, objects };
-export { sceneOne };
+export { sceneOne, mapOneOrigin };
