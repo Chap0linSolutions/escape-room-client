@@ -67,15 +67,6 @@ const renderDistance = (
   canvas.closePath();
 };
 
-const renderReferenceTile = (canvas: CanvasRenderingContext2D, object: ObjectAndDistance) => {
-  const location = {
-    x: object.origin.x + object.center.x,
-    y: object.origin.y + object.center.y,
-  }
-
-  renderHitbox(canvas, location, 10, 'dodgerblue');
-}
-
 export default function RenderAll({
   context,
   players,
@@ -113,6 +104,7 @@ export default function RenderAll({
   });
 
   ground.render(context);
+
   renderables.sort((a, b) => {
     const h = b.center.x - a.center.x;
     const l = b.center.y - a.center.y;
@@ -123,10 +115,11 @@ export default function RenderAll({
     }
     return 1;
   });
+  
   renderables.forEach((r) => {
     r.object.render(context);
     SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin, ground);
-    SHOW_REFERENCE_TILE && renderReferenceTile(context, r);
+    SHOW_REFERENCE_TILE && renderHitbox(context, r.center, 10, 'lime');
   });
 
   fragments.forEach((f) => f.renderFragment(context));
