@@ -1,6 +1,12 @@
 import roomSprite from '../../../assets/isometric/room.png';
 import waterDispenserSprite from '../../../assets/isometric/waterDispenser.png';
 import sofaOneSprite from '../../../assets/isometric/sofaOne.png';
+import sofaTwoSprite from '../../../assets/isometric/sofaTwo.png';
+import drawerSprite from '../../../assets/isometric/drawer.png';
+import meetingDeskSprite from '../../../assets/isometric/meetingDesk.png';
+import midLevelDeskSprite from '../../../assets/isometric/midLevelDesk.png';
+import seniorDeskSprite from '../../../assets/isometric/seniorDesk.png';
+
 import { tileMap } from './TileMap';
 import { InteractiveObject, Floor } from '../../../classes';
 import { SofaOneFragment } from '../../fragments/SofaOneFragment';
@@ -37,7 +43,7 @@ const floor = new Floor({
 
 const objects = [
 
-  new InteractiveObject({
+  new InteractiveObject({                 //bebedouro
     spriteSrc: waterDispenserSprite,
     interactible: false,
     size: 80,
@@ -54,7 +60,7 @@ const objects = [
     fragment: null,
   }),
 
-  new InteractiveObject({
+  new InteractiveObject({                 //sofá 1
     spriteSrc: sofaOneSprite,
     interactible: true,
     size: 395,
@@ -63,23 +69,23 @@ const objects = [
       map: { x: mapOrigin.x + 3 * DX, y: mapOrigin.y - 2 * DY },
       tiles: [
         easyCoords({ x: 0, y: 0}),
-        easyCoords({ x: 1, y: -1}),
-        easyCoords({ x: 2, y: -2}),
-        easyCoords({ x: 3, y: -3}),
-        easyCoords({ x: 4, y: -4}),
-        easyCoords({ x: 5, y: -5}),
+        easyCoords({ x: 1, y: 0}),
         easyCoords({ x: 2, y: 0}),
-        easyCoords({ x: 3, y: -1}),
-        easyCoords({ x: 4, y: -2}),
-        easyCoords({ x: 5, y: -3}),
-        easyCoords({ x: 6, y: -4}),
+        easyCoords({ x: 3, y: 0}),
+        easyCoords({ x: 4, y: 0}),
+        easyCoords({ x: 5, y: 0}),
+        easyCoords({ x: 1, y: 1}),
+        easyCoords({ x: 2, y: 1}),
+        easyCoords({ x: 3, y: 1}),
+        easyCoords({ x: 4, y: 1}),
+        easyCoords({ x: 5, y: 1}),
       ],
       hitboxes: [
-        easyCoords({ x: 3 * DX, y: DY }),
-        easyCoords({ x: 4 * DX, y: 0 }),
-        easyCoords({ x: 5 * DX, y: -1 * DY }),
-        easyCoords({ x: 6 * DX, y: -2 * DY }),
-        easyCoords({ x: 7 * DX, y: -3 * DY }),
+        easyCoords({ x: 1, y: 2 }),
+        easyCoords({ x: 2, y: 2 }),
+        easyCoords({ x: 3, y: 2 }),
+        easyCoords({ x: 4, y: 2 }),
+        easyCoords({ x: 5, y: 2 }),
       ],
     },
     allowedDirections: ['left'],
@@ -87,6 +93,186 @@ const objects = [
       texts: ['interagir'],
     },
     fragment: SofaOneFragment,
+  }),
+
+  new InteractiveObject({        //armário
+    spriteSrc: drawerSprite,
+    interactible: true,
+    size: 215,
+    position: {
+      canvas: {x: 420, y: 105},
+      map: {x: mapOrigin.x + 9*DX, y: mapOrigin.y - 8*DY},
+      tiles: [
+        easyCoords({ x: 0, y: 0}),
+        easyCoords({ x: 1, y: 0}),
+        easyCoords({ x: 2, y: 0}),
+        easyCoords({ x: 3, y: 0}),
+      ],
+      hitboxes: [
+        easyCoords({ x: 0, y: 1}),
+        easyCoords({ x: 1, y: 1}),
+        easyCoords({ x: 2, y: 1}),
+        easyCoords({ x: 3, y: 1}),
+      ],
+    },
+    allowedDirections: ['left'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: null,
+  }),
+
+  new InteractiveObject({                 //sofá 2
+    spriteSrc: sofaTwoSprite,
+    interactible: true,
+    size: 325,
+    position: {
+      canvas: { x: 610, y: -70 },
+      map: { x: mapOrigin.x + 13 * DX, y: mapOrigin.y - 12 * DY },
+      tiles: [
+        easyCoords({ x: 0, y: 0}),
+        easyCoords({ x: 1, y: 0}),
+        easyCoords({ x: 2, y: 0}),
+        easyCoords({ x: 3, y: 0}),
+        easyCoords({ x: 4, y: 0}),
+        easyCoords({ x: 5, y: 0}),
+        easyCoords({ x: 0, y: 1}),
+        easyCoords({ x: 1, y: 1}),
+        easyCoords({ x: 2, y: 1}),
+        easyCoords({ x: 3, y: 1}),
+        easyCoords({ x: 4, y: 1}),
+      ],
+      hitboxes: [
+        easyCoords({ x: 0, y: 2 }),
+        easyCoords({ x: 1, y: 2 }),
+        easyCoords({ x: 2, y: 2 }),
+        easyCoords({ x: 3, y: 2 }),
+        easyCoords({ x: 4, y: 2 }),
+      ],
+    },
+    allowedDirections: ['left'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: null,
+  }),
+
+  new InteractiveObject({                 //mesa de reunião
+    spriteSrc: meetingDeskSprite,
+    interactible: true,
+    size: 620,
+    position: {
+      canvas: { x: 280, y: 380 },
+      map: { x: mapOrigin.x + 9 * DX, y: mapOrigin.y + 4 * DY },
+      tiles: [
+        easyCoords({ x: -1, y: -1 }),
+        easyCoords({ x: -2, y: 0 }),
+        easyCoords({ x: 0, y: 0}),
+        easyCoords({ x: 1, y: 0}),
+        easyCoords({ x: 2, y: 0}),
+        easyCoords({ x: 3, y: 0}),
+        easyCoords({ x: 4, y: 0}),  
+        easyCoords({ x: 0, y: 1}),
+        easyCoords({ x: 1, y: 1}),
+        easyCoords({ x: 2, y: 1}),
+        easyCoords({ x: 3, y: 1}),
+        easyCoords({ x: 4, y: 1}),
+        easyCoords({ x: 0, y: 2}),
+        easyCoords({ x: 1, y: 2}),
+        easyCoords({ x: 2, y: 2}),
+        easyCoords({ x: 3, y: 2}),
+        easyCoords({ x: 4, y: 2}),
+        easyCoords({ x: 0, y: 3}),
+        easyCoords({ x: 1, y: 3}),
+        easyCoords({ x: 2, y: 3}),
+        easyCoords({ x: 3, y: 3}),
+        easyCoords({ x: 4, y: 3}),
+        easyCoords({ x: 0, y: 4}),
+        easyCoords({ x: 1, y: 4}),
+        easyCoords({ x: 2, y: 4}),
+        easyCoords({ x: 3, y: 4}),
+        easyCoords({ x: 4, y: 4}),
+      ],
+      hitboxes: [
+        easyCoords({ x: -1, y: 0 }),
+        easyCoords({ x: -1, y: 1 }),
+        easyCoords({ x: -1, y: 2 }),
+        easyCoords({ x: -1, y: 3 }),
+        easyCoords({ x: -1, y: 4 }),
+      ],
+    },
+    allowedDirections: ['up'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: null,
+  }),
+
+  new InteractiveObject({                 //mesa do dev pleno
+    spriteSrc: midLevelDeskSprite,
+    interactible: true,
+    size: 365,
+    position: {
+      canvas: { x: 840, y: 680 },
+      map: { x: mapOrigin.x + 18 * DX, y: mapOrigin.y + 15 * DY },
+      tiles: [
+        easyCoords({ x: 0, y: 0}),
+        easyCoords({ x: 1, y: 0}),
+        easyCoords({ x: 2, y: 0}),
+        easyCoords({ x: 3, y: 0}),
+        easyCoords({ x: 0, y: 1}),
+        easyCoords({ x: 1, y: 1}),
+        easyCoords({ x: 2, y: 1}),
+        easyCoords({ x: 3, y: 1}),
+        easyCoords({ x: 0, y: 2}),
+        easyCoords({ x: 1, y: 2}),
+        easyCoords({ x: 2, y: 2}),
+        easyCoords({ x: 3, y: 2}),
+      ],
+      hitboxes: [
+        easyCoords({ x: 0, y: 3}),
+        easyCoords({ x: 1, y: 3}),
+        easyCoords({ x: 2, y: 3}),
+      ],
+    },
+    allowedDirections: ['left'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: null,
+  }),
+
+  new InteractiveObject({                 //mesa do dev sênior
+    spriteSrc: seniorDeskSprite,
+    interactible: true,
+    size: 355,
+    position: {
+      canvas: { x: 1115, y: 565 },
+      map: { x: mapOrigin.x + 23 * DX, y: mapOrigin.y + 10 * DY },
+      tiles: [
+        easyCoords({ x: 0, y: 0}),
+        easyCoords({ x: 1, y: 0}),
+        easyCoords({ x: 2, y: 0}),
+        easyCoords({ x: 3, y: 0}),
+        easyCoords({ x: 1, y: 1}),
+        easyCoords({ x: 2, y: 1}),
+        easyCoords({ x: 3, y: 1}),
+        easyCoords({ x: 1, y: 2}),
+        easyCoords({ x: 2, y: 2}),
+        easyCoords({ x: 3, y: 2}),
+      ],
+      hitboxes: [
+        easyCoords({ x: 0, y: 1}),
+        easyCoords({ x: 0, y: 2}),
+        easyCoords({ x: 1, y: 3}),
+        easyCoords({ x: 2, y: 3}),
+      ],
+    },
+    allowedDirections: ['left'],
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: null,
   }),
 ];
 
