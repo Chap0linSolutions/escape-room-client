@@ -5,7 +5,6 @@ import { coordinate } from '../types';
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
-  SHOW_REFERENCE_TILE,
   SHOW_WALK_TOGGLE_PADDING,
   WALK_TOGGLE_PADDING,
 } from '../constants';
@@ -119,7 +118,6 @@ export default function RenderAll({
   renderables.forEach((r) => {
     r.object.render(context);
     SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin, ground);
-    SHOW_REFERENCE_TILE && renderHitbox(context, r.center, 10, 'lime');
   });
 
   fragments.forEach((f) => f.renderFragment(context));
