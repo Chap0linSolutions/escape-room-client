@@ -110,11 +110,6 @@ export abstract class Fragment {
     };
   }
 
-  isWithin(what: clickableArea, target: coordinate) {
-    const w = this.getAbsoluteCoords(what.coordinate);
-    return getDistance(w, target) < what.radius;
-  }
-
   setPosition(width: number, height: number) {
     //deve rodar apenas no 1o ciclo de render do fragmento (precisamos do width e height do fragmento para calcular a posição)
     this.position = {

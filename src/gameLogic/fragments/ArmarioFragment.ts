@@ -1,7 +1,8 @@
-import { coordinate, interactiveCoords } from '../../types';
+import { clickableArea, coordinate, interactiveCoords } from '../../types';
 import { InputHandler } from '../../events/InputHandler';
 import { Sprite, InventoryItem, Fragment, FragmentParams } from '../../classes';
 import { State } from '../../gameLogic/state';
+import { isWithin } from '../../functions/Metrics';
 import drawerSprite from '../../assets/fragments/drawerFragment.png';
 import bottleSprite from '../../assets/bottle.png';
 import paperSprite from '../../assets/paper.png';
@@ -59,7 +60,11 @@ export class ArmarioFragment extends Fragment {
       : this.interactions.open;
     for (let i = 0; i < interaction.length; i++) {
       //verifica se o jogador está tentando abrir/fechar o fragmento (ex.: portas de um armário)
-      if (this.isWithin(interaction[i], clickCoords)) {
+      const absolute: clickableArea = {
+        coordinate: this.getAbsoluteCoords(interaction[i].coordinate),
+        radius: interaction[i].radius,
+      }
+      if (isWithin(absolute, clickCoords)) {
         this.sprite.setQuad(this.sprite.nextSprite());
         this.isOpen = !this.isOpen;
         this.object.toggleState();

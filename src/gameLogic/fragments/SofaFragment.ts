@@ -2,11 +2,11 @@ import { Sprite, InventoryItem, Fragment, FragmentParams } from '../../classes';
 // import { renderHitbox } from '../../functions/Metrics';
 import { InputHandler } from '../../events/InputHandler';
 import { State } from '../../gameLogic/state';
+import { coordinate } from '../../types';
+import { isWithin } from '../../functions/Metrics';
 import sofaSprite from '../../assets/sofa_frag.png';
 import paperSound from '../../assets/sounds/paper.mp3';
 import paperSprite from '../../assets/paper.png';
-
-import { coordinate } from '../../types';
 
 export class SofaFragment extends Fragment {
   interactions;
@@ -43,11 +43,22 @@ export class SofaFragment extends Fragment {
   interact(clickCoords: coordinate): void {
     if (!this.isVisible()) return;
     const noPillowUp = !this.rightPillowUp && !this.leftPillowUp;
-    if (noPillowUp && this.isWithin(this.interactions.left, clickCoords)) {
+
+    const absoluteLeft = {
+      coordinate: this.getAbsoluteCoords(this.interactions.left.coordinate),
+      radius: this.interactions.left.radius,
+    }
+
+    const absoluteRight = {
+      coordinate: this.getAbsoluteCoords(this.interactions.right.coordinate),
+      radius: this.interactions.right.radius,
+    }
+
+    if (noPillowUp && isWithin(absoluteLeft, clickCoords)) {
       this.leftPillowUp = true;
       return this.sprite.setQuad([0, 1]);
     }
-    if (noPillowUp && this.isWithin(this.interactions.right, clickCoords)) {
+    if (noPillowUp && isWithin(absoluteRight, clickCoords)) {
       this.rightPillowUp = true;
       return this.sprite.setQuad([0, 2]);
     }

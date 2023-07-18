@@ -11,6 +11,7 @@ import {
 } from '../../../constants';
 import { easyCoords } from '../../../functions/Builder';
 import { SofaFragment } from '../../fragments/SofaFragment';
+import { DoorFragment } from '../../fragments/OfficeSpace/Door/DoorFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOneOrigin = {
@@ -65,7 +66,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: DoorFragment,
   }),
 ];
 
