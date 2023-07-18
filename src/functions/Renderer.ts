@@ -8,7 +8,7 @@ import {
   SHOW_WALK_TOGGLE_PADDING,
   WALK_TOGGLE_PADDING,
 } from '../constants';
-import { getDistance } from './Metrics';
+import { getDistance, renderHitbox } from './Metrics';
 import { SHOW_DISTANCE_TO_BOTTOM_CORNER } from '../constants';
 
 interface RendererProps {
@@ -103,6 +103,7 @@ export default function RenderAll({
   });
 
   ground.render(context);
+
   renderables.sort((a, b) => {
     const h = b.center.x - a.center.x;
     const l = b.center.y - a.center.y;
@@ -113,6 +114,7 @@ export default function RenderAll({
     }
     return 1;
   });
+  
   renderables.forEach((r) => {
     r.object.render(context);
     SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin, ground);

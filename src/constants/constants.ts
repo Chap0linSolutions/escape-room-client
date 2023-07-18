@@ -28,7 +28,7 @@ export const DESK_SIZE = 200;
 export const V_DESK_SIZE = 380;
 export const PLAYER_SPEED = 0.4;
 export const ANIMATION_PERIOD = 100;
-export const WALK_TOGGLE_PADDING = 250;
+export const WALK_TOGGLE_PADDING = 270;
 export const ISOMETRIC_ANGLE = Math.PI / 6;
 export const ISOMETRIC_RATIO =
   Math.cos(0.305 * Math.PI) * Math.cos(ISOMETRIC_ANGLE); //o ângulo de visualização do mapa é de 30° de inclinação, por isso esta constante

@@ -32,6 +32,7 @@ type Frag = {
 
 type InteractiveObjectParams = {
   spriteSrc: string;
+  interactible: boolean;
   size: number;
   position: positionType;
   allowedDirections: string[];
@@ -54,6 +55,7 @@ export class InteractiveObject {
 
   constructor({
     spriteSrc,
+    interactible,
     size,
     position,
     allowedDirections,
@@ -64,7 +66,7 @@ export class InteractiveObject {
     this.sprite = new Sprite({
       sprite: spriteSrc,
       size,
-      rows: 2,
+      rows: interactible? 2 : 1,
       columns: action && action.texts.length > 1 ? 2 : 1,
       maxCount: 0,
     });
