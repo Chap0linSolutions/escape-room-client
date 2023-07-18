@@ -1,5 +1,16 @@
 import roomSprite from '../../../assets/isometric/room.png';
-import sofaSprite from '../../../assets/sofa_raw.png';
+import waterDispenserSprite from '../../../assets/isometric/waterDispenser.png';
+import sofaOneSprite from '../../../assets/isometric/sofaOne.png';
+import sofaTwoSprite from '../../../assets/isometric/sofaTwo.png';
+import drawerSprite from '../../../assets/isometric/drawer.png';
+import doorSprite from '../../../assets/isometric/door.png';
+import meetingDeskSprite from '../../../assets/isometric/meetingDesk.png';
+import midLevelDeskSprite from '../../../assets/isometric/midLevelDesk.png';
+import seniorDeskSprite from '../../../assets/isometric/seniorDesk.png';
+import juniorDeskSprite from '../../../assets/isometric/juniorDesk.png';
+import internDeskSprite from '../../../assets/isometric/internDesk.png';
+import beanBagsSprite from '../../../assets/isometric/beanBags.png'; 
+import bookshelfSprite from '../../../assets/isometric/bookshelf.png';
 import tableSprite from '../../../assets/meeting_table.png';
 import { tileMap } from './TileMap';
 import { InteractiveObject, Floor } from '../../../classes';
@@ -10,10 +21,6 @@ import {
   DX,
   DY,
 } from '../../../constants';
-import { easyCoords } from '../../../functions/Builder';
-import { SofaFragment } from '../../fragments/SofaFragment';
-import { coordinate } from '../../../types';
-import { TableFragment } from '../../fragments/TableFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOrigin = {
@@ -37,7 +44,7 @@ const floor = new Floor({
   },
 });
 
-let tableTiles = <coordinate[]>[];
+let tableTiles //<coordinate[]>[];
 const tableStartX = 2;
 const tableStartY = 6;
 const tableSizeX = 5;
@@ -45,7 +52,7 @@ const tableSizeY = 6;
 
 for (let i = tableStartX; i < tableSizeX + tableStartX; i += 1) {
   for (let j = tableStartY; j < tableSizeY + tableStartY; j += 1) {
-    tableTiles = tableTiles.concat(easyCoords({ x: i, y: j }));
+    //tableTiles = tableTiles.concat(easyCoords({ x: i, y: j }));
   }
 }
 
@@ -54,20 +61,20 @@ const objects = [
   //you should include your own, as well as its respective fragment, here. below is a dummy object in case you need an example.
 
   new InteractiveObject({
-    spriteSrc: sofaSprite,
+    spriteSrc: sofaOneSprite,
     size: 225,
     position: {
       canvas: { x: 95, y: 310 },
       map: { x: mapOrigin.x + DX, y: mapOrigin.y },
       tiles: [
-        easyCoords({ x: 2, y: 0 }),
-        easyCoords({ x: 3, y: 0 }),
-        easyCoords({ x: 4, y: 0 }),
+        //easyCoords({ x: 2, y: 0 }),
+        //easyCoords({ x: 3, y: 0 }),
+        //easyCoords({ x: 4, y: 0 }),
       ],
       hitboxes: [
-        easyCoords({ x: 2, y: 1 }),
-        easyCoords({ x: 3, y: 1 }),
-        easyCoords({ x: 4, y: 1 }),
+        //easyCoords({ x: 2, y: 1 }),
+        //easyCoords({ x: 3, y: 1 }),
+        //easyCoords({ x: 4, y: 1 }),
       ],
     },
     allowedDirections: ['left'],
@@ -84,19 +91,19 @@ const objects = [
       map: { x: mapOrigin.x + DX, y: mapOrigin.y },
       tiles: tableTiles,
       hitboxes: [
-        easyCoords({ x: 1, y: 8 }),
-        easyCoords({ x: 1, y: 9 }),
-        easyCoords({ x: 1, y: 10 }),
-        easyCoords({ x: 7, y: 7 }),
-        easyCoords({ x: 7, y: 8 }),
-        easyCoords({ x: 7, y: 9 }),
+        //easyCoords({ x: 1, y: 8 }),
+        //easyCoords({ x: 1, y: 9 }),
+        //easyCoords({ x: 1, y: 10 }),
+        //easyCoords({ x: 7, y: 7 }),
+        //easyCoords({ x: 7, y: 8 }),
+        //easyCoords({ x: 7, y: 9 }),
       ],
     },
     allowedDirections: ['up', 'down'],
     action: {
       texts: ['interagir'],
     },
-    fragment: TableFragment,
+    fragment: null//TableFragment,
   }),
 ];
 
