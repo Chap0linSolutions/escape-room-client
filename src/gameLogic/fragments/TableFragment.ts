@@ -3,7 +3,7 @@ import { InputHandler } from '../../events/InputHandler';
 import tableSprite from '../../assets/fragments/tableFragment.png';
 
 import { coordinate } from '../../types';
-import { getDistance, renderHitbox } from '../../functions/Metrics';
+import { getDistance } from '../../functions/Metrics';
 
 import { State } from '../state';
 
@@ -21,7 +21,10 @@ export class TableFragment extends Fragment {
 
     this.items = [];
     this.interactions = {
-      bottle: { coordinate: { x: 502, y: 304 }, radius: 13 },
+      bottle1: { coordinate: { x: 502, y: 304 }, radius: 13 },
+      bottle2: { coordinate: { x: 505, y: 319 }, radius: 13 },
+      bottle3: { coordinate: { x: 502, y: 333 }, radius: 13 },
+      bottle4: { coordinate: { x: 594, y: 205 }, radius: 13 },
     };
     const inputHandler = new InputHandler();
     inputHandler.subscribe('mouseDown', 'tableFragmentMouseDown', (pos) =>
@@ -30,8 +33,29 @@ export class TableFragment extends Fragment {
   }
   interact(clickCoords: coordinate): void {
     if (!this.isVisible()) return;
-    const dist = getDistance(this.interactions.bottle.coordinate, clickCoords);
-    if (dist > this.interactions.bottle.radius) return;
+    const dist1 = getDistance(
+      this.interactions.bottle1.coordinate,
+      clickCoords
+    );
+    const dist2 = getDistance(
+      this.interactions.bottle2.coordinate,
+      clickCoords
+    );
+    const dist3 = getDistance(
+      this.interactions.bottle3.coordinate,
+      clickCoords
+    );
+    const dist4 = getDistance(
+      this.interactions.bottle4.coordinate,
+      clickCoords
+    );
+    if (
+      dist1 > this.interactions.bottle1.radius &&
+      dist2 > this.interactions.bottle2.radius &&
+      dist3 > this.interactions.bottle3.radius &&
+      dist4 > this.interactions.bottle4.radius
+    )
+      return;
 
     // TODO: bottle flip animation in another pop up
     const state = new State();
@@ -42,15 +66,10 @@ export class TableFragment extends Fragment {
     });
   }
 
-  drawHitboxes(canvas: CanvasRenderingContext2D) {
-    renderHitbox(canvas, { x: 502, y: 304 }, 13, '#800080');
-  }
-
   render(canvas: CanvasRenderingContext2D): void {
     const { width, height } = this.sprite.getAllDimensions();
     !this.position && this.setPosition(width, height);
     this.drawBackground(canvas, width, height, 2);
     this.sprite.render(canvas, this.position);
-    this.drawHitboxes(canvas);
   }
 }
