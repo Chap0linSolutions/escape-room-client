@@ -9,7 +9,7 @@ import midLevelDeskSprite from '../../../assets/isometric/midLevelDesk.png';
 import seniorDeskSprite from '../../../assets/isometric/seniorDesk.png';
 import juniorDeskSprite from '../../../assets/isometric/juniorDesk.png';
 import internDeskSprite from '../../../assets/isometric/internDesk.png';
-import beanBagsSprite from '../../../assets/isometric/beanBags.png';
+import beanBagsSprite from '../../../assets/isometric/beanBags.png'; 
 import bookshelfSprite from '../../../assets/isometric/bookshelf.png';
 
 import { tileMap } from './TileMap';
