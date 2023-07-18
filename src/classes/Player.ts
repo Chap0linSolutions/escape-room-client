@@ -36,6 +36,7 @@ type PlayerParams = {
   size: number;
   animationPeriod: number;
   feetOffset: coordinate;
+  mapOrigin: coordinate;
 };
 
 export class Player {
@@ -44,6 +45,8 @@ export class Player {
   speed: number;
   size: number;
   position: coordinate;
+  mapOrigin: coordinate;
+  positionOnMap: coordinate;
   dp: quad;
   interactingWithFragment: boolean;
   movementLeft: coordinate;
@@ -61,6 +64,7 @@ export class Player {
     size,
     animationPeriod,
     feetOffset,
+    mapOrigin,
   }: PlayerParams) {
     this.name = new FloatingText({ text: name, iconSprite: null });
     this.speed = speed;
@@ -69,6 +73,7 @@ export class Player {
     this.dp = [1, 1];
     this.movementLeft = { x: 0, y: 0 };
     this.feetOffset = feetOffset;
+    this.mapOrigin = mapOrigin;
     this.sprite = new Sprite({
       sprite: spriteSrc,
       size,
@@ -122,9 +127,10 @@ export class Player {
     for (let i = 0; i < objects.length; i++) {
       if (objects[i].isInside('hitbox', this.position)) {
         this.interactingWithFragment = objects[i].isBeingInteractedWith();
-        objects[i].isAllowedToInteract(myDirection) &&
+        if(objects[i].isAllowedToInteract(myDirection)){
           objects[i].interact(this, keyPressed);
-        objects[i].setHighlight(true);
+          objects[i].setHighlight(true);
+        }
         return;
       }
       objects[i].setHighlight(false);
@@ -222,6 +228,16 @@ export class Player {
     };
   }
 
+  updatePositionOnMap() {
+    let xFixed = this.position.x - (this.mapOrigin.x + DX);
+    let yFixed = this.position.y - this.mapOrigin.y;
+    let xConverted = Math.round((xFixed * DY - yFixed * DX) / (2 * DX * DY));
+    let yConverted = Math.round(
+      (xFixed * 2 * DY - xFixed * DY + yFixed * DX) / (2 * DX * DY)
+    );
+    this.positionOnMap = { x: xConverted, y: yConverted };
+  }
+
   ////////////////////////////////////////////////////////////////////////////////
 
   update(
@@ -240,6 +256,7 @@ export class Player {
     }
     this.checkInteractions(objects, keyPressed);
     this.lastKeyPressed = keyPressed;
+    this.updatePositionOnMap();
   }
 
   render(canvas: CanvasRenderingContext2D) {

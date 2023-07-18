@@ -8,7 +8,7 @@ import {
   SHOW_WALK_TOGGLE_PADDING,
   WALK_TOGGLE_PADDING,
 } from '../constants';
-import { getDistance } from './Metrics';
+import { getDistance, renderHitbox } from './Metrics';
 import { SHOW_DISTANCE_TO_BOTTOM_CORNER } from '../constants';
 
 interface RendererProps {
@@ -21,7 +21,7 @@ interface RendererProps {
 type ObjectAndDistance = {
   object: Player | InteractiveObject;
   origin: coordinate;
-  distance: number;
+  center: coordinate;
 };
 
 const canvasBottom = {
@@ -84,7 +84,7 @@ export default function RenderAll({
       renderables.push({
         object: p,
         origin: origin,
-        distance: getDistance(canvasBottom, origin),
+        center: { x: p.positionOnMap.x, y: p.positionOnMap.y },
       });
     });
 
@@ -97,13 +97,24 @@ export default function RenderAll({
     renderables.push({
       object: o,
       origin: origin,
-      distance: getDistance(canvasBottom, origin),
+      center: { x: o.position.referenceTile.x, y: o.position.referenceTile.y },
     });
     o.fragment && o.fragment.isVisible() && fragments.push(o);
   });
 
   ground.render(context);
-  renderables.sort((a, b) => b.distance - a.distance);
+
+  renderables.sort((a, b) => {
+    const h = b.center.x - a.center.x;
+    const l = b.center.y - a.center.y;
+    const g = getDistance(b.center, a.center);
+    const angle = Math.asin(l / g);
+    if ((angle > Math.PI / 9 && h > 0) || (angle > -Math.PI / 9 && h <= 0)) {
+      return -1;
+    }
+    return 1;
+  });
+  
   renderables.forEach((r) => {
     r.object.render(context);
     SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin, ground);
