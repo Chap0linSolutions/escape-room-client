@@ -21,7 +21,7 @@ export default function UpdateAll({
   floor && floor.update();
 
   objects.forEach((o) => {
-    o.update();
+    o.update(dt);
   });
 
   players.forEach((p) => {

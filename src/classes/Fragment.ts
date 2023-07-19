@@ -31,6 +31,8 @@ export abstract class Fragment {
     this.items = [];
   }
 
+  abstract update(dt: number): void;
+  abstract setAllPositions(width: number, height: number):void;
   abstract interact(clickCoords: coordinate): void;
   abstract render(canvas: CanvasRenderingContext2D): void;
 

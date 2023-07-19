@@ -3,7 +3,7 @@ import { InputHandler } from '../../events/InputHandler';
 import { State } from '../state';
 import sofaSprite from '../../assets/fragments/sofaOneFragment.png';
 import { coordinate } from '../../types';
-import { renderHitbox } from '../../functions/Metrics';
+import { isWithin, renderHitbox } from '../../functions/Metrics';
 import { SHOW_HITBOX } from '../../constants';
 
 export class SofaOneFragment extends Fragment {
@@ -37,15 +37,15 @@ export class SofaOneFragment extends Fragment {
   interact(clickCoords: coordinate): void {
     if (!this.isVisible()) return;
     const nothingUp = !this.plantVaseUp && !this.rightPillowUp && !this.leftPillowUp;
-    if (nothingUp && this.isWithin(this.interactions.plantVase, clickCoords)) {
+    if (nothingUp && isWithin(this.interactions.plantVase, clickCoords)) {
       this.plantVaseUp = true;
       return this.sprite.setQuad([0, 1]);
     }
-    if (nothingUp && this.isWithin(this.interactions.pillowLeft, clickCoords)) {
+    if (nothingUp && isWithin(this.interactions.pillowLeft, clickCoords)) {
       this.leftPillowUp = true;
       return this.sprite.setQuad([0, 2]);
     }
-    if (nothingUp && this.isWithin(this.interactions.pillowRight, clickCoords)) {
+    if (nothingUp && isWithin(this.interactions.pillowRight, clickCoords)) {
       this.rightPillowUp = true;
       return this.sprite.setQuad([0, 3]);
     }
@@ -76,9 +76,27 @@ export class SofaOneFragment extends Fragment {
     renderHitbox(canvas, this.getAbsoluteCoords(this.interactions.pillowRight.coordinate), this.interactions.pillowRight.radius);
   }
 
+  update(dt: number){};
+
+  setAllPositions(width: number, height: number): void {
+    this.setPosition(width, height);
+    this.interactions.plantVase.coordinate = {
+      x: this.interactions.plantVase.coordinate.x + this.position.x,
+      y: this.interactions.plantVase.coordinate.y + this.position.y,
+    };
+    this.interactions.pillowLeft.coordinate = {
+      x: this.interactions.pillowLeft.coordinate.x + this.position.x,
+      y: this.interactions.pillowLeft.coordinate.y + this.position.y,
+    };
+    this.interactions.pillowRight.coordinate = {
+      x: this.interactions.pillowRight.coordinate.x + this.position.x,
+      y: this.interactions.pillowRight.coordinate.y + this.position.y,
+    };
+  }
+
   render(canvas: CanvasRenderingContext2D): void {
     const { width, height } = this.sprite.getAllDimensions();
-    !this.position && this.setPosition(width, height);
+    !this.position && this.setAllPositions(width, height);
     this.drawBackground(canvas, width, height, 2);
     this.sprite.render(canvas, this.position);
     this.drawItems(canvas);

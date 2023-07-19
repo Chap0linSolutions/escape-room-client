@@ -1,22 +1,33 @@
 import { Sprite } from "../../../../classes";
 import { clickableArea, coordinate } from "../../../../types";
 import { isWithin, renderHitbox } from "../../../../functions/Metrics";
+import { State } from "../../../state";
+import { Genius } from "./Genius";
 import openPanel from '../../../../assets/fragments/fragment5/open_panel.png';
 import closedPanel from '../../../../assets/fragments/fragment5/closed_panel.png';
+import disconnectSound from '../../../../assets/sounds/disconnect.mp3';
+import openPanelSound from '../../../../assets/sounds/openPanel.mp3'; 
+import closePanelSound from '../../../../assets/sounds/closePanel.mp3';
+import lockedSound from '../../../../assets/sounds/errorPanel.mp3';
+import Sound from "../../../../classes/Sound";
+
 
 interface controlPanelProps {
     position: coordinate;
     size: number;
 }
 
-interface panel {
+type panel = {
     sprite: Sprite;
     position: coordinate;
 }
 
-interface genius {
-    name: string,
-    hitbox: clickableArea;
+type sounds = {
+    locked: Sound;
+    open: Sound;
+    close: Sound;
+    disconnect: Sound;
+    shutdown: Sound;
 }
 
 const offset = {
@@ -25,14 +36,16 @@ const offset = {
     y: 0,
 }
 
-const geniusHitboxRadius = 7;
-
 export class ControlPanel {
     openPanel: panel;
     closedPanel: panel;
     buttonHitbox: clickableArea;
-    genius: genius[];
+    isOn: boolean;
     isOpen: boolean;
+    isConnected: boolean;
+    sounds: sounds;
+    genius: Genius;
+    
 
     constructor({size, position}: controlPanelProps) {
         this.closedPanel = {
@@ -47,37 +60,23 @@ export class ControlPanel {
             coordinate: {x: position.x + 57, y: position.y + 62},
             radius: 7,
         };
-        this.genius = [
-            {
-                name: 'green',
-                hitbox: {
-                    coordinate: {x: 63, y: 16},      //top tile
-                    radius: geniusHitboxRadius,
-                }
-            },{
-                name: 'blue', 
-                hitbox: {
-                    coordinate: {x: 52, y: 27},     //left tile
-                    radius: geniusHitboxRadius,
-                }
-            },{
-                name: 'red',
-                hitbox: {
-                    coordinate: {x: 63, y: 38},     //bottom tile
-                    radius: geniusHitboxRadius,
-                }
-            },{
-                name: 'yellow',
-                hitbox: {
-                    coordinate: {x: 74, y: 27},     //right tile
-                    radius: geniusHitboxRadius,
-                }
-            }
-        ]
+
+        this.isOn = true;
         this.isOpen = false;
+        this.isConnected = true;
+
+        this.sounds = {
+            locked: new Sound({source: lockedSound}),
+            shutdown: new Sound({source: disconnectSound}),
+            disconnect: new Sound({source: disconnectSound}),
+            open: new Sound({source: openPanelSound}),
+            close: new Sound({source: closePanelSound}),
+        }
+
+        this.genius = new Genius();
     }
 
-    setPositionRelativeToFragment(fragmentPosition: coordinate){
+    setPositionRelativeToReference(fragmentPosition: coordinate){
         this.openPanel.position = {
             x: fragmentPosition.x + this.openPanel.position.x,
             y: fragmentPosition.y + this.openPanel.position.y,
@@ -90,45 +89,77 @@ export class ControlPanel {
             x: fragmentPosition.x + this.buttonHitbox.coordinate.x,
             y: fragmentPosition.y + this.buttonHitbox.coordinate.y,
         }
-        this.genius.forEach(g => {
-            g.hitbox.coordinate = {
-                x: this.openPanel.position.x + g.hitbox.coordinate.x, 
-                y: this.openPanel.position.y + g.hitbox.coordinate.y,
-            }
-        })
-    }
-
-    geniusPressed(clickCoords: coordinate){
-        for(let i = 0; i < this.genius.length; i++){
-            if(isWithin(this.genius[i].hitbox, clickCoords)){
-                console.log(this.genius[i].name);
-                return i;
-            }
-        } return -1;
+        this.genius.setPositionRelativeToReference(this.openPanel.position);
     }
     
+    isDisconnected(){
+        return !this.isConnected;
+    }
+
+    disconnect(){
+        if(!this.isConnected) return;
+        this.isConnected = false;
+        this.closedPanel.sprite.setQuad([1, 0]);
+        this.sounds.disconnect.play();
+        const state = new State();
+        state.cb.showToast({
+            title: 'Opa',
+            description: 'Alguma coisa mudou no painel.',
+            backgroundColor: 'forestgreen',
+        });
+    }
+
+    shutDown(){
+        this.isOn = false;
+        this.genius.reset();
+        this.closedPanel.sprite.setQuad([2, 0]);
+    }
+
+    open(){
+        this.isOpen = true;
+        this.sounds.open.play();
+    }
+
+    close(){
+        this.isOpen = false;
+        this.sounds.close.play();
+    }
 
     interact(clickCoords: coordinate){
         if (!this.isOpen && isWithin(this.buttonHitbox, clickCoords)){
-            this.isOpen = true;
-        } else if(this.isOpen && (this.geniusPressed(clickCoords) === -1)){
-            this.isOpen = false;
+            if(this.isConnected){
+                const state = new State();
+                state.cb.showToast({
+                    title: 'Hmmmm...',
+                    description: 'parece que o painel está trancado.',
+                    backgroundColor: 'firebrick',
+                });
+                return this.sounds.locked.play();
+            }
+            this.open();
+        } else if(this.isOpen && (!this.genius.buttonPressed(clickCoords))){
+            this.close();
         }
     }
 
     renderHitboxes(canvas: CanvasRenderingContext2D){
         if(this.isOpen){
-            this.genius.forEach(g => renderHitbox(canvas, g.hitbox.coordinate, g.hitbox.radius, 'magenta'));
+            this.genius.renderHitboxes(canvas);
         } else {
             renderHitbox(canvas, this.buttonHitbox.coordinate, this.buttonHitbox.radius);
         }
     }
 
-    render(canvas: CanvasRenderingContext2D){
-        this.isOpen
-        ? this.openPanel.sprite.render(canvas, this.openPanel.position)
-        : this.closedPanel.sprite.render(canvas, this.closedPanel.position);
+    update(dt: number){
+        this.genius.update(dt);
+    }
 
-        //this.renderHitboxes(canvas);
+    render(canvas: CanvasRenderingContext2D){
+        if(this.isOpen){
+            this.openPanel.sprite.render(canvas, this.openPanel.position);
+            this.genius.render(canvas);
+        } else {
+            this.closedPanel.sprite.render(canvas, this.closedPanel.position);
+        }
     }
 }

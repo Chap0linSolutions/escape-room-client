@@ -67,7 +67,9 @@ const objects = [
       ],
     },
     allowedDirections: ['up'],
-    action: null,
+    action: {
+      texts: ['interagir'],
+    },
     fragment: DoorFragment,
   }),
 
