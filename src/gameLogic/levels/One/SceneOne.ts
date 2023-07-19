@@ -23,6 +23,7 @@ import {
   DX,
   DY,
 } from '../../../constants';
+import { PuffsFragment } from '../../fragments/PuffsFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOneOrigin = {
@@ -416,7 +417,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: PuffsFragment,
   }),
 
   new InteractiveObject({                 //estante com livros
