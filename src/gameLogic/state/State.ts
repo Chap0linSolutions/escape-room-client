@@ -31,7 +31,7 @@ export class State {
   }
 
   setGameCallbacks(gameCallbacks: GameCallbacks) {
-    this.cb = {...this.cb, ...gameCallbacks};
+    this.cb = { ...this.cb, ...gameCallbacks };
   }
 
   setInventoryCallback(setInventory: any) {
@@ -39,7 +39,7 @@ export class State {
   }
 
   addItem(item: InventoryItem) {
-    const position = this.inventory.findIndex((v) => v.name === undefined)
+    const position = this.inventory.findIndex((v) => v.name === undefined);
     this.inventory[position] = item;
     this.cb.setInventory(this.inventory);
     console.log(
@@ -50,7 +50,7 @@ export class State {
 
   removeItem(item: InventoryItem) {
     if (!this.inventory || this.inventory.length === 0) return;
-    const position = this.inventory.findIndex((v) => v.name === item.name)
+    const position = this.inventory.findIndex((v) => v.name === item.name);
     this.inventory[position] = {};
     this.cb.setInventory(this.inventory);
     console.log(

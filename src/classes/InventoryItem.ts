@@ -19,7 +19,14 @@ export class InventoryItem {
   position: coordinate | null;
   icon: string;
 
-  constructor({ spriteSrc, size, name, sound, position, icon }: InventoryItemParams) {
+  constructor({
+    spriteSrc,
+    size,
+    name,
+    sound,
+    position,
+    icon,
+  }: InventoryItemParams) {
     this.size = size;
     this.icon = icon;
     this.sound = new Sound({ source: sound });

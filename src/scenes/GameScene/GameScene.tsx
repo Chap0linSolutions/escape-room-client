@@ -34,28 +34,31 @@ export function GameScene() {
     // Still need to add a loading state
     const width = window.innerWidth;
     const height = window.innerHeight;
-    
-    const heightRatio = height/CANVAS_HEIGHT;
-    
-    const widthRatio = width/CANVAS_WIDTH;
-    
-    if (heightRatio > widthRatio) { // scale based on width
+
+    const heightRatio = height / CANVAS_HEIGHT;
+
+    const widthRatio = width / CANVAS_WIDTH;
+
+    if (heightRatio > widthRatio) {
+      // scale based on width
       setGameScale(widthRatio);
-    } else { // scale based on height
+    } else {
+      // scale based on height
       setGameScale(heightRatio);
     }
-    handleStartGame()
-  }, [])
+    handleStartGame();
+  }, []);
   const randomFragment = <h1 style={{ color: 'green' }}>Daleeeeeee brabo</h1>;
 
   return (
     <>
-      <div style={{
-        background: "white",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}>
+      <div
+        style={{
+          background: 'white',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         {/* <h1 onClick={() => showPopup(randomFragment)}>Game</h1> */}
         <canvas
           style={{

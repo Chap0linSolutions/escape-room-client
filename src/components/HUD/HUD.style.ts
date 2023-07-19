@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const RightSideContainer = styled.div({
   position: 'absolute',
@@ -7,7 +7,7 @@ export const RightSideContainer = styled.div({
   width: '140px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '24px'
+  gap: '24px',
 });
 
 export const OptionsContainer = styled.div({
@@ -18,7 +18,7 @@ export const OptionsContainer = styled.div({
   gap: '10px',
   justifyContent: 'center',
   alignItems: 'center',
-  borderRadius: '20px'
+  borderRadius: '20px',
 });
 
 export const InventoryContainer = styled.div({
@@ -30,12 +30,12 @@ export const InventoryContainer = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   gap: '16px',
-  borderRadius: '20px'
+  borderRadius: '20px',
 });
 
 export const SlotContainer = styled.div({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  gap: '8px'
+  gap: '8px',
 });

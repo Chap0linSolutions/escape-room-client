@@ -1,2 +1,2 @@
-export * from "./InventorySlot";
-export * from "./HUD.style";
+export * from './InventorySlot';
+export * from './HUD.style';
