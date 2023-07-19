@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
 import { usePopupContext } from '../../contexts';
 import { useGameLoop, useGameState } from '../../hooks';
 import { InputHandler } from '../../events/InputHandler';
@@ -10,6 +10,7 @@ export function GameScene() {
   const { showPopup, popupOpened, showToast } = usePopupContext();
   const { startGame } = useGameLoop({ showPopup, showToast });
   const { resumeGame } = useGameState();
+  const [gameScale, setGameScale] = useState(1);
 
   useEffect(() => {
     if (popupOpened === false) {
@@ -29,21 +30,44 @@ export function GameScene() {
     });
   };
 
+  useLayoutEffect(() => {
+    // Still need to add a loading state
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    const heightRatio = height/CANVAS_HEIGHT;
+    
+    const widthRatio = width/CANVAS_WIDTH;
+    
+    if (heightRatio > widthRatio) { // scale based on width
+      setGameScale(widthRatio);
+    } else { // scale based on height
+      setGameScale(heightRatio);
+    }
+    handleStartGame()
+  }, [])
   const randomFragment = <h1 style={{ color: 'green' }}>Daleeeeeee brabo</h1>;
 
   return (
     <>
-      <div>
-        <h1 onClick={() => showPopup(randomFragment)}>Game</h1>
+      <div style={{
+        background: "white",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}>
+        {/* <h1 onClick={() => showPopup(randomFragment)}>Game</h1> */}
         <canvas
-          style={{ border: '1px solid gold' }}
+          style={{
+            transform: `scale(${gameScale})`,
+          }}
           ref={canvasRef}
           width={CANVAS_WIDTH}
           height={CANVAS_HEIGHT}></canvas>
-        <div>
+        {/* <div>
           <Button onClick={handleStartGame}>Start</Button>
           <button onClick={callToast}>Click me!</button>
-        </div>
+        </div> */}
       </div>
     </>
   );

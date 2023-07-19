@@ -27,7 +27,7 @@ import {
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOneOrigin = {
   x: FLOOR_PADDING,
-  y: 0.75 * CANVAS_HEIGHT,
+  y: 0.75 * 700,
 };
 
 const playerOrigin = {
@@ -39,7 +39,7 @@ const playerOrigin = {
 const floor = new Floor({
   tileMap,
   spriteSrc: roomSprite,
-  size: 2.05 * CANVAS_WIDTH,
+  size: 2.05 * 1000,
   position: {
     canvas: { x: mapOneOrigin.x - 35, y: mapOneOrigin.y - 39 * DY },
     map: mapOneOrigin,

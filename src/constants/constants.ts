@@ -16,8 +16,8 @@ export const ACTION_KEYS: keyAndIcon[] = [
   //demais ações...
 ];
 
-export const CANVAS_WIDTH = 1000;
-export const CANVAS_HEIGHT = 700;
+export const CANVAS_WIDTH = 1280;
+export const CANVAS_HEIGHT = 720;
 export const FLOOR_PADDING = 5;
 export const FLOOR_TOP_Y = 100;
 export const PLAYER_SIZE = 100;
