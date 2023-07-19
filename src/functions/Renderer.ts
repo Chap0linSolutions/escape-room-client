@@ -32,7 +32,7 @@ const canvasBottom = {
 const renderBackground = (canvas: CanvasRenderingContext2D) => {
   canvas.fillStyle = '#464646';
   canvas.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-}
+};
 
 const renderWalkPadding = (canvas: CanvasRenderingContext2D) => {
   canvas.fillStyle = '#FF000022';
@@ -81,7 +81,7 @@ export default function RenderAll({
   if (!ground) return;
   const renderables: ObjectAndDistance[] = [];
   const fragments: InteractiveObject[] = [];
-  
+
   players &&
     players.forEach((p) => {
       const { x, y, feetOffset } = p.getAllDimensions();
