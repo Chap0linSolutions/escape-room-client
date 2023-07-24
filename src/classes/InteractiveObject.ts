@@ -9,7 +9,6 @@ import {
   FloatingText,
   Fragment,
   FragmentParams,
-  Player,
   InventoryItem,
   Sprite,
 } from '../classes';
@@ -21,13 +20,6 @@ type Action = {
   sound: Sound; //qual som é feito quando a ação dispara
   description: FloatingText; //objeto de texto a ser exibido
   options: string[]; //opções de texto a serem exibidas no objeto
-};
-
-type Frag = {
-  sprite: string;
-  size: number;
-  items: InventoryItem[];
-  interactionCoordinates?: interactiveCoords;
 };
 
 type InteractiveObjectParams = {
@@ -66,7 +58,7 @@ export class InteractiveObject {
     this.sprite = new Sprite({
       sprite: spriteSrc,
       size,
-      rows: interactible? 2 : 1,
+      rows: interactible ? 2 : 1,
       columns: action && action.texts.length > 1 ? 2 : 1,
       maxCount: 0,
     });

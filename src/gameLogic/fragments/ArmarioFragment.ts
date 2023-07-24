@@ -63,7 +63,7 @@ export class ArmarioFragment extends Fragment {
       const absolute: clickableArea = {
         coordinate: this.getAbsoluteCoords(interaction[i].coordinate),
         radius: interaction[i].radius,
-      }
+      };
       if (isWithin(absolute, clickCoords)) {
         this.sprite.setQuad(this.sprite.nextSprite());
         this.isOpen = !this.isOpen;
@@ -88,7 +88,8 @@ export class ArmarioFragment extends Fragment {
     this.isOpen && this.items.forEach((item) => item.render(canvas));
   }
 
-  update(dt: number){}
+  update(dt: number) {}
+  setAllPositions(width: number, height: number): void {}
 
   render(canvas: CanvasRenderingContext2D): void {
     const { width, height } = this.sprite.getAllDimensions();

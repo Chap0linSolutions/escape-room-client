@@ -6,7 +6,6 @@ import { InventoryItem } from './InventoryItem';
 import { Floor } from './Floor';
 import { isInsideAllowedSpace, renderHitbox } from '../functions/Metrics';
 import {
-  ACTION_KEYS,
   ISOMETRIC_RATIO,
   SHOW_HITBOX,
   DX,
@@ -127,7 +126,7 @@ export class Player {
     for (let i = 0; i < objects.length; i++) {
       if (objects[i].isInside('hitbox', this.position)) {
         this.interactingWithFragment = objects[i].isBeingInteractedWith();
-        if(objects[i].isAllowedToInteract(myDirection)){
+        if (objects[i].isAllowedToInteract(myDirection)) {
           objects[i].interact(keyPressed);
           objects[i].setHighlight(true);
         }
@@ -229,10 +228,10 @@ export class Player {
   }
 
   updatePositionOnMap() {
-    let xFixed = this.position.x - (this.mapOrigin.x + DX);
-    let yFixed = this.position.y - this.mapOrigin.y;
-    let xConverted = Math.round((xFixed * DY - yFixed * DX) / (2 * DX * DY));
-    let yConverted = Math.round(
+    const xFixed = this.position.x - (this.mapOrigin.x + DX);
+    const yFixed = this.position.y - this.mapOrigin.y;
+    const xConverted = Math.round((xFixed * DY - yFixed * DX) / (2 * DX * DY));
+    const yConverted = Math.round(
       (xFixed * 2 * DY - xFixed * DY + yFixed * DX) / (2 * DX * DY)
     );
     this.positionOnMap = { x: xConverted, y: yConverted };

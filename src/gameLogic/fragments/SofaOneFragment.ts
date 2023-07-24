@@ -1,6 +1,5 @@
 import { Sprite, Fragment, FragmentParams } from '../../classes';
 import { InputHandler } from '../../events/InputHandler';
-import { State } from '../state';
 import sofaSprite from '../../assets/fragments/sofaOneFragment.png';
 import { coordinate } from '../../types';
 import { isWithin, renderHitbox } from '../../functions/Metrics';
@@ -24,7 +23,7 @@ export class SofaOneFragment extends Fragment {
 
     this.items = [];
     this.interactions = {
-      plantVase: { coordinate: {x: 50, y: 300}, radius: 20 },
+      plantVase: { coordinate: { x: 50, y: 300 }, radius: 20 },
       pillowLeft: { coordinate: { x: 170, y: 250 }, radius: 40 },
       pillowRight: { coordinate: { x: 460, y: 250 }, radius: 40 },
     };
@@ -36,7 +35,8 @@ export class SofaOneFragment extends Fragment {
 
   interact(clickCoords: coordinate): void {
     if (!this.isVisible()) return;
-    const nothingUp = !this.plantVaseUp && !this.rightPillowUp && !this.leftPillowUp;
+    const nothingUp =
+      !this.plantVaseUp && !this.rightPillowUp && !this.leftPillowUp;
     if (nothingUp && isWithin(this.interactions.plantVase, clickCoords)) {
       this.plantVaseUp = true;
       return this.sprite.setQuad([0, 1]);
@@ -70,13 +70,25 @@ export class SofaOneFragment extends Fragment {
     this.rightPillowUp && this.items.forEach((item) => item.render(canvas));
   }
 
-  drawHitboxes(canvas: CanvasRenderingContext2D){
-    renderHitbox(canvas, this.getAbsoluteCoords(this.interactions.plantVase.coordinate), this.interactions.plantVase.radius);
-    renderHitbox(canvas, this.getAbsoluteCoords(this.interactions.pillowLeft.coordinate), this.interactions.pillowLeft.radius);
-    renderHitbox(canvas, this.getAbsoluteCoords(this.interactions.pillowRight.coordinate), this.interactions.pillowRight.radius);
+  drawHitboxes(canvas: CanvasRenderingContext2D) {
+    renderHitbox(
+      canvas,
+      this.getAbsoluteCoords(this.interactions.plantVase.coordinate),
+      this.interactions.plantVase.radius
+    );
+    renderHitbox(
+      canvas,
+      this.getAbsoluteCoords(this.interactions.pillowLeft.coordinate),
+      this.interactions.pillowLeft.radius
+    );
+    renderHitbox(
+      canvas,
+      this.getAbsoluteCoords(this.interactions.pillowRight.coordinate),
+      this.interactions.pillowRight.radius
+    );
   }
 
-  update(dt: number){};
+  update(dt: number) {}
 
   setAllPositions(width: number, height: number): void {
     this.setPosition(width, height);

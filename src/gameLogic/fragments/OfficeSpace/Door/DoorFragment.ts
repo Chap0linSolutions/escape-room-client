@@ -18,7 +18,7 @@ export class DoorFragment extends Fragment {
   sprite: Sprite;
   controlPanel: ControlPanel;
   plant: plantVase;
-  dummyDisconnect: clickableArea;   //TODO dummy hitbox for disconnecting the system, delete when coupling with the state;
+  dummyDisconnect: clickableArea; //TODO dummy hitbox for disconnecting the system, delete when coupling with the state;
 
   constructor({ object }: FragmentParams) {
     super({ object });
@@ -30,18 +30,18 @@ export class DoorFragment extends Fragment {
     });
 
     this.controlPanel = new ControlPanel({
-      size: 70, 
-      position: {x: 409, y: 186}
+      size: 70,
+      position: { x: 409, y: 186 },
     });
 
     this.plant = {
       hitbox: {
-        coordinate: {x: 530, y: 450},
+        coordinate: { x: 530, y: 450 },
         radius: 40,
       },
       isUp: false,
-      sound: new Sound({source: plantSound}),
-    }
+      sound: new Sound({ source: plantSound }),
+    };
 
     this.items = [];
     const inputHandler = new InputHandler();
@@ -49,41 +49,42 @@ export class DoorFragment extends Fragment {
       this.interact(pos)
     );
 
-    this.dummyDisconnect = {      //TODO dummy hitbox, delete when coupling with the state;
-      coordinate: {x: 270, y: 225},
+    this.dummyDisconnect = {
+      //TODO dummy hitbox, delete when coupling with the state;
+      coordinate: { x: 270, y: 225 },
       radius: 50,
-    }
+    };
   }
 
-  setAllPositions(width: number, height: number){
+  setAllPositions(width: number, height: number) {
     this.setPosition(width, height);
     this.controlPanel.setPositionRelativeToReference(this.position);
     this.plant.hitbox.coordinate = {
       x: this.position.x + this.plant.hitbox.coordinate.x,
-      y: this.position.y + this.plant.hitbox.coordinate.y, 
-    }
+      y: this.position.y + this.plant.hitbox.coordinate.y,
+    };
   }
 
-  liftPlant(){
-    if(this.plant.isUp) return;
+  liftPlant() {
+    if (this.plant.isUp) return;
     this.plant.isUp = true;
     this.plant.sound.play();
   }
 
-  releasePlant(){
-    if(!this.plant.isUp) return;
+  releasePlant() {
+    if (!this.plant.isUp) return;
     this.plant.isUp = false;
     this.plant.sound.play();
   }
 
   interact(clickCoords: coordinate): void {
     //TODO dummy snippet. Delete when coupling with the state;
-    if(isWithin(this.dummyDisconnect, clickCoords)){
+    if (isWithin(this.dummyDisconnect, clickCoords)) {
       this.controlPanel.disconnect();
-    } 
+    }
 
     this.controlPanel.interact(clickCoords);
-    if(!this.plant.isUp && isWithin(this.plant.hitbox, clickCoords)){
+    if (!this.plant.isUp && isWithin(this.plant.hitbox, clickCoords)) {
       this.sprite.setQuad([0, 1]);
       this.liftPlant();
     } else {
@@ -92,7 +93,7 @@ export class DoorFragment extends Fragment {
     }
   }
 
-  update(dt: number){
+  update(dt: number) {
     this.controlPanel.update(dt);
   }
 
@@ -102,7 +103,7 @@ export class DoorFragment extends Fragment {
     this.drawBackground(canvas, width, height, 2);
     this.sprite.render(canvas, this.position);
     this.controlPanel.render(canvas);
-    
+
     //renderHitbox(canvas, this.dummyDisconnect.coordinate, this.dummyDisconnect.radius);
   }
 }
