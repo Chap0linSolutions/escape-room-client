@@ -8,9 +8,9 @@ export const RightSideContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '24px',
-  "@media (max-height: 850px)": {
-    width: "100px"
-  }
+  '@media (max-height: 850px)': {
+    width: '100px',
+  },
 });
 
 export const OptionsContainer = styled.div({
@@ -35,9 +35,9 @@ export const InventoryContainer = styled.div({
   alignItems: 'center',
   gap: '16px',
   borderRadius: '20px',
-  "@media (max-height: 850px)": {
-    height: "400px"
-  }
+  '@media (max-height: 850px)': {
+    height: '400px',
+  },
 });
 
 export const SlotContainer = styled.div({
