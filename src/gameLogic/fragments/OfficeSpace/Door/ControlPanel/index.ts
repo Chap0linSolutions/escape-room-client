@@ -1,15 +1,16 @@
-import { Sprite } from "../../../../classes";
-import { clickableArea, coordinate } from "../../../../types";
-import { isWithin, renderHitbox } from "../../../../functions/Metrics";
-import { State } from "../../../state";
+import { Sprite } from "../../../../../classes";
+import { clickableArea, coordinate } from "../../../../../types";
+import { isWithin, renderHitbox } from "../../../../../functions/Metrics";
+import { State } from "../../../../state";
 import { Genius } from "./Genius";
-import openPanel from '../../../../assets/fragments/fragment5/open_panel.png';
-import closedPanel from '../../../../assets/fragments/fragment5/closed_panel.png';
-import disconnectSound from '../../../../assets/sounds/disconnect.mp3';
-import openPanelSound from '../../../../assets/sounds/openPanel.mp3'; 
-import closePanelSound from '../../../../assets/sounds/closePanel.mp3';
-import lockedSound from '../../../../assets/sounds/errorPanel.mp3';
-import Sound from "../../../../classes/Sound";
+import Sound from "../../../../../classes/Sound";
+import openPanel from '../../../../../assets/fragments/fragment5/open_panel.png';
+import closedPanel from '../../../../../assets/fragments/fragment5/closed_panel.png';
+import disconnectSound from '../../../../../assets/sounds/disconnect.mp3';
+import openPanelSound from '../../../../../assets/sounds/openPanel.mp3'; 
+import closePanelSound from '../../../../../assets/sounds/closePanel.mp3';
+import lockedSound from '../../../../../assets/sounds/errorPanel.mp3';
+import shutDownSound from '../../../../../assets/sounds/shutDown.mp3';
 
 
 interface controlPanelProps {
@@ -67,13 +68,13 @@ export class ControlPanel {
 
         this.sounds = {
             locked: new Sound({source: lockedSound}),
-            shutdown: new Sound({source: disconnectSound}),
+            shutdown: new Sound({source: shutDownSound}),
             disconnect: new Sound({source: disconnectSound}),
             open: new Sound({source: openPanelSound}),
             close: new Sound({source: closePanelSound}),
         }
 
-        this.genius = new Genius();
+        this.genius = new Genius({controlPanel: this});
     }
 
     setPositionRelativeToReference(fragmentPosition: coordinate){
@@ -111,8 +112,15 @@ export class ControlPanel {
 
     shutDown(){
         this.isOn = false;
-        this.genius.reset();
+        this.genius.resetButtons();
         this.closedPanel.sprite.setQuad([2, 0]);
+        this.sounds.shutdown.play();
+        const state = new State();
+        state.cb.showToast({
+            title: 'Opa',
+            description: 'Parece que o painel desligou!',
+            backgroundColor: 'forestgreen',
+        });
     }
 
     open(){
@@ -123,6 +131,10 @@ export class ControlPanel {
     close(){
         this.isOpen = false;
         this.sounds.close.play();
+    }
+
+    isPlayable(){
+        return (this.isOn && this.isOpen);
     }
 
     interact(clickCoords: coordinate){
@@ -137,7 +149,7 @@ export class ControlPanel {
                 return this.sounds.locked.play();
             }
             this.open();
-        } else if(this.isOpen && (!this.genius.buttonPressed(clickCoords))){
+        } else if(this.isOpen && (!this.genius.play(clickCoords))){
             this.close();
         }
     }

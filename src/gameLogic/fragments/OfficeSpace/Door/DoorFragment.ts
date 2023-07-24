@@ -6,6 +6,7 @@ import { isWithin } from '../../../../functions/Metrics';
 import doorSprite from '../../../../assets/fragments/fragment5/fragment5.png';
 import plantSound from '../../../../assets/sounds/woosh1.mp3';
 import Sound from '../../../../classes/Sound';
+
 interface plantVase {
   hitbox: clickableArea;
   isUp: boolean;
