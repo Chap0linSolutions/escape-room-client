@@ -54,7 +54,7 @@ export function GameScene() {
     <>
       <div
         style={{
-          background: 'white',
+          background: '#272727',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
