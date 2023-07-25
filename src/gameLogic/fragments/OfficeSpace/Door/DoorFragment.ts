@@ -2,7 +2,7 @@ import { Sprite, Fragment, FragmentParams } from '../../../../classes';
 import { InputHandler } from '../../../../events/InputHandler';
 import { clickableArea, coordinate } from '../../../../types';
 import { ControlPanel } from './ControlPanel';
-import { isWithin } from '../../../../functions/Metrics';
+import { isWithin, renderHitbox } from '../../../../functions/Metrics';
 import doorSprite from '../../../../assets/fragments/fragment5/fragment5.png';
 import plantSound from '../../../../assets/sounds/woosh1.mp3';
 import Sound from '../../../../classes/Sound';
@@ -51,7 +51,7 @@ export class DoorFragment extends Fragment {
 
     this.dummyDisconnect = {
       //TODO dummy hitbox, delete when coupling with the state;
-      coordinate: { x: 270, y: 225 },
+      coordinate: { x: 410, y: 235 },
       radius: 50,
     };
   }
@@ -104,6 +104,6 @@ export class DoorFragment extends Fragment {
     this.sprite.render(canvas, this.position);
     this.controlPanel.render(canvas);
 
-    //renderHitbox(canvas, this.dummyDisconnect.coordinate, this.dummyDisconnect.radius);
+    renderHitbox(canvas, this.dummyDisconnect.coordinate, this.dummyDisconnect.radius);
   }
 }
