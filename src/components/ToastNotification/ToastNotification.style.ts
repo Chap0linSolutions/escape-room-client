@@ -9,6 +9,7 @@ export const NotificationContainer = styled.div<NotificationToastProps>`
   font-size: 14px;
   box-sizing: border-box;
   position: fixed;
+  height: 80px;
   z-index: 10;
   ${(props) => (!props.bottom ? 'top: 12px' : 'bottom: 12px')};
   ${(props) => (!props.left ? 'right: 12px' : 'left: 12px')};
@@ -33,7 +34,7 @@ export const NotificationToast = styled.div<NotificationToastProps>`
     opacity: 1;
     cursor: pointer;
   }
-  height: 50px;
+  height: 80px;
   width: 365px;
   color: #fff;
   padding: 20px 15px 10px 10px;

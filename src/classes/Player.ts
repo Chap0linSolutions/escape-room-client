@@ -111,7 +111,7 @@ export class Player {
   ) {
     const dir = this.allowedDirections.indexOf(direction);
     if (dir < 0 || this.interactingWithFragment) return;
-    this.sprite.setQuad([0, dir]);
+    this.sprite.setQuad([this.sprite.getQuad()[0], dir]);
     if (this.canMove(direction, map, objects)) {
       this.dp = getDp(direction);
       this.movementLeft = { x: DX, y: DY };

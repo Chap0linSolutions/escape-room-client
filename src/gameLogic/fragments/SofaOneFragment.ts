@@ -1,9 +1,13 @@
-import { Sprite, Fragment, FragmentParams } from '../../classes';
+import { Sprite, Fragment, FragmentParams, InventoryItem } from '../../classes';
 import { InputHandler } from '../../events/InputHandler';
-import sofaSprite from '../../assets/fragments/sofaOneFragment.png';
 import { coordinate } from '../../types';
 import { isWithin, renderHitbox } from '../../functions/Metrics';
 import { SHOW_HITBOX } from '../../constants';
+import { State } from '../state';
+import sofaSprite from '../../assets/fragments/sofaOneFragment.png';
+import CabinetKeyIcon from '../../assets/items/cabinet-key.png';
+import CabinetKeySprite from '../../assets/items/cabinet-key-sprite.png';
+import WooshSound from '../../assets/sounds/woosh1.mp3';
 
 export class SofaOneFragment extends Fragment {
   interactions;
@@ -21,7 +25,16 @@ export class SofaOneFragment extends Fragment {
       columns: 1,
     });
 
-    this.items = [];
+    this.items = [
+      new InventoryItem({
+        spriteSrc: CabinetKeySprite,
+        name: 'CABINET_KEY',
+        size: 40,
+        icon: CabinetKeyIcon,
+        position: { x: 440, y: 270 },
+        sound: WooshSound,
+      }),
+    ];
     this.interactions = {
       plantVase: { coordinate: { x: 50, y: 300 }, radius: 20 },
       pillowLeft: { coordinate: { x: 170, y: 250 }, radius: 40 },
@@ -49,15 +62,15 @@ export class SofaOneFragment extends Fragment {
       this.rightPillowUp = true;
       return this.sprite.setQuad([0, 3]);
     }
-    // if (this.rightPillowUp && this.items.length > 0) {
-    //   const state = new State();
-    //   if (this.items[0].isInside(clickCoords)) {
-    //     this.items[0].sound.play();
-    //     state.addItem(this.items[0]);
-    //     this.removeItem(this.items[0]);
-    //     return;
-    //   }
-    // }
+    if (this.rightPillowUp && this.items.length > 0) {
+      const state = new State();
+      if (this.items[0].isInside(clickCoords)) {
+        this.items[0].sound.play();
+        state.addItem(this.items[0]);
+        this.removeItem(this.items[0]);
+        return;
+      }
+    }
     if (!nothingUp) {
       this.plantVaseUp = false;
       this.leftPillowUp = false;

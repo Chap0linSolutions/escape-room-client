@@ -3,7 +3,7 @@ import { GameCallbacks } from '../../types';
 
 export class State {
   private static instance: State;
-  cb: GameCallbacks;
+  cb: GameCallbacks & { setInventory?: (inventory: any) => void };
   paused = false;
   key = undefined;
   currentPlayer = '';
@@ -19,7 +19,8 @@ export class State {
    *  currentPlayerId: ""
    * }
    */
-  inventory = [];
+  inventory = Array(10).fill({});
+  activeItem = null;
 
   constructor() {
     if (!!State.instance) {
@@ -30,20 +31,32 @@ export class State {
   }
 
   setGameCallbacks(gameCallbacks: GameCallbacks) {
-    this.cb = gameCallbacks;
+    this.cb = { ...this.cb, ...gameCallbacks };
+  }
+
+  setInventoryCallback(setInventory: any) {
+    this.cb = { ...this.cb, setInventory };
   }
 
   addItem(item: InventoryItem) {
-    this.inventory.unshift(item);
+    const position = this.inventory.findIndex((v) => v.name === undefined);
+    this.inventory[position] = item;
+    this.cb.setInventory(this.inventory);
     console.log(
       'itens com o jogador:',
       this.inventory.map((item) => item.name)
     );
   }
 
-  removeItem() {
+  removeItem(item: InventoryItem) {
     if (!this.inventory || this.inventory.length === 0) return;
-    this.inventory.splice(0, 1);
+    const position = this.inventory.findIndex((v) => v.name === item.name);
+    this.inventory[position] = {};
+    this.cb.setInventory(this.inventory);
+    console.log(
+      'itens com o jogador:',
+      this.inventory.map((item) => item.name)
+    );
   }
 
   pauseGame() {
