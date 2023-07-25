@@ -131,7 +131,7 @@ const objects = [
     size: 215,
     position: {
       referenceTile: { x: 9.5, y: -0.5 },
-      canvas: {x: 420, y: 105},
+      canvas: { x: 420, y: 105 },
       map: { x: mapOneOrigin.x + DX, y: mapOneOrigin.y },
       tiles: [
         easyCoords({ x: 8, y: 0 }),

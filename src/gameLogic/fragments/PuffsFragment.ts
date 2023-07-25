@@ -2,6 +2,8 @@ import { coordinate } from '../../types';
 import { InputHandler } from '../../events/InputHandler';
 import { Sprite, Fragment, FragmentParams } from '../../classes';
 import { State } from '../../gameLogic/state';
+import Sound from '../../classes/Sound';
+import soundFile from '../../assets/sounds/woosh1.mp3';
 import puffsSprite from '../../assets/fragments/puffsPlantFragment.png';
 //import { renderHitbox } from '../../functions/Metrics';
 
@@ -36,9 +38,11 @@ export class PuffsFragment extends Fragment {
     if (!this.position) return;
     if (!this.interactions || !clickCoords) return;
     const state = new State();
+    const plantSound = new Sound({ source: soundFile });
 
     if (this.isWithin(this.interactions.plantVase, clickCoords)) {
       this.plantVaseUp = !this.plantVaseUp;
+      plantSound.play();
       return this.sprite.setQuad([0, this.plantVaseUp ? 1 : 0]);
     } else {
       let title = 'Error';
