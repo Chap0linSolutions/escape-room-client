@@ -9,6 +9,7 @@ type InventoryItemParams = {
   name: string;
   sound: string;
   position?: coordinate;
+  icon?: string;
 };
 export class InventoryItem {
   name: string;
@@ -16,9 +17,18 @@ export class InventoryItem {
   sprite: Sprite;
   sound: Sound;
   position: coordinate | null;
+  icon: string;
 
-  constructor({ spriteSrc, size, name, sound, position }: InventoryItemParams) {
+  constructor({
+    spriteSrc,
+    size,
+    name,
+    sound,
+    position,
+    icon,
+  }: InventoryItemParams) {
     this.size = size;
+    this.icon = icon;
     this.sound = new Sound({ source: sound });
     this.sprite = new Sprite({
       sprite: spriteSrc,

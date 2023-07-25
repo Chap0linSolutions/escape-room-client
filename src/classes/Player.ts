@@ -112,7 +112,7 @@ export class Player {
   ) {
     const dir = this.allowedDirections.indexOf(direction);
     if (dir < 0 || this.interactingWithFragment) return;
-    this.sprite.setQuad([0, dir]);
+    this.sprite.setQuad([this.sprite.getQuad()[0], dir]);
     if (this.canMove(direction, map, objects)) {
       this.dp = getDp(direction);
       this.movementLeft = { x: DX, y: DY };
@@ -127,7 +127,7 @@ export class Player {
     for (let i = 0; i < objects.length; i++) {
       if (objects[i].isInside('hitbox', this.position)) {
         this.interactingWithFragment = objects[i].isBeingInteractedWith();
-        if(objects[i].isAllowedToInteract(myDirection)){
+        if (objects[i].isAllowedToInteract(myDirection)) {
           objects[i].interact(this, keyPressed);
           objects[i].setHighlight(true);
         }
