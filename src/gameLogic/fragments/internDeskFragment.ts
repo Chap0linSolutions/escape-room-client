@@ -2,10 +2,13 @@ import { Sprite, Fragment, FragmentParams, InventoryItem } from '../../classes';
 import { InputHandler } from '../../events/InputHandler';
 import { State } from '../state';
 import deskSprite from '../../assets/fragments/internDeskFragment.png';
-//import soundFile from '../../assets/sounds/woosh1.mp3'; //TODO: change to switch sound
 import { coordinate } from '../../types';
 import { renderHitbox } from '../../functions/Metrics';
 import { SHOW_HITBOX } from '../../constants';
+import Sound from '../../classes/Sound';
+
+// Sfx by Nicole Marie T, CC-BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via OpenGameArt.org
+import soundFile from '../../assets/sounds/light_switch.wav'; 
 
 export class internDeskFragment extends Fragment {
     interactions;
@@ -38,14 +41,14 @@ export class internDeskFragment extends Fragment {
         if (!this.isVisible()) return;
         if (!this.interactions || !clickCoords) return;
         const state = new State();
-        //const switchSound = new Sound({ source: soundFile });
+        const switchSound = new Sound({ source: soundFile });
 
         if (!this.calendarZoom) {
             if (this.isWithin(this.interactions.calendar, clickCoords)) {
                 this.calendarZoom = true;
             } else if (this.isWithin(this.interactions.deskLamp, clickCoords)) {
                 this.lampOn = !this.lampOn;
-                //switchSound.play();
+                switchSound.play();
             } else if (this.isWithin(this.interactions.bookPile, clickCoords)) {
                 state.cb.showToast({
                     title: 'Livros',
