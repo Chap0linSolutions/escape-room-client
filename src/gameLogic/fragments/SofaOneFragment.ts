@@ -1,10 +1,10 @@
 import { Sprite, Fragment, FragmentParams, InventoryItem } from '../../classes';
 import { InputHandler } from '../../events/InputHandler';
-import { coordinate } from '../../types';
-import { isWithin, renderHitbox } from '../../functions/Metrics';
-import { SHOW_HITBOX } from '../../constants';
 import { State } from '../state';
-import sofaSprite from '../../assets/fragments/sofaOneFragment.png';
+import { coordinate } from '../../types';
+import { renderHitbox } from '../../functions/Metrics';
+import { SHOW_HITBOX } from '../../constants';
+import sofaSprite from '../../assets/fragments/fragment8/fragment8.png';
 import CabinetKeyIcon from '../../assets/items/cabinet-key.png';
 import CabinetKeySprite from '../../assets/items/cabinet-key-sprite.png';
 import WooshSound from '../../assets/sounds/woosh1.mp3';
@@ -50,15 +50,18 @@ export class SofaOneFragment extends Fragment {
     if (!this.isVisible()) return;
     const nothingUp =
       !this.plantVaseUp && !this.rightPillowUp && !this.leftPillowUp;
-    if (nothingUp && isWithin(this.interactions.plantVase, clickCoords)) {
+    if (nothingUp && this.isWithin(this.interactions.plantVase, clickCoords)) {
       this.plantVaseUp = true;
       return this.sprite.setQuad([0, 1]);
     }
-    if (nothingUp && isWithin(this.interactions.pillowLeft, clickCoords)) {
+    if (nothingUp && this.isWithin(this.interactions.pillowLeft, clickCoords)) {
       this.leftPillowUp = true;
       return this.sprite.setQuad([0, 2]);
     }
-    if (nothingUp && isWithin(this.interactions.pillowRight, clickCoords)) {
+    if (
+      nothingUp &&
+      this.isWithin(this.interactions.pillowRight, clickCoords)
+    ) {
       this.rightPillowUp = true;
       return this.sprite.setQuad([0, 3]);
     }
@@ -101,27 +104,11 @@ export class SofaOneFragment extends Fragment {
     );
   }
 
-  update(dt: number) {}
-
-  setAllPositions(width: number, height: number): void {
-    this.setPosition(width, height);
-    this.interactions.plantVase.coordinate = {
-      x: this.interactions.plantVase.coordinate.x + this.position.x,
-      y: this.interactions.plantVase.coordinate.y + this.position.y,
-    };
-    this.interactions.pillowLeft.coordinate = {
-      x: this.interactions.pillowLeft.coordinate.x + this.position.x,
-      y: this.interactions.pillowLeft.coordinate.y + this.position.y,
-    };
-    this.interactions.pillowRight.coordinate = {
-      x: this.interactions.pillowRight.coordinate.x + this.position.x,
-      y: this.interactions.pillowRight.coordinate.y + this.position.y,
-    };
-  }
+  update(dt: number){}
 
   render(canvas: CanvasRenderingContext2D): void {
     const { width, height } = this.sprite.getAllDimensions();
-    !this.position && this.setAllPositions(width, height);
+    !this.position && this.setPosition(width, height);
     this.drawBackground(canvas, width, height, 2);
     this.sprite.render(canvas, this.position);
     this.drawItems(canvas);

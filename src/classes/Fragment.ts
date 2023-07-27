@@ -1,10 +1,11 @@
-import { coordinate } from '../types';
+import { clickableArea, coordinate } from '../types';
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../constants';
 import { InteractiveObject } from './InteractiveObject';
 import { FloatingText } from './FloatingText';
 import { InventoryItem } from './InventoryItem';
 import eKey from '../assets/icons/e-key.png';
 import cursorKey from '../assets/icons/cursor.png';
+import { getDistance } from '../functions/Metrics';
 
 export type FragmentParams = {
   object?: InteractiveObject;
@@ -31,7 +32,6 @@ export abstract class Fragment {
   }
 
   abstract update(dt: number): void;
-  abstract setAllPositions(width: number, height: number): void;
   abstract interact(clickCoords: coordinate): void;
   abstract render(canvas: CanvasRenderingContext2D): void;
 
@@ -109,6 +109,11 @@ export abstract class Fragment {
       x: this.position.x + coords.x,
       y: this.position.y + coords.y,
     };
+  }
+
+  isWithin(what: clickableArea, target: coordinate) {
+    const w = this.getAbsoluteCoords(what.coordinate);
+    return getDistance(w, target) < what.radius;
   }
 
   setPosition(width: number, height: number) {

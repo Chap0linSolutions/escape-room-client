@@ -89,7 +89,6 @@ export class ArmarioFragment extends Fragment {
   }
 
   update(dt: number) {}
-  setAllPositions(width: number, height: number): void {}
 
   render(canvas: CanvasRenderingContext2D): void {
     const { width, height } = this.sprite.getAllDimensions();
