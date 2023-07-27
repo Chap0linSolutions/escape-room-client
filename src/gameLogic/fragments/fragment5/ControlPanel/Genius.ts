@@ -1,8 +1,8 @@
-import { isWithin, renderHitbox } from '../../../../../functions/Metrics';
-import { clickableArea, coordinate, quad } from '../../../../../types';
-import { Sprite } from '../../../../../classes';
+import { isWithin, renderHitbox } from '../../../../functions/Metrics';
+import { clickableArea, coordinate, quad } from '../../../../types';
+import { Sprite } from '../../../../classes';
 import { GeniusLogic } from './GeniusLogic';
-import { ControlPanel } from '../index';
+import { ControlPanel } from './ControlPanel';
 import rightGuessSound from '../../../../../assets/sounds/right1.mp3';
 import wrongGuessSound from '../../../../../assets/sounds/errorPanel.mp3';
 import geniusSprite from '../../../../../assets/fragments/fragment5/genius.png';
@@ -10,7 +10,7 @@ import geniusSound1 from '../../../../../assets/sounds/genius1.mp3';
 import geniusSound2 from '../../../../../assets/sounds/genius2.mp3';
 import geniusSound3 from '../../../../../assets/sounds/genius3.mp3';
 import geniusSound4 from '../../../../../assets/sounds/genius4.mp3';
-import Sound from '../../../../../classes/Sound';
+import Sound from '../../../../classes/Sound';
 
 const hitboxRadius = 9;
 const pointsToVictory = 3;

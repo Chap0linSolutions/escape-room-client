@@ -1,4 +1,4 @@
-import { Genius } from '../index';
+import { Genius } from './Genius';
 
 enum states {
   STARTING = 1500, //period that runs right after the sequence starts over, before the first button lights
