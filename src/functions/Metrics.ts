@@ -1,5 +1,5 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH, WALK_TOGGLE_PADDING } from '../constants';
-import { coordinate } from '../types';
+import { clickableArea, coordinate } from '../types';
 
 const topLeft = { x: WALK_TOGGLE_PADDING, y: WALK_TOGGLE_PADDING };
 const bottomRight = {
@@ -37,6 +37,10 @@ export function isInsideBox(
     return false;
   }
   return true;
+}
+
+export function isWithin(what: clickableArea, target: coordinate) {
+  return getDistance(what.coordinate, target) < what.radius;
 }
 
 export function renderHitbox(
