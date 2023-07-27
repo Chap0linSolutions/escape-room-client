@@ -15,7 +15,7 @@ import { tileMap } from './TileMap';
 import { easyCoords } from '../../../functions/Builder';
 import { InteractiveObject, Floor } from '../../../classes';
 import { SofaOneFragment } from '../../fragments/SofaOneFragment';
-import { DoorFragment } from '../../fragments/OfficeSpace/Door/DoorFragment';
+import { DoorFragment } from '../../fragments/fragment5/DoorFragment';
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,

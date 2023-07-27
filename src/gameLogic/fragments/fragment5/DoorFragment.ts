@@ -1,12 +1,12 @@
-import { Sprite, Fragment, FragmentParams } from '../../../../classes';
-import { InputHandler } from '../../../../events/InputHandler';
-import { coordinate } from '../../../../types';
+import { Sprite, Fragment, FragmentParams } from '../../../classes';
+import { InputHandler } from '../../../events/InputHandler';
+import { coordinate } from '../../../types';
 import { ControlPanel } from './ControlPanel';
-import { isWithin, renderHitbox } from '../../../../functions/Metrics';
-import doorSprite from '../../../../assets/fragments/fragment5/fragment5.png';
-import plantSound from '../../../../assets/sounds/woosh1.mp3';
-import Sound from '../../../../classes/Sound';
-import { SHOW_HITBOX } from '../../../../constants';
+import { isWithin, renderHitbox } from '../../../functions/Metrics';
+import doorSprite from '../../../assets/fragments/fragment5/fragment5.png';
+import plantSound from '../../../assets/sounds/woosh1.mp3';
+import Sound from '../../../classes/Sound';
+import { SHOW_HITBOX } from '../../../constants';
 export class DoorFragment extends Fragment {
   interactions;
   sprite: Sprite;
