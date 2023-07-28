@@ -16,14 +16,14 @@ export const useGameLoop = (gameCallbacks: GameCallbacks) => {
     animationLoop = requestAnimationFrame(loop);
   };
 
-  const startGame = (ref: RefObject<HTMLCanvasElement>) => {
-    if (!ref.current) return null;
-    const gameCtx = ref.current.getContext('2d');
+  const startGame = async (canvas: RefObject<HTMLCanvasElement>) => {
+    if (!canvas.current) return null;
+    const gameCtx = canvas.current.getContext('2d');
     if (!gameCtx) return null;
     animationLoop && cancelAnimationFrame(animationLoop);
     ctx = gameCtx;
     game = new Game({ gameCallbacks });
-    game.initialSetup();
+    await game.initialSetup();
     animationLoop = requestAnimationFrame(loop);
   };
 

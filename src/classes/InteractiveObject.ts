@@ -1,67 +1,109 @@
-import { hitbox, textAndSound, position } from '../types';
-import { Sprite } from './Sprite';
+import {
+  actionType,
+  coordinate,
+  interactiveCoords,
+  positionType,
+} from '../types';
 import { ACTION_KEYS, SHOW_HITBOX } from '../constants';
-import { FloatingText } from './FloatingText';
-import { Player } from './Player';
-import { Slot } from './Slot';
+import {
+  FloatingText,
+  Fragment,
+  FragmentParams,
+  Player,
+  InventoryItem,
+  Sprite,
+} from '../classes';
+import { getDistance, renderHitbox } from '../functions/Metrics';
 import Sound from './Sound';
-import { DraggableObject } from './DraggableObject';
+
+type Action = {
+  //ação que o objeto pode responder
+  sound: Sound; //qual som é feito quando a ação dispara
+  description: FloatingText; //objeto de texto a ser exibido
+  options: string[]; //opções de texto a serem exibidas no objeto
+};
+
+type Frag = {
+  sprite: string;
+  size: number;
+  items: InventoryItem[];
+  interactionCoordinates?: interactiveCoords;
+};
+
+type InteractiveObjectParams = {
+  spriteSrc: string;
+  interactible: boolean;
+  size: number;
+  position: positionType;
+  allowedDirections: string[];
+  fragment?: new (params: FragmentParams) => Fragment;
+  action?: actionType;
+};
 
 export class InteractiveObject {
   //clase para representar os objetos que o usuário pode interagir
   size: number; //tamanho (largura, pra ser mais exato. O comprimento é calculado automaticamente a partir dela)
-  position: position; //coordenadas [x,y] da quina superior esquerda do sprite
+  position: positionType;
   sprite: Sprite;
   isHighlighted: boolean;
   canBeOpened: boolean;
-  isOpen: boolean;
+  state: boolean;
   lastKeyPressed: string | undefined;
-  actionTarget: number;
-  hitboxes: hitbox[];
-  action:
-    | {
-        //ação que o objeto pode responder
-        sound: Sound; //qual som é feito quando a ação dispara
-        object: FloatingText; //objeto de texto a ser exibido
-        options: string[]; //opções de texto a serem exibidas no objeto
-      }
-    | undefined;
-  slots?: Slot[];
-  slotsAlwaysVisible: boolean;
+  allowedDirections: string[];
+  action: Action | undefined;
+  fragment: Fragment | null;
 
-  constructor(
-    spriteSrc: string,
-    size: number,
-    position: position,
-    hitboxes: hitbox[],
-    slots: Slot[],
-    slotsAlwaysVisible: boolean,
-    action?: textAndSound
-  ) {
+  constructor({
+    spriteSrc,
+    interactible,
+    size,
+    position,
+    allowedDirections,
+    fragment,
+    action,
+  }: InteractiveObjectParams) {
     this.canBeOpened = action ? true : false;
-    this.sprite = new Sprite(spriteSrc, size, 2, action ? 2 : 1, 0);
+    this.sprite = new Sprite({
+      sprite: spriteSrc,
+      size,
+      rows: interactible ? 2 : 1,
+      columns: action && action.texts.length > 1 ? 2 : 1,
+      maxCount: 0,
+    });
     this.size = size;
     this.position = position;
     this.isHighlighted = false;
-    this.actionTarget = 1;
-    this.hitboxes = hitboxes;
-    this.isOpen = false;
+    this.state = false;
     this.action = action
       ? {
           options: action.texts,
-          sound: new Sound(action.sound),
-          object: new FloatingText(action.texts[0], ACTION_KEYS[0].icon),
+          sound: new Sound({ source: action.sound }),
+          description: new FloatingText({
+            text: 'interagir',
+            iconSprite: ACTION_KEYS[0].icon,
+          }),
         }
       : undefined;
-    this.slotsAlwaysVisible = slotsAlwaysVisible;
-    slots.forEach((slot) => {
-      const relativePos = slot.getPosition();
-      slot.setPosition({
-        x: position.x + relativePos.x,
-        y: position.y + relativePos.y,
-      }); //passando de coordenadas relativas para absolutas
-    });
-    this.slots = slots;
+    this.allowedDirections = allowedDirections;
+
+    this.fragment = fragment ? new fragment({ object: this }) : null;
+  }
+
+  isAllowedToInteract(invaderDirection: string) {
+    return this.allowedDirections.includes(invaderDirection);
+  }
+
+  isInside(where: 'object' | 'hitbox', invader: coordinate) {
+    const w = where === 'object' ? this.position.tiles : this.position.hitboxes;
+
+    for (let i = 0; i < w.length; i++) {
+      const absolutePosition = {
+        x: this.position.map.x + w[i].x,
+        y: this.position.map.y + w[i].y,
+      };
+      if (getDistance(invader, absolutePosition) < 5) return true;
+    }
+    return false;
   }
 
   getSize() {
@@ -73,16 +115,39 @@ export class InteractiveObject {
     this.sprite.setSize(newSize);
   }
 
-  setPosition(pos: position) {
-    this.position = pos;
+  incrementalMoveTo(delta: coordinate) {
+    this.position.canvas.x += delta.x;
+    this.position.canvas.y += delta.y;
+    this.position.map.x += delta.x;
+    this.position.map.y += delta.y;
+  }
+
+  setPosition(ofWhat: 'canvas' | 'map', pos: coordinate) {
+    const diff = {
+      x: this.position.canvas.x - this.position.map.x,
+      y: this.position.canvas.y - this.position.map.y,
+    };
+    if (ofWhat === 'canvas') {
+      this.position.canvas = pos;
+      this.position.map = {
+        x: pos.x - diff.x,
+        y: pos.y - diff.y,
+      };
+    } else {
+      this.position.map = pos;
+      this.position.canvas = {
+        x: pos.x + diff.x,
+        y: pos.y + diff.y,
+      };
+    }
   }
 
   setHighlight(high: boolean) {
     this.isHighlighted = high;
   }
 
-  setHitboxes(newHitboxes: hitbox[]) {
-    this.hitboxes = newHitboxes;
+  setHitboxes(newHitboxes: coordinate[]) {
+    this.position.hitboxes = newHitboxes;
   }
 
   getAllDimensions() {
@@ -91,99 +156,105 @@ export class InteractiveObject {
     const ratio = h / this.sprite.rows / (w / this.sprite.columns);
 
     return {
-      x: this.position.x,
-      y: this.position.y,
+      position: this.position,
       width: this.size,
       height: this.size * ratio,
-      hitboxes: this.hitboxes,
     };
   }
 
-  private toggleState(key: string | undefined) {
-    if (key !== ACTION_KEYS[0].key || !this.action) return;
+  getFragment() {
+    return this.fragment;
+  }
 
+  setFragment(newFrag: Fragment | null) {
+    this.fragment = newFrag;
+  }
+
+  isBeingInteractedWith() {
+    return this.fragment && this.fragment.isVisible();
+  }
+
+  interact(player: Player, key: string | undefined) {
+    this.updateKey(key);
+  }
+
+  toggleState() {
+    this.state = !this.state;
     this.action.sound.play();
-    this.isOpen = !this.isOpen;
   }
 
-  getNearestItem() {
-    if (!this.slots || this.slots.length === 0) return undefined;
-    return this.slots[0].object;
-  }
-
-  takeItem() {
-    if (!this.slots || this.slots.length === 0) return;
-    this.slots[0].object = undefined;
-  }
-
-  putItem(item: DraggableObject) {
-    if (!this.slots || this.slots.length === 0) return;
-    this.slots[0].object = item;
-  }
-
-  orderSlotsAccordingToDistance(player: Player) {
-    if (!this.slots) return;
-    const { x, y, width, height } = player.getAllDimensions();
-    const p = { x: x + width / 2, y: y + height };
-    this.slots.sort((a, b) => a.getDistanceTo(p) - b.getDistanceTo(p));
-  }
-
-  private renderHitboxes(canvas: CanvasRenderingContext2D) {
-    canvas.fillStyle = 'lime';
-    this.hitboxes.forEach((hit) => {
-      canvas.fillRect(
-        this.position.x + hit.offset.x,
-        this.position.y + hit.offset.y,
-        hit.size,
-        hit.size
-      );
-    });
-  }
-
-  private renderTexts(canvas: CanvasRenderingContext2D) {
+  private drawTexts(canvas: CanvasRenderingContext2D) {
     if (!this.isHighlighted || !this.action) return;
+    if (this.fragment && this.fragment.isVisible()) return;
 
     const pos = {
-      x: this.position.x + this.size / 2,
-      y: this.position.y,
+      x: this.position.canvas.x + this.size / 2,
+      y: this.position.canvas.y,
     };
 
-    const action = this.isOpen
-      ? this.action.options[1]
-      : this.action.options[0];
-    this.action.object.setText(action);
-
-    this.action.object.render(canvas, {
+    this.action.description.render(canvas, {
       x: pos.x,
       y: pos.y,
     });
   }
 
-  private renderSlots(canvas: CanvasRenderingContext2D) {
-    if (this.slots && (this.slotsAlwaysVisible || this.isOpen)) {
-      this.slots.forEach((slot, i) => {
-        i === 0 &&
-          slot.setText(slot.object ? `pegar ${slot.object.name}` : 'vazio');
-        slot.render(canvas, this.isHighlighted && i === 0);
-      });
+  private drawItems(canvas: CanvasRenderingContext2D) {
+    if (!this.fragment || !this.state) return;
+    const items = this.fragment.getItems().map((item) => item.sprite);
+    items.forEach((item) => {
+      item.setSize(0.5 * item.getSize());
+      item.render(canvas, {
+        x: this.position.canvas.x + 0.5 * this.size,
+        y: this.position.canvas.y + 0.5 * this.size,
+      }); //TODO melhorar o posicionamento
+    });
+  }
+
+  private drawHitboxes(canvas: CanvasRenderingContext2D) {
+    this.position.tiles.forEach((tile) => {
+      const absolutePosition = {
+        x: this.position.map.x + tile.x,
+        y: this.position.map.y + tile.y,
+      };
+      renderHitbox(canvas, absolutePosition, 10, 'firebrick');
+    });
+
+    this.position.hitboxes.forEach((hitbox) => {
+      const absolutePosition = {
+        x: this.position.map.x + hitbox.x,
+        y: this.position.map.y + hitbox.y,
+      };
+      renderHitbox(canvas, absolutePosition, 10, 'gold');
+    });
+  }
+
+  private updateKey(key: string | undefined) {
+    if (key === ACTION_KEYS[0].key && this.action) {
+      if (!this.lastKeyPressed && this.isHighlighted) {
+        this.fragment && this.fragment.toggleVisibility();
+      }
     }
+    this.lastKeyPressed = key;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  update(keyPressed: string | undefined) {
-    if (!this.lastKeyPressed && this.isHighlighted) {
-      this.toggleState(keyPressed);
+  update() {
+    if (this.state && this.action.options.length > 1) {
+      this.sprite.setQuad([1, this.isHighlighted ? 1 : 0]);
+    } else {
+      this.sprite.setQuad([0, this.isHighlighted ? 1 : 0]);
     }
-    this.sprite.setQuad([this.isOpen ? 1 : 0, this.isHighlighted ? 1 : 0]);
-    this.lastKeyPressed = keyPressed;
   }
 
   render(canvas: CanvasRenderingContext2D) {
-    this.sprite.render(canvas, this.position);
-    this.renderTexts(canvas);
-    this.renderSlots(canvas);
+    this.sprite.render(canvas, this.position.canvas);
+    this.drawTexts(canvas);
+    // this.drawItems(canvas);
+    SHOW_HITBOX && this.drawHitboxes(canvas);
+  }
 
-    SHOW_HITBOX && this.renderHitboxes(canvas);
+  renderFragment(canvas: CanvasRenderingContext2D) {
+    this.fragment && this.fragment.render(canvas);
   }
 }
