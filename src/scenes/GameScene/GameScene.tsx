@@ -31,6 +31,8 @@ export function GameScene() {
     });
   };
 
+  const randomFragment = <ComputerScene />;
+
   useLayoutEffect(() => {
     // Still need to add a loading state
     const width = window.innerWidth;
@@ -48,9 +50,8 @@ export function GameScene() {
       setGameScale(heightRatio);
     }
     handleStartGame();
+    showPopup(randomFragment)
   }, []);
-
-  const randomFragment = <ComputerScene />;
 
   return (
     <>
@@ -61,7 +62,6 @@ export function GameScene() {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <h1 onClick={() => showPopup(randomFragment)}>Game</h1>
         <canvas
           style={{
             transform: `scale(${gameScale})`,
