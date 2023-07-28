@@ -1,11 +1,11 @@
-import { clickableArea, coordinate, interactiveCoords } from '../types';
-import { getDistance } from '../functions/Metrics';
+import { clickableArea, coordinate } from '../types';
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../constants';
 import { InteractiveObject } from './InteractiveObject';
 import { FloatingText } from './FloatingText';
+import { InventoryItem } from './InventoryItem';
 import eKey from '../assets/icons/e-key.png';
 import cursorKey from '../assets/icons/cursor.png';
-import { InventoryItem } from './InventoryItem';
+import { getDistance } from '../functions/Metrics';
 
 export type FragmentParams = {
   object?: InteractiveObject;
@@ -31,6 +31,7 @@ export abstract class Fragment {
     this.items = [];
   }
 
+  abstract update(dt: number): void;
   abstract interact(clickCoords: coordinate): void;
   abstract render(canvas: CanvasRenderingContext2D): void;
 

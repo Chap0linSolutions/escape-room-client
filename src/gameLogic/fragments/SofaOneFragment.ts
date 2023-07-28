@@ -1,13 +1,13 @@
 import { Sprite, Fragment, FragmentParams, InventoryItem } from '../../classes';
 import { InputHandler } from '../../events/InputHandler';
 import { State } from '../state';
-import sofaSprite from '../../assets/fragments/sofaOneFragment.png';
-import CabinetKeyIcon from '../../assets/items/cabinet-key.png';
-import CabinetKeySprite from '../../assets/items/cabinet-key-sprite.png';
-import WooshSound from '../../assets/sounds/woosh1.mp3';
 import { coordinate } from '../../types';
 import { renderHitbox } from '../../functions/Metrics';
 import { SHOW_HITBOX } from '../../constants';
+import sofaSprite from '../../assets/fragments/fragment8/fragment8.png';
+import CabinetKeyIcon from '../../assets/items/cabinet-key.png';
+import CabinetKeySprite from '../../assets/items/cabinet-key-sprite.png';
+import WooshSound from '../../assets/sounds/woosh1.mp3';
 
 export class SofaOneFragment extends Fragment {
   interactions;
@@ -103,6 +103,8 @@ export class SofaOneFragment extends Fragment {
       this.interactions.pillowRight.radius
     );
   }
+
+  update(dt: number){}
 
   render(canvas: CanvasRenderingContext2D): void {
     const { width, height } = this.sprite.getAllDimensions();

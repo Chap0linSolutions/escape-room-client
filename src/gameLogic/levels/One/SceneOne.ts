@@ -11,11 +11,11 @@ import juniorDeskSprite from '../../../assets/isometric/juniorDesk.png';
 import internDeskSprite from '../../../assets/isometric/internDesk.png';
 import beanBagsSprite from '../../../assets/isometric/beanBags.png';
 import bookshelfSprite from '../../../assets/isometric/bookshelf.png';
-
 import { tileMap } from './TileMap';
+import { easyCoords } from '../../../functions/Builder';
 import { InteractiveObject, Floor } from '../../../classes';
 import { SofaOneFragment } from '../../fragments/SofaOneFragment';
-import { easyCoords } from '../../../functions/Builder';
+import { DoorFragment } from '../../fragments/fragment5/DoorFragment';
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
@@ -68,8 +68,10 @@ const objects = [
       ],
     },
     allowedDirections: ['up'],
-    action: null,
-    fragment: null,
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: DoorFragment,
   }),
 
   new InteractiveObject({

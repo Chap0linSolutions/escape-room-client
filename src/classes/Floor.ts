@@ -1,6 +1,5 @@
 //import { ISOMETRIC_ANGLE } from '../constants';
 import {
-  ISOMETRIC_ANGLE,
   SHOW_HITBOX,
   SHOW_TILEMAP,
   DX,
