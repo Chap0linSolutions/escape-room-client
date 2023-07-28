@@ -29,6 +29,11 @@ const canvasBottom = {
   y: CANVAS_HEIGHT,
 };
 
+const renderBackground = (canvas: CanvasRenderingContext2D) => {
+  canvas.fillStyle = '#464646';
+  canvas.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+};
+
 const renderWalkPadding = (canvas: CanvasRenderingContext2D) => {
   canvas.fillStyle = '#FF000022';
   canvas.fillRect(0, 0, WALK_TOGGLE_PADDING, CANVAS_HEIGHT);
@@ -102,19 +107,21 @@ export default function RenderAll({
     o.fragment && o.fragment.isVisible() && fragments.push(o);
   });
 
-  ground.render(context);
-
   renderables.sort((a, b) => {
     const h = b.center.x - a.center.x;
     const l = b.center.y - a.center.y;
     const g = getDistance(b.center, a.center);
-    const angle = Math.asin(l / g);
-    if ((angle > Math.PI / 9 && h > 0) || (angle > -Math.PI / 9 && h <= 0)) {
+    const angle = 180 * Math.asin(l / g) / Math.PI;
+    if ((h > 0 && angle > 35 ) || (angle > -35 && h <= 0)) {
       return -1;
     }
     return 1;
   });
-  
+
+  renderBackground(context);
+
+  ground.render(context);
+
   renderables.forEach((r) => {
     r.object.render(context);
     SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin, ground);

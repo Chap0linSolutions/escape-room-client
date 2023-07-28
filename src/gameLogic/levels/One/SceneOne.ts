@@ -23,12 +23,13 @@ import {
   DX,
   DY,
 } from '../../../constants';
+import { internDeskFragment } from '../../fragments/internDeskFragment';
 import { TableFragment } from '../../fragments/TableFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOneOrigin = {
   x: FLOOR_PADDING,
-  y: 0.75 * CANVAS_HEIGHT,
+  y: 0.75 * 700,
 };
 
 const playerOrigin = {
@@ -40,7 +41,7 @@ const playerOrigin = {
 const floor = new Floor({
   tileMap,
   spriteSrc: roomSprite,
-  size: 2.05 * CANVAS_WIDTH,
+  size: 2.05 * 1000,
   position: {
     canvas: { x: mapOneOrigin.x - 35, y: mapOneOrigin.y - 39 * DY },
     map: mapOneOrigin,
@@ -93,7 +94,7 @@ const objects = [
     interactible: true,
     size: 395,
     position: {
-      referenceTile: { x: 3, y: 0.5 },
+      referenceTile: { x: 5, y: 0.5 },
       canvas: { x: 105, y: 240 },
       map: { x: mapOneOrigin.x + DX, y: mapOneOrigin.y },
       tiles: [
@@ -130,7 +131,7 @@ const objects = [
     interactible: true,
     size: 215,
     position: {
-      referenceTile: { x: 9.5, y: 0 },
+      referenceTile: { x: 9.5, y: -0.5 },
       canvas: { x: 420, y: 105 },
       map: { x: mapOneOrigin.x + DX, y: mapOneOrigin.y },
       tiles: [
@@ -196,10 +197,11 @@ const objects = [
     interactible: true,
     size: 620,
     position: {
-      referenceTile: { x: 3, y: 8.5 },
+      referenceTile: { x: 4, y: 8 },
       canvas: { x: 280, y: 380 },
       map: { x: mapOneOrigin.x + DX, y: mapOneOrigin.y },
       tiles: [
+        easyCoords({ x: 0, y: 5 }),
         easyCoords({ x: 0, y: 6 }),
         easyCoords({ x: 1, y: 5 }),
         easyCoords({ x: 2, y: 7 }),
@@ -390,7 +392,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: internDeskFragment,
   }),
 
   new InteractiveObject({
