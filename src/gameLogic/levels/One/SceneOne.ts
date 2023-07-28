@@ -23,6 +23,8 @@ import {
   DX,
   DY,
 } from '../../../constants';
+import { internDeskFragment } from '../../fragments/internDeskFragment';
+import { TableFragment } from '../../fragments/TableFragment';
 import { PuffsFragment } from '../../fragments/PuffsFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
@@ -238,18 +240,20 @@ const objects = [
         easyCoords({ x: 6, y: 10 }),
       ],
       hitboxes: [
-        easyCoords({ x: 1, y: 6 }),
         easyCoords({ x: 1, y: 7 }),
         easyCoords({ x: 1, y: 8 }),
         easyCoords({ x: 1, y: 9 }),
-        easyCoords({ x: 1, y: 10 }),
+        easyCoords({ x: 7, y: 6 }),
+        easyCoords({ x: 7, y: 7 }),
+        easyCoords({ x: 7, y: 8 }),
+        easyCoords({ x: 7, y: 9 }),
       ],
     },
-    allowedDirections: ['up'],
+    allowedDirections: ['up', 'down'],
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: TableFragment,
   }),
 
   new InteractiveObject({
@@ -389,7 +393,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: internDeskFragment,
   }),
 
   new InteractiveObject({
