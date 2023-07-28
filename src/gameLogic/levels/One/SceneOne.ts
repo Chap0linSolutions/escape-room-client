@@ -25,6 +25,7 @@ import {
 } from '../../../constants';
 import { internDeskFragment } from '../../fragments/internDeskFragment';
 import { TableFragment } from '../../fragments/TableFragment';
+import { PuffsFragment } from '../../fragments/PuffsFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOneOrigin = {
@@ -426,7 +427,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: PuffsFragment,
   }),
 
   new InteractiveObject({
