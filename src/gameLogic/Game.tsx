@@ -259,7 +259,7 @@ export class Game {
 
   GameLoop = (context: CanvasRenderingContext2D, dt: number) => {
     context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    console.log(this.key);
+    // console.log(this.key);
     UpdateAll({
       dt,
       key: this.key,

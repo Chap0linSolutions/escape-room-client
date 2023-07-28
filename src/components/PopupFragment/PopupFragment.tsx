@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import closeWindowIcon from '../../assets/PCMechanics/close-window-icon.png';
 
 type PopupProps = {
   show?: boolean;
@@ -26,13 +27,19 @@ export const PopupFragment = ({ show, closePopup, children }: PopupProps) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          alignItems: 'center',
-          background: 'white',
-          width: '500px',
-          height: '500px',
+          alignItems: 'flex-end',
+          background: '#D9D9D9',
+          width: '960px',
+          height: '720px',
         }}>
+        <button style={{
+          borderRadius: '20px',
+          background: '#D9D9D9',
+          padding: '0px',
+        }} onClick={closePopup}>
+          <img src={closeWindowIcon}/>
+        </button>
         {children}
-        <button onClick={closePopup}>Close</button>
       </div>
     </div>
   );

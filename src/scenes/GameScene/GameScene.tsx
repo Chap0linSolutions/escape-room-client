@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { usePopupContext } from '../../contexts';
 import { useGameLoop, useGameState } from '../../hooks';
 import { Button } from './GameScene.style';
+import { ComputerScene } from '../ComputerMechanics/ComputerScene';
 
 export function GameScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -19,7 +20,7 @@ export function GameScene() {
     startGame(canvasRef);
   };
 
-  const randomFragment = <h1 style={{ color: 'green' }}>Daleeeeeee brabo</h1>;
+  const randomFragment = <ComputerScene />;
 
   return (
     <div>
