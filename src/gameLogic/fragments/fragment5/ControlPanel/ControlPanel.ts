@@ -83,7 +83,6 @@ export class ControlPanel {
     };
 
     this.genius = new Genius({ controlPanel: this });
-    this.disconnect();
   }
 
   setPositionRelativeToReference(fragmentPosition: coordinate) {

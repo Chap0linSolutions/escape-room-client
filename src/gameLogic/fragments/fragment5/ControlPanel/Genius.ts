@@ -13,7 +13,7 @@ import geniusSound4 from '../../../../assets/sounds/genius4.mp3';
 import Sound from '../../../../classes/Sound';
 
 const hitboxRadius = 9;
-const pointsToVictory = 3;
+const pointsToVictory = 10;
 
 type geniusButton = {
   name: string;
@@ -84,7 +84,7 @@ export class Genius {
       columns: 5,
     });
     this.logic = new GeniusLogic({ genius: this });
-    this.logic.startNewLevel(1);
+    this.logic.startNewLevel();
 
     this.correctSound = new Sound({ source: rightGuessSound });
     this.wrongSound = new Sound({ source: wrongGuessSound });

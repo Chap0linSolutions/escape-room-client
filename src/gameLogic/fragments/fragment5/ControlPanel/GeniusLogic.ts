@@ -94,6 +94,10 @@ export class GeniusLogic {
     return newLevel;
   }
 
+  private sortButton(){
+    return this.buttons[Math.floor(this.buttons.length * Math.random())]
+  }
+
   resetLevel() {
     this.dt = 0;
     this.index = 0;
@@ -138,10 +142,9 @@ export class GeniusLogic {
 
   startNewLevel(newLength?: number) {
     this.resetLevel();
-    const nextLevelLength = newLength
-      ? newLength
-      : this.currentLevel.length + 1;
-    this.currentLevel = this.sortLevel(nextLevelLength);
+    this.currentLevel = newLength
+    ? this.sortLevel(newLength)
+    : [...this.currentLevel, this.sortButton()];
   }
 
   getState() {
