@@ -17,8 +17,6 @@ export function PendriveFolder() {
   const [noPermissionAlert, setNoPermissionAlert] = useState(false);
   const [warningWindow, setWarningWindow] = useState(false);
 
-
-
   const toggleShowNoPermission = () => {
     setNoPermissionAlert((previousValue) => !previousValue);
   }

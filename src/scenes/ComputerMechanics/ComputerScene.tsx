@@ -39,11 +39,12 @@ export function ComputerScene() {
 
   const [pendriveOpened, setPendriveOpened] = useState(false);
   const [textFileOpened, setTextFileOpened] = useState(false);
-  const [exeFileOpened, setExeFileOpened] = useState(false);
+  const [bruteForceFile, setBruteForceFile] = useState(false);
   const [showReadmeTxt, setShowReadmeTxt] = useState(false);
   const [generalControlFile, setGeneralControlFile] = useState(false);
   const [temperature, setTemperature] = useState(22);
 
+  let isSenior = true;
 
   useEffect(() => {
     let currentFolderPath = miscFolder;
@@ -77,7 +78,7 @@ export function ComputerScene() {
     setLoadingBar(Array(14).fill(false));
     setShowPendrivePopup(false);
     setCurrentRequest(0);
-    setExeFileOpened(true);
+    setBruteForceFile(true);
     for (let i =0 ; i < 5; i+=1){
       await delay();
       setLoadingBar(t => {
@@ -101,7 +102,7 @@ export function ComputerScene() {
   }
 
   const closeExeFile = () => {
-    setExeFileOpened(false);
+    setBruteForceFile(false);
   }
 
   const closeErrorWindow = () => {
@@ -228,7 +229,7 @@ export function ComputerScene() {
               </div>
 
 
-              { exeFileOpened &&
+              { bruteForceFile &&
 
                 <div className="exeFile">
                   <div className="closeExeFile" onClick={closeExeFile} />
@@ -267,7 +268,7 @@ export function ComputerScene() {
             </>
             :
             <>
-              {exeFileOpened &&
+              {bruteForceFile &&
                 <div className="exeFile">
                   <div className="closeExeFile" onClick={closeExeFile} />
                   <img src={exeFileImg} className="exeFileImg" />
@@ -394,7 +395,7 @@ export function ComputerScene() {
               </>
             }
 
-            { exeFileOpened && 
+            { bruteForceFile && 
                 <div className="exeFile">
                   <div className="closeExeFile" onClick={closeExeFile} />
                   <img src={exeFileImg} className="exeFileImg" />
