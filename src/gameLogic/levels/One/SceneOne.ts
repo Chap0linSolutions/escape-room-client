@@ -23,7 +23,7 @@ import {
   DX,
   DY,
 } from '../../../constants';
-import { internDeskFragment } from '../../fragments/internDeskFragment';
+import { InternDeskFragment } from '../../fragments/InternDeskFragment';
 import { TableFragment } from '../../fragments/TableFragment';
 import { PuffsFragment } from '../../fragments/PuffsFragment';
 
@@ -395,7 +395,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: internDeskFragment,
+    fragment: InternDeskFragment,
   }),
 
   new InteractiveObject({

@@ -30,9 +30,11 @@ export class PuffsFragment extends Fragment {
     this.items = [];
     const inputHandler = new InputHandler();
     inputHandler.subscribe('mouseDown', 'fragmentMouseDown', (pos) =>
-      this.interact(pos)
+      this.handleClick(pos)
     );
   }
+
+  update(dt: number): void {}
 
   interact(clickCoords: coordinate): void {
     if (!this.position) return;

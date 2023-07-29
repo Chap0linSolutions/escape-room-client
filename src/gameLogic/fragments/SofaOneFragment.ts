@@ -42,12 +42,11 @@ export class SofaOneFragment extends Fragment {
     };
     const inputHandler = new InputHandler();
     inputHandler.subscribe('mouseDown', 'sofaFragmentMouseDown', (pos) =>
-      this.interact(pos)
+      this.handleClick(pos)
     );
   }
 
   interact(clickCoords: coordinate): void {
-    if (!this.isVisible()) return;
     const nothingUp =
       !this.plantVaseUp && !this.rightPillowUp && !this.leftPillowUp;
     if (nothingUp && this.isWithin(this.interactions.plantVase, clickCoords)) {

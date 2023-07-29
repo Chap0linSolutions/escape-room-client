@@ -37,7 +37,7 @@ export class DoorFragment extends Fragment {
     this.items = [];
     const inputHandler = new InputHandler();
     inputHandler.subscribe('mouseDown', 'sofaFragmentMouseDown', (pos) =>
-      this.interact(pos)
+      this.handleClick(pos)
     );
   }
 
@@ -59,7 +59,6 @@ export class DoorFragment extends Fragment {
   }
 
   interact(clickCoords: coordinate): void {
-    if (!this.isVisible()) return;
     this.controlPanel.interact(clickCoords);
     if (!this.plantVaseUp && this.isWithin(this.interactions.plantVase.hitbox, clickCoords)) {
       this.sprite.setQuad([0, 1]);
