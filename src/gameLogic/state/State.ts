@@ -21,6 +21,7 @@ export class State {
    */
   inventory = Array(10).fill({});
   activeItem = null;
+  pendriveConnectedAt = "senior"; // "senior", "pleno", "junior"
 
   constructor() {
     if (!!State.instance) {

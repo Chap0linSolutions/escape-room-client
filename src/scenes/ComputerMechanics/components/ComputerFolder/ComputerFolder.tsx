@@ -8,7 +8,7 @@ interface ComputerFolderProps {
   onFolderClick?: () =>void;
 }
 
-export default function ComputerFolder({
+export function ComputerFolder({
   folderIcon,
   folderName,
   smallSize,
