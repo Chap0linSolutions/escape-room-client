@@ -59,7 +59,7 @@ const renderWalkPadding = (canvas: CanvasRenderingContext2D) => {
 
 const renderDistance = (
   canvas: CanvasRenderingContext2D,
-  origin: coordinate,
+  origin: coordinate
 ) => {
   canvas.strokeStyle = 'red';
   canvas.lineWidth = 5;
@@ -110,8 +110,8 @@ export default function RenderAll({
     const h = b.center.x - a.center.x;
     const l = b.center.y - a.center.y;
     const g = getDistance(b.center, a.center);
-    const angle = 180 * Math.asin(l / g) / Math.PI;
-    if ((h > 0 && angle > 35 ) || (angle > -35 && h <= 0)) {
+    const angle = (180 * Math.asin(l / g)) / Math.PI;
+    if ((h > 0 && angle > 35) || (angle > -35 && h <= 0)) {
       return -1;
     }
     return 1;

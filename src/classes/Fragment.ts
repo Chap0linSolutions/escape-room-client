@@ -74,7 +74,6 @@ export abstract class Fragment {
 
   toggleVisibility() {
     this.visible = !this.visible;
-    console.log(this.visible);
   }
 
   isVisible() {

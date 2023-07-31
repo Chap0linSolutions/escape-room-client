@@ -3,7 +3,10 @@ import { GameCallbacks } from '../../types';
 
 export class State {
   private static instance: State;
-  cb: GameCallbacks & { setInventory?: (inventory: any) => void };
+  cb: GameCallbacks & {
+    setInventory?: (inventory: any) => void;
+    updateHUD?: () => void;
+  };
   paused = false;
   key = undefined;
   currentPlayer = '';
@@ -34,14 +37,15 @@ export class State {
     this.cb = { ...this.cb, ...gameCallbacks };
   }
 
-  setInventoryCallback(setInventory: any) {
-    this.cb = { ...this.cb, setInventory };
+  setInventoryCallback(setInventory: any, updateHUD: any) {
+    this.cb = { ...this.cb, setInventory, updateHUD };
   }
 
   addItem(item: InventoryItem) {
     const position = this.inventory.findIndex((v) => v.name === undefined);
     this.inventory[position] = item;
     this.cb.setInventory(this.inventory);
+    this.cb.updateHUD();
     console.log(
       'itens com o jogador:',
       this.inventory.map((item) => item.name)

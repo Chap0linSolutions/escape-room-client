@@ -29,7 +29,7 @@ export class PuffsFragment extends Fragment {
 
     this.items = [];
     const inputHandler = new InputHandler();
-    inputHandler.subscribe('mouseDown', 'fragmentMouseDown', (pos) =>
+    inputHandler.subscribe('mouseDown', 'puffsFragmentMouseDown', (pos) =>
       this.handleClick(pos)
     );
   }

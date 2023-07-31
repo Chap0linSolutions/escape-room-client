@@ -32,7 +32,7 @@ export class DoorFragment extends Fragment {
         hitbox: { coordinate: { x: 530, y: 450 }, radius: 40 },
         sound: new Sound({ source: plantSound }),
       },
-    }
+    };
 
     this.items = [];
     const inputHandler = new InputHandler();
@@ -60,7 +60,10 @@ export class DoorFragment extends Fragment {
 
   interact(clickCoords: coordinate): void {
     this.controlPanel.interact(clickCoords);
-    if (!this.plantVaseUp && this.isWithin(this.interactions.plantVase.hitbox, clickCoords)) {
+    if (
+      !this.plantVaseUp &&
+      this.isWithin(this.interactions.plantVase.hitbox, clickCoords)
+    ) {
       this.sprite.setQuad([0, 1]);
       this.liftPlant();
     } else {
@@ -77,7 +80,7 @@ export class DoorFragment extends Fragment {
     renderHitbox(
       canvas,
       this.getAbsoluteCoords(this.interactions.plantVase.hitbox.coordinate),
-      this.interactions.plantVase.hitbox.radius,
+      this.interactions.plantVase.hitbox.radius
     );
   }
 

@@ -35,7 +35,7 @@ export class TableFragment extends Fragment {
   update(dt: number): void {}
 
   interact(clickCoords: coordinate): void {
-    console.log("interactions", clickCoords)
+    console.log('interactions', clickCoords);
     const dist1 = getDistance(
       this.interactions.bottle1.coordinate,
       clickCoords

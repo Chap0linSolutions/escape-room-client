@@ -5,12 +5,7 @@ import { Sprite } from './Sprite';
 import { InventoryItem } from './InventoryItem';
 import { Floor } from './Floor';
 import { isInsideAllowedSpace, renderHitbox } from '../functions/Metrics';
-import {
-  ISOMETRIC_RATIO,
-  SHOW_HITBOX,
-  DX,
-  DY,
-} from '../constants';
+import { ISOMETRIC_RATIO, SHOW_HITBOX, DX, DY } from '../constants';
 
 function getDp(direction: string): quad {
   switch (direction) {

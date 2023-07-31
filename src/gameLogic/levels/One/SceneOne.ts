@@ -1,4 +1,4 @@
-import roomSprite from '../../../assets/isometric/room.png';
+import roomSprite from '../../../assets/isometric/room2.png';
 import waterDispenserSprite from '../../../assets/isometric/waterDispenser.png';
 import sofaOneSprite from '../../../assets/isometric/sofaOne.png';
 import sofaTwoSprite from '../../../assets/isometric/sofaTwo.png';
@@ -14,8 +14,15 @@ import bookshelfSprite from '../../../assets/isometric/bookshelf.png';
 import { tileMap } from './TileMap';
 import { easyCoords } from '../../../functions/Builder';
 import { InteractiveObject, Floor } from '../../../classes';
-import { SofaOneFragment } from '../../fragments/SofaOneFragment';
-import { DoorFragment } from '../../fragments/fragment5/DoorFragment';
+import {
+  SofaOneFragment,
+  DoorFragment,
+  InternDeskFragment,
+  TableFragment,
+  PuffsFragment,
+  DrawerFragment,
+} from '../../fragments';
+
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
@@ -23,9 +30,6 @@ import {
   DX,
   DY,
 } from '../../../constants';
-import { InternDeskFragment } from '../../fragments/InternDeskFragment';
-import { TableFragment } from '../../fragments/TableFragment';
-import { PuffsFragment } from '../../fragments/PuffsFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOneOrigin = {
@@ -154,7 +158,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: DrawerFragment,
   }),
 
   new InteractiveObject({
