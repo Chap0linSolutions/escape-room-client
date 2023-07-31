@@ -11,11 +11,19 @@ import juniorDeskSprite from '../../../assets/isometric/juniorDesk.png';
 import internDeskSprite from '../../../assets/isometric/internDesk.png';
 import beanBagsSprite from '../../../assets/isometric/beanBags.png';
 import bookshelfSprite from '../../../assets/isometric/bookshelf.png';
-
 import { tileMap } from './TileMap';
-import { InteractiveObject, Floor } from '../../../classes';
-import { SofaOneFragment } from '../../fragments/SofaOneFragment';
 import { easyCoords } from '../../../functions/Builder';
+import { InteractiveObject, Floor } from '../../../classes';
+import {
+  SofaOneFragment,
+  DoorFragment,
+  InternDeskFragment,
+  TableFragment,
+  PuffsFragment,
+  DrawerFragment,
+  SeniorDeskFragment,
+} from '../../fragments';
+
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
@@ -23,8 +31,6 @@ import {
   DX,
   DY,
 } from '../../../constants';
-import { internDeskFragment } from '../../fragments/internDeskFragment';
-import { SeniorDeskFragment } from '../../fragments/fragment1/SeniorDeskFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOneOrigin = {
@@ -67,8 +73,10 @@ const objects = [
       ],
     },
     allowedDirections: ['up'],
-    action: null,
-    fragment: null,
+    action: {
+      texts: ['interagir'],
+    },
+    fragment: DoorFragment,
   }),
 
   new InteractiveObject({
@@ -132,7 +140,7 @@ const objects = [
     size: 215,
     position: {
       referenceTile: { x: 9.5, y: -0.5 },
-      canvas: {x: 420, y: 105},
+      canvas: { x: 420, y: 105 },
       map: { x: mapOneOrigin.x + DX, y: mapOneOrigin.y },
       tiles: [
         easyCoords({ x: 8, y: 0 }),
@@ -151,7 +159,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: DrawerFragment,
   }),
 
   new InteractiveObject({
@@ -239,18 +247,20 @@ const objects = [
         easyCoords({ x: 6, y: 10 }),
       ],
       hitboxes: [
-        easyCoords({ x: 1, y: 6 }),
         easyCoords({ x: 1, y: 7 }),
         easyCoords({ x: 1, y: 8 }),
         easyCoords({ x: 1, y: 9 }),
-        easyCoords({ x: 1, y: 10 }),
+        easyCoords({ x: 7, y: 6 }),
+        easyCoords({ x: 7, y: 7 }),
+        easyCoords({ x: 7, y: 8 }),
+        easyCoords({ x: 7, y: 9 }),
       ],
     },
-    allowedDirections: ['up'],
+    allowedDirections: ['up', 'down'],
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: TableFragment,
   }),
 
   new InteractiveObject({
@@ -390,7 +400,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: internDeskFragment,
+    fragment: InternDeskFragment,
   }),
 
   new InteractiveObject({
@@ -424,7 +434,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: PuffsFragment,
   }),
 
   new InteractiveObject({

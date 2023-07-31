@@ -9,7 +9,6 @@ import {
   FloatingText,
   Fragment,
   FragmentParams,
-  Player,
   InventoryItem,
   Sprite,
 } from '../classes';
@@ -21,13 +20,6 @@ type Action = {
   sound: Sound; //qual som é feito quando a ação dispara
   description: FloatingText; //objeto de texto a ser exibido
   options: string[]; //opções de texto a serem exibidas no objeto
-};
-
-type Frag = {
-  sprite: string;
-  size: number;
-  items: InventoryItem[];
-  interactionCoordinates?: interactiveCoords;
 };
 
 type InteractiveObjectParams = {
@@ -174,7 +166,7 @@ export class InteractiveObject {
     return this.fragment && this.fragment.isVisible();
   }
 
-  interact(player: Player, key: string | undefined) {
+  interact(key: string | undefined) {
     this.updateKey(key);
   }
 
@@ -239,7 +231,8 @@ export class InteractiveObject {
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  update() {
+  update(dt: number) {
+    this.fragment && this.fragment.update(dt);
     if (this.state && this.action.options.length > 1) {
       this.sprite.setQuad([1, this.isHighlighted ? 1 : 0]);
     } else {

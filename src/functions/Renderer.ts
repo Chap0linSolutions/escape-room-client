@@ -8,7 +8,7 @@ import {
   SHOW_WALK_TOGGLE_PADDING,
   WALK_TOGGLE_PADDING,
 } from '../constants';
-import { getDistance, renderHitbox } from './Metrics';
+import { getDistance } from './Metrics';
 import { SHOW_DISTANCE_TO_BOTTOM_CORNER } from '../constants';
 
 interface RendererProps {
@@ -59,8 +59,7 @@ const renderWalkPadding = (canvas: CanvasRenderingContext2D) => {
 
 const renderDistance = (
   canvas: CanvasRenderingContext2D,
-  origin: coordinate,
-  floor: Floor
+  origin: coordinate
 ) => {
   canvas.strokeStyle = 'red';
   canvas.lineWidth = 5;
@@ -111,20 +110,19 @@ export default function RenderAll({
     const h = b.center.x - a.center.x;
     const l = b.center.y - a.center.y;
     const g = getDistance(b.center, a.center);
-    const angle = 180 * Math.asin(l / g) / Math.PI;
-    if ((h > 0 && angle > 35 ) || (angle > -35 && h <= 0)) {
+    const angle = (180 * Math.asin(l / g)) / Math.PI;
+    if ((h > 0 && angle > 35) || (angle > -35 && h <= 0)) {
       return -1;
     }
     return 1;
   });
 
   renderBackground(context);
-
   ground.render(context);
 
   renderables.forEach((r) => {
     r.object.render(context);
-    SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin, ground);
+    SHOW_DISTANCE_TO_BOTTOM_CORNER && renderDistance(context, r.origin);
   });
 
   fragments.forEach((f) => f.renderFragment(context));
