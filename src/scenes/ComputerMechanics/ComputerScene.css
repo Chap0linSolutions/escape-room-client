@@ -1,7 +1,8 @@
 .screenContainer {
   width: 100%;
   height: 100%;
-  background: no-repeat center/100% url(./img/desktop-base.png);
+  background: no-repeat center/105% url(../../assets/PCMechanics/desktop-base.png);
+  background-color: aqua;
   position: relative;
   z-index: 0;
 }
