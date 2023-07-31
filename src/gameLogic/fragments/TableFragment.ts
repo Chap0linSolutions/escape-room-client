@@ -28,11 +28,14 @@ export class TableFragment extends Fragment {
     };
     const inputHandler = new InputHandler();
     inputHandler.subscribe('mouseDown', 'tableFragmentMouseDown', (pos) =>
-      this.interact(pos)
+      this.handleClick(pos)
     );
   }
+
+  update(dt: number): void {}
+
   interact(clickCoords: coordinate): void {
-    if (!this.isVisible()) return;
+    console.log('interactions', clickCoords);
     const dist1 = getDistance(
       this.interactions.bottle1.coordinate,
       clickCoords

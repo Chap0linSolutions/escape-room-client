@@ -14,8 +14,15 @@ import bookshelfSprite from '../../../assets/isometric/bookshelf.png';
 import { tileMap } from './TileMap';
 import { easyCoords } from '../../../functions/Builder';
 import { InteractiveObject, Floor } from '../../../classes';
-import { SofaOneFragment } from '../../fragments/SofaOneFragment';
-import { DoorFragment } from '../../fragments/fragment5/DoorFragment';
+import {
+  SofaOneFragment,
+  DoorFragment,
+  InternDeskFragment,
+  TableFragment,
+  PuffsFragment,
+  DrawerFragment,
+} from '../../fragments';
+
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
@@ -23,9 +30,6 @@ import {
   DX,
   DY,
 } from '../../../constants';
-import { internDeskFragment } from '../../fragments/internDeskFragment';
-import { TableFragment } from '../../fragments/TableFragment';
-import { PuffsFragment } from '../../fragments/PuffsFragment';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOneOrigin = {
@@ -154,7 +158,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: DrawerFragment,
   }),
 
   new InteractiveObject({
@@ -395,7 +399,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: internDeskFragment,
+    fragment: InternDeskFragment,
   }),
 
   new InteractiveObject({

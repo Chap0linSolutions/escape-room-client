@@ -35,6 +35,12 @@ export abstract class Fragment {
   abstract interact(clickCoords: coordinate): void;
   abstract render(canvas: CanvasRenderingContext2D): void;
 
+  handleClick(pos) {
+    if (this.visible) {
+      this.interact(pos);
+    }
+  }
+
   setItems(newItems: InventoryItem[]) {
     this.items = newItems;
   }
@@ -68,7 +74,6 @@ export abstract class Fragment {
 
   toggleVisibility() {
     this.visible = !this.visible;
-    console.log(this.visible);
   }
 
   isVisible() {
