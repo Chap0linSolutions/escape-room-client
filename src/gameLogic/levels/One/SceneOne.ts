@@ -1,4 +1,4 @@
-import roomSprite from '../../../assets/isometric/room2.png';
+import roomSprite from '../../../assets/isometric/room.png';
 import waterDispenserSprite from '../../../assets/isometric/waterDispenser.png';
 import sofaOneSprite from '../../../assets/isometric/sofaOne.png';
 import sofaTwoSprite from '../../../assets/isometric/sofaTwo.png';

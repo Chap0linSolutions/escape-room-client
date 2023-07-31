@@ -6,7 +6,7 @@ import Sound from '../../../classes/Sound';
 import soundFile from '../../../assets/sounds/woosh1.mp3';
 import locked from '../../../assets/sounds/locked.wav';
 import unlocked from '../../../assets/sounds/unlocked.wav';
-import drawerSprite from '../../../assets/fragments/frag7painting.png';
+import drawerSprite from '../../../assets/fragments/fragment7.png';
 
 import { renderHitbox } from '../../../functions/Metrics';
 import { Vault } from './Vault';
