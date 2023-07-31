@@ -147,12 +147,12 @@ export function ComputerScene({ owner }: ComputerSceneProps) {
             }
 
             {showPendrivePopup &&
-              <>
+              <div className="optionsBackdrop" onClick={() => setShowPendrivePopup(false)}>
                 <div className="optionsContainer">
                   <div className="optionItem" onClick={handleExeFileClick}>Executar arquivo</div>
                   <div className="optionItem" onClick={handleCopyFile}>Copiar para Pendrive</div>
                 </div>
-              </>
+              </div>
             }
 
             {bruteForceFile &&
