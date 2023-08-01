@@ -216,3 +216,22 @@ export const miscFolder = [
     children: []
   },
 ]
+
+
+export const computerProperties = {
+  senior: {
+    folderStructure: miscFolder,
+    background: '#93CEDB',
+    password: ''
+  },
+  pleno: {
+    folderStructure: [],
+    background: 'rebeccapurple',
+    password: ''
+  },
+  junior: {
+    folderStructure: [],
+    background: 'rgb(65,248,124)',
+    password: ''
+  },
+}

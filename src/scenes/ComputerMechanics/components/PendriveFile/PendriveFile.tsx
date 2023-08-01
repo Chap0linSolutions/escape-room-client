@@ -4,6 +4,7 @@ import { ComputerFolder } from "../ComputerFolder";
 import pendriveOpenedImg from "../../../../assets/PCMechanics/pendrive-folder.png";
 import exeIcon from "../../../../assets/PCMechanics/console-icon-44.png";
 import textIcon from "../../../../assets/PCMechanics/text-file-icon-44.png";
+import { State } from "../../../../gameLogic/state";
 
 interface PendriveFileProps {
   children: ReactNode;
@@ -11,11 +12,13 @@ interface PendriveFileProps {
   openBruteForceFile: () => void;
   showPermissionAlert: () => void;
   close: () => void;
+  showPendrivePopup: () => void;
 }
 
-export function PendriveFile({ children, openReadme, openBruteForceFile, showPermissionAlert, close }: PendriveFileProps) {
+export function PendriveFile({ children, openReadme, openBruteForceFile, showPermissionAlert, close, showPendrivePopup }: PendriveFileProps) {
+  const state = new State();
   const [generalControlFile, setGeneralControlFile] = useState(false);
-  const copiedToPendrive = true;
+  const copiedToPendrive = state.exeOnPendrive;
 
   const openGeneralControlFile = () => {
     setGeneralControlFile(true);
@@ -38,23 +41,22 @@ export function PendriveFile({ children, openReadme, openBruteForceFile, showPer
             onFolderClick={openGeneralControlFile}
             smallSize={true}
           />
+          { copiedToPendrive &&
+            <ComputerFolder 
+              folderIcon={exeIcon} 
+              folderName={`BruteForce Disconnect.exe`}
+              onFolderClick={showPendrivePopup}
+              smallSize={true}
+            />
+          }
           <ComputerFolder 
             folderIcon={textIcon} 
             folderName={`README.txt`}
             onFolderClick={ openReadme }
             smallSize={true}
           />
-          { copiedToPendrive &&
-            <ComputerFolder 
-              folderIcon={exeIcon} 
-              folderName={`BruteForce Disconnect.exe`}
-              onFolderClick={openBruteForceFile}
-              smallSize={true}
-            />
-          }
         </div>
       </div>
-
 
       { generalControlFile && 
         <GeneralControlFile close={closeGeneralControlFile}/>

@@ -31,7 +31,7 @@ export function GameScene() {
     });
   };
 
-  const randomFragment = <ComputerScene owner='senior' />;
+  const randomFragment = <ComputerScene owner = "senior" />;
 
   useLayoutEffect(() => {
     // Still need to add a loading state

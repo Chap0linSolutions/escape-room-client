@@ -22,6 +22,12 @@ export class State {
   inventory = Array(10).fill({});
   activeItem = null;
   pendriveConnectedAt = "senior"; // "senior", "pleno", "junior"
+  exeOnDesktop = {
+    senior: false,
+    pleno: false,
+    junior: false
+  };
+  exeOnPendrive = false;
 
   constructor() {
     if (!!State.instance) {

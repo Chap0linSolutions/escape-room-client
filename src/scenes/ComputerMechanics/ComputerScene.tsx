@@ -13,8 +13,9 @@ import trashIcon from "../../assets/PCMechanics/trash-icon.png";
 import explorerFolderIcon from "../../assets/PCMechanics/explorer-folder-icon.png";
 import musicFolderIcon from "../../assets/PCMechanics/music-folder-icon.png";
 import folderOpenedImg from "../../assets/PCMechanics/files-explorer.png";
+import exeFileImg from "../../assets/PCMechanics/console-icon-44.png";
 
-import { miscFolder } from "./folderStructure";
+import { computerProperties } from "./computerProperties";
 import fileType from "./fileTypes";
 
 import './ComputerScene.css';
@@ -25,10 +26,11 @@ interface ComputerSceneProps {
 }
 
 export function ComputerScene({ owner }: ComputerSceneProps) {
+  const configs = computerProperties[owner];
   const [folderOpened, setFolderOpened] = useState<boolean>(false);
 
   const [pathCurrentFolder, setPathCurrentFolder] = useState<number[]>([]);
-  const [folderItems, setFolderItems] = useState(miscFolder);
+  const [folderItems, setFolderItems] = useState(configs.folderStructure);
 
   // janelas de erros e warnings
   const [noPermissionAlert, setNoPermissionAlert] = useState(false);
@@ -36,7 +38,7 @@ export function ComputerScene({ owner }: ComputerSceneProps) {
   // pendrive
   const [showPendrivePopup, setShowPendrivePopup] = useState(false);
   const [pendriveOpened, setPendriveOpened] = useState(false);
-
+  
   // abrir arquivos
   const [textFileOpened, setTextFileOpened] = useState<TextTypes | null>(null);
 
@@ -46,7 +48,7 @@ export function ComputerScene({ owner }: ComputerSceneProps) {
   const pendriveConnected = state.pendriveConnectedAt === owner;
 
   useEffect(() => {
-    let currentFolderPath = miscFolder;
+    let currentFolderPath = configs.folderStructure;
     for (let i = 0; i < pathCurrentFolder.length; i++) {
       currentFolderPath = currentFolderPath[pathCurrentFolder[i]].children;
     }
@@ -78,8 +80,13 @@ export function ComputerScene({ owner }: ComputerSceneProps) {
     setShowPendrivePopup(false);
   }
 
-  const handleCopyFile = () => {
-    // setCopyToPendrive(true);
+  const copyToPendrive = () => {
+    state.exeOnPendrive = true;
+    setShowPendrivePopup(false);
+  }
+
+  const copyToDesktop = () => {
+    state.exeOnDesktop[owner] = true;
     setShowPendrivePopup(false);
   }
 
@@ -98,7 +105,7 @@ export function ComputerScene({ owner }: ComputerSceneProps) {
   }
 
   return (
-    <div className="screenContainer">
+    <div className="screenContainer" style={{ backgroundColor: configs.background }}>
       {noPermissionAlert &&
         <NoPermissionAlert toggleShowNoPermission={toggleShowNoPermission} />
       }
@@ -150,7 +157,7 @@ export function ComputerScene({ owner }: ComputerSceneProps) {
               <div className="optionsBackdrop" onClick={() => setShowPendrivePopup(false)}>
                 <div className="optionsContainer">
                   <div className="optionItem" onClick={handleExeFileClick}>Executar arquivo</div>
-                  <div className="optionItem" onClick={handleCopyFile}>Copiar para Pendrive</div>
+                  <div className="optionItem" onClick={copyToPendrive}>Copiar para Pendrive</div>
                 </div>
               </div>
             }
@@ -161,21 +168,35 @@ export function ComputerScene({ owner }: ComputerSceneProps) {
           </>
         }
 
-        {pendriveOpened &&
+        { pendriveOpened &&
           <PendriveFile
             close={toggleShowPendriveFolder}
             openReadme={() => setTextFileOpened("readme")}
             openBruteForceFile={handleExeFileClick}
             showPermissionAlert={toggleShowNoPermission}
+            showPendrivePopup={ () => setShowPendrivePopup(true)}
           >
-            {textFileOpened === "readme" &&
+            { textFileOpened === "readme" &&
               <TextFiles file="readme" close={closeTextFile} />
             }
 
-            {bruteForceFile &&
+            { bruteForceFile &&
               <BruteForceFile close={closeExeFile} />
             }
+
+            { showPendrivePopup &&
+              <div className="optionsBackdrop" onClick={() => setShowPendrivePopup(false)}>
+                <div className="optionsContainer">
+                  <div className="optionItem" onClick={handleExeFileClick}>Executar arquivo</div>
+                  <div className="optionItem" onClick={copyToDesktop}>Copiar para área de trabalho </div>
+                </div>
+              </div>
+            }
           </PendriveFile>
+        }
+
+        { bruteForceFile && !pendriveOpened && !folderOpened &&
+          <BruteForceFile close={closeExeFile} />
         }
 
         <div className="desktopIcons">
@@ -201,7 +222,13 @@ export function ComputerScene({ owner }: ComputerSceneProps) {
               onFolderClick={toggleShowPendriveFolder}
             />
           }
-          
+          { state.exeOnDesktop[owner] &&
+            <ComputerFolder
+              folderIcon={exeFileImg}
+              folderName={`BruteForce Disconnect.exe`}
+              onFolderClick={handleExeFileClick}
+            />
+          }
         </div>
 
         <div className="taskBar">
