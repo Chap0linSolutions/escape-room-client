@@ -1,6 +1,5 @@
-import cleanBooklet from '../../../assets/items/booklet.png';
-import smudgedBooklet from '../../../assets/items/booklet-smudged.png';
-import { InventoryItem, Sprite } from '../../../classes';
+import bookletSprite from '../../../assets/fragments/fragment1/bookletSprite.png';
+import { Sprite } from '../../../classes';
 import { clickableArea, coordinate, size } from '../../../types';
 import { isInsideBox, isWithin, renderHitbox } from '../../../functions/Metrics';
 import { SHOW_HITBOX } from '../../../constants';
@@ -26,28 +25,18 @@ const hitboxOffset = 44;
 const selectedBookletSize = 300;
 
 export class Booklet {
-    clean: boolean;
     selected: boolean;
     sprite: Sprite;
-    cleanSprite: Sprite;
-    smudgedSprite: Sprite;
     background: backgroundSize;
     onDesk: deskCoords;
     onSelected: selectedCoords;
 
 
     constructor(){
-        this.cleanSprite = new Sprite({
-            sprite: cleanBooklet,
+        this.sprite = new Sprite({
+            sprite: bookletSprite,
             size: selectedBookletSize,
-            rows: 1,
-            columns: 1,
-            
-        });
-        this.smudgedSprite = new Sprite({
-            sprite: smudgedBooklet,
-            size: selectedBookletSize,
-            rows: 1,
+            rows: 2,
             columns: 1,
         });
 
@@ -87,12 +76,10 @@ export class Booklet {
                 h: 0,
             }
         }
-
-        this.clean = true;
     }
 
     setPositionRelativeToReference(fragmentPosition: coordinate, width: number, height: number){
-        const sprite = this.cleanSprite.getAllDimensions();
+        const sprite = this.sprite.getAllDimensions();
   
         this.background = {
             position: {
@@ -139,7 +126,7 @@ export class Booklet {
     }   
 
     isClean(){
-        return this.clean;
+        return (this.sprite.getQuad()[1] === 0);
     }
 
     isSelected(){
@@ -147,7 +134,7 @@ export class Booklet {
     }
 
     setClean(state: boolean){
-        this.clean = state;
+        this.sprite.setQuad(state? [0, 0] : [0, 1]);
     }
 
     setSelected(state: boolean){
@@ -155,8 +142,7 @@ export class Booklet {
     }
 
     setSize(newSize: number){
-        this.cleanSprite.setSize(newSize);
-        this.smudgedSprite.setSize(newSize);
+        this.sprite.setSize(newSize);
     }
 
     interact(clickCoords: coordinate){
@@ -172,14 +158,14 @@ export class Booklet {
         if(isInsideBox(
             clickCoords,
             positionWithOffest,
-            this.onSelected.size.w,
+            this.onSelected.size.w - hitboxOffset,
             this.onSelected.size.h
         )){
             if(isWithin(this.onSelected.hitbox, clickCoords)){
                 if(this.isClean()){
                     const state = new State();
-                    const itemInHand : InventoryItem = state.activeItem;
-                    (itemInHand.name === 'LÁPIS') && this.setClean(false);
+                    const itemInHand : string = state.activeItem;
+                    (itemInHand === 'LÁPIS') && this.setClean(false);
                 }
             }
             return;
@@ -194,7 +180,7 @@ export class Booklet {
             canvas.fillRect(
                 this.onSelected.position.x + hitboxOffset,
                 this.onSelected.position.y,
-                this.onSelected.size.w,
+                this.onSelected.size.w - hitboxOffset,
                 this.onSelected.size.h,
             );
             canvas.fillStyle = fill;
@@ -209,7 +195,7 @@ export class Booklet {
                 canvas,
                 this.onDesk.hitbox.coordinate,
                 this.onDesk.hitbox.radius,
-            );
+            )
         }
     }
 
@@ -235,9 +221,7 @@ export class Booklet {
     render(canvas: CanvasRenderingContext2D){
         if(this.isSelected()){
             this.drawBackground(canvas);
-            this.isClean()
-              ? this.cleanSprite.render(canvas, this.onSelected.position)
-              : this.smudgedSprite.render(canvas, this.onSelected.position);
+            this.sprite.render(canvas, this.onSelected.position)
             SHOW_HITBOX && this.drawHitboxes(canvas);
             return;
         }

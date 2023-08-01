@@ -37,7 +37,7 @@ export class SeniorDeskFragment extends Fragment {
         };
         const inputHandler = new InputHandler();
         inputHandler.subscribe('mouseDown', 'deskFragmentMouseDown', (pos) =>
-            this.interact(pos)
+            this.handleClick(pos)
         );
 
         this.books = new Books({
@@ -125,7 +125,6 @@ export class SeniorDeskFragment extends Fragment {
     }
 
     interact(clickCoords: coordinate): void {
-        if (!this.isVisible()) return;
         const bookletWasSelected = this.booklet.isSelected();
         this.booklet.interact(clickCoords);
         if(!bookletWasSelected){
@@ -151,8 +150,8 @@ export class SeniorDeskFragment extends Fragment {
                         this.closeDrawer();
                     }
                 } else {
-                    const itemInHand : InventoryItem = state.activeItem;
-                    if(itemInHand && (itemInHand.name === 'CHAVE VERMELHA')){
+                    const itemInHand : string = state.activeItem;
+                    if(itemInHand && (itemInHand === 'CHAVE VERMELHA')){
                         this.unlockDrawer();
                         this.success('A gaveta foi destrancada.');
                         return;
@@ -185,6 +184,8 @@ export class SeniorDeskFragment extends Fragment {
             item.render(canvas);
         });
     }
+
+    update(dt: number){}
 
     render(canvas: CanvasRenderingContext2D): void {
         const { width, height } = this.sprite.getAllDimensions();
