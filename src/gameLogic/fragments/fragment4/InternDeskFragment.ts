@@ -1,14 +1,14 @@
-import { Sprite, Fragment, FragmentParams, InventoryItem } from '../../classes';
-import { InputHandler } from '../../events/InputHandler';
-import { State } from '../state';
-import deskSprite from '../../assets/fragments/internDeskFragment.png';
-import { coordinate } from '../../types';
-import { renderHitbox } from '../../functions/Metrics';
-import { SHOW_HITBOX } from '../../constants';
-import Sound from '../../classes/Sound';
+import { Sprite, Fragment, FragmentParams } from '../../../classes';
+import { InputHandler } from '../../../events/InputHandler';
+import { State } from '../../state';
+import deskSprite from '../../../assets/fragments/fragment4/internDeskFragment.png';
+import { coordinate } from '../../../types';
+import { renderHitbox } from '../../../functions/Metrics';
+import { SHOW_HITBOX } from '../../../constants';
+import Sound from '../../../classes/Sound';
 
 // Sfx by Nicole Marie T, CC-BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via OpenGameArt.org
-import soundFile from '../../assets/sounds/light_switch.wav';
+import soundFile from '../../../assets/sounds/light_switch.wav';
 
 export class InternDeskFragment extends Fragment {
   interactions;

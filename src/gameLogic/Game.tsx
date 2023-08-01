@@ -5,7 +5,6 @@ import RenderAll from '../functions/Renderer';
 import UpdateAll from '../functions/Updater';
 import { CANVAS_WIDTH, CANVAS_HEIGHT, SCENE } from '../constants';
 import { GameCallbacks } from '../types';
-import { TestFragment } from './fragments/testFragment';
 
 const mapKeys = (key: string) => {
   switch (key) {
@@ -62,9 +61,6 @@ export class Game {
   setKey = (e: string) => {
     this.key[mapKeys(e)] = true;
     this.key.lastKey = mapKeys(e);
-    if (this.key === 'Enter') {
-      this.callbacks.showPopup(TestFragment);
-    }
   };
 
   GameLoop = (context: CanvasRenderingContext2D, dt: number) => {

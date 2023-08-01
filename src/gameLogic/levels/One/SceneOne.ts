@@ -25,8 +25,6 @@ import {
 } from '../../fragments';
 
 import {
-  CANVAS_WIDTH,
-  CANVAS_HEIGHT,
   FLOOR_PADDING,
   DX,
   DY,

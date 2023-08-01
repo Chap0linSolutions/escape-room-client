@@ -2,7 +2,7 @@ import { Sprite, InventoryItem } from '../../../classes';
 import { coordinate } from '../../../types';
 import { renderHitbox, isWithin } from '../../../functions/Metrics';
 
-import vaultSprite from '../../../assets/fragments/cofre.png';
+import vaultSprite from '../../../assets/fragments/fragment7/cofre.png';
 import buttonClick from '../../../assets/sounds/btn_click.wav';
 import error from '../../../assets/sounds/errorPanel.mp3';
 import right from '../../../assets/sounds/right1.mp3';

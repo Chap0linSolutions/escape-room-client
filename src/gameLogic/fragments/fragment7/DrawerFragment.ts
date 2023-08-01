@@ -2,14 +2,13 @@ import { coordinate } from '../../../types';
 import { InputHandler } from '../../../events/InputHandler';
 import { Sprite, Fragment, FragmentParams } from '../../../classes';
 import { State } from '../../../gameLogic/state';
+import { renderHitbox } from '../../../functions/Metrics';
+import { Vault } from './Vault';
 import Sound from '../../../classes/Sound';
 import soundFile from '../../../assets/sounds/woosh1.mp3';
 import locked from '../../../assets/sounds/locked.wav';
 import unlocked from '../../../assets/sounds/unlocked.wav';
-import drawerSprite from '../../../assets/fragments/fragment7.png';
-
-import { renderHitbox } from '../../../functions/Metrics';
-import { Vault } from './Vault';
+import drawerSprite from '../../../assets/fragments/fragment7/fragment7.png';
 
 export class DrawerFragment extends Fragment {
   interactions;
