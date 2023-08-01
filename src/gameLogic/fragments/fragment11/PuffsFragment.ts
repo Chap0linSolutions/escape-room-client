@@ -1,10 +1,10 @@
-import { coordinate } from '../../types';
-import { InputHandler } from '../../events/InputHandler';
-import { Sprite, Fragment, FragmentParams } from '../../classes';
-import { State } from '../../gameLogic/state';
-import Sound from '../../classes/Sound';
-import soundFile from '../../assets/sounds/woosh1.mp3';
-import puffsSprite from '../../assets/fragments/puffsPlantFragment.png';
+import { coordinate } from '../../../types';
+import { InputHandler } from '../../../events/InputHandler';
+import { Sprite, Fragment, FragmentParams } from '../../../classes';
+import { State } from '../../state';
+import Sound from '../../../classes/Sound';
+import soundFile from '../../../assets/sounds/woosh1.mp3';
+import puffsSprite from '../../../assets/fragments/fragment11/puffsPlantFragment.png';
 //import { renderHitbox } from '../../functions/Metrics';
 
 export class PuffsFragment extends Fragment {

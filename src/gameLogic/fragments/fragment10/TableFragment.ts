@@ -1,11 +1,11 @@
-import { Sprite, Fragment, FragmentParams } from '../../classes';
-import { InputHandler } from '../../events/InputHandler';
-import tableSprite from '../../assets/fragments/tableFragment.png';
+import { Sprite, Fragment, FragmentParams } from '../../../classes';
+import { InputHandler } from '../../../events/InputHandler';
+import tableSprite from '../../../assets/fragments/fragment10/tableFragment.png';
 
-import { coordinate } from '../../types';
-import { getDistance } from '../../functions/Metrics';
+import { coordinate } from '../../../types';
+import { getDistance } from '../../../functions/Metrics';
 
-import { State } from '../state';
+import { State } from '../../state';
 
 export class TableFragment extends Fragment {
   interactions;
