@@ -17,6 +17,11 @@ import pencilSprite from '../../../assets/items/green-pencil-sprite.png';
 import thumbDriveSprite from '../../../assets/items/thumb-drive-sprite.png';
 import thumbDriveIcon from '../../../assets/items/thumb-drive.png';
 import wooshSound from '../../../assets/sounds/woosh1.mp3';
+import lockedSound from '../../../assets/sounds/locked.wav';
+import unlockedSound from '../../../assets/sounds/unlocked.wav';
+import openDrawerSound from '../../../assets/sounds/openPanel.mp3';
+import closeDrawerSound from '../../../assets/sounds/closePanel.mp3';
+import Sound from '../../../classes/Sound';
 
 export class SeniorDeskFragment extends Fragment {
   interactions;
@@ -25,6 +30,12 @@ export class SeniorDeskFragment extends Fragment {
   booklet: Booklet;
   drawerPulled: boolean;
   drawerUnlocked: boolean;
+  sounds: {
+    openDrawer: Sound;
+    closeDrawer: Sound;
+    locked: Sound;
+    unlocked: Sound;
+  }
 
   constructor({ object }: FragmentParams) {
     super({ object });
@@ -86,28 +97,38 @@ export class SeniorDeskFragment extends Fragment {
         },
       }),
     ];
+
+    this.sounds = {
+      openDrawer: new Sound({source: openDrawerSound}),
+      closeDrawer: new Sound({source: closeDrawerSound}),
+      locked: new Sound({source: lockedSound}),
+      unlocked: new Sound({source: unlockedSound}),
+    }
   }
 
   unlockDrawer() {
     this.drawerUnlocked = true;
+    this.sounds.unlocked.play();
   }
 
   openDrawer() {
     this.drawerPulled = true;
     this.sprite.setQuad([0, 1]);
+    this.sounds.openDrawer.play();
   }
 
   closeDrawer() {
     this.drawerPulled = false;
     this.sprite.setQuad([0, 0]);
+    this.sounds.closeDrawer.play();
   }
 
   success(msg: string) {
     const state = new State();
     state.cb.showToast({
       backgroundColor: 'forestgreen',
-      title: 'Sucesso!',
-      description: msg,
+      title: msg,
+      description: '',
     });
   }
 
@@ -115,8 +136,8 @@ export class SeniorDeskFragment extends Fragment {
     const state = new State();
     state.cb.showToast({
       backgroundColor: 'firebrick',
-      title: 'Erro',
-      description: msg,
+      title: msg,
+      description: '',
     });
   }
 
@@ -160,11 +181,12 @@ export class SeniorDeskFragment extends Fragment {
             this.success('A gaveta foi destrancada.');
             return;
           }
+          this.sounds.locked.play();
           this.error('Gaveta trancada.');
         }
         return;
       }
-      this.closeDrawer();
+      this.drawerPulled && this.closeDrawer();
     }
   }
 

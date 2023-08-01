@@ -7,6 +7,7 @@ import redKeySprite from '../../../assets/items/red-key-sprite.png';
 import redKeyIcon from '../../../assets/items/red-key.png';
 import wooshSound from '../../../assets/sounds/woosh1.mp3';
 import { State } from '../../state';
+import Sound from '../../../classes/Sound';
 
 interface booksProps {
   position: coordinate;
@@ -25,6 +26,7 @@ export class Books {
   interactive: book[];
   fragment: Fragment;
   items: InventoryItem[];
+  bookSound: Sound;
 
   constructor({ position, size, fragment }: booksProps) {
     this.sprite = new Sprite({
@@ -67,6 +69,8 @@ export class Books {
         },
       }),
     ];
+
+    this.bookSound = new Sound({source: wooshSound});
   }
 
   removeItem(item: InventoryItem) {
@@ -117,12 +121,14 @@ export class Books {
           }
         }
       }
+      this.bookSound.play();
       return this.sprite.reset();
     }
     for (let i = 0; i < this.interactive.length; i++) {
       const book = this.interactive[i];
       if (isWithin(book.hitbox, clickCoords)) {
         this.sprite.setQuad(book.quad);
+        this.bookSound.play();
         break;
       }
     }
