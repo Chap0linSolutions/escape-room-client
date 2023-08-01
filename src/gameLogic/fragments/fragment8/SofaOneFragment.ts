@@ -1,4 +1,9 @@
-import { Sprite, Fragment, FragmentParams, InventoryItem } from '../../../classes';
+import {
+  Sprite,
+  Fragment,
+  FragmentParams,
+  InventoryItem,
+} from '../../../classes';
 import { InputHandler } from '../../../events/InputHandler';
 import { State } from '../../state';
 import { coordinate } from '../../../types';

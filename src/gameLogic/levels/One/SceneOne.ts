@@ -24,11 +24,7 @@ import {
   SeniorDeskFragment,
 } from '../../fragments';
 
-import {
-  FLOOR_PADDING,
-  DX,
-  DY,
-} from '../../../constants';
+import { FLOOR_PADDING, DX, DY } from '../../../constants';
 
 //ORIGEM DO JOGADOR E DO CHÃO//////////////////////////////////////////////////////////
 const mapOneOrigin = {
