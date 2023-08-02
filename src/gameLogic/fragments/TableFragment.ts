@@ -32,7 +32,6 @@ export class TableFragment extends Fragment {
   }
 
   interact(clickCoords: coordinate): void {
-    if (!this.isVisible()) return;
     const clickedBottle1 = this.isWithin(this.interactions.bottle1, clickCoords);
     const clickedBottle2 = this.isWithin(this.interactions.bottle2, clickCoords);
     const clickedBottle3 = this.isWithin(this.interactions.bottle3, clickCoords);
