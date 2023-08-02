@@ -149,6 +149,7 @@ export class SofaTwoFragment extends Fragment {
     );
   }
 
+  update(_dt: number): void {}
   render(canvas: CanvasRenderingContext2D): void {
     const { width, height } = this.sprite.getAllDimensions();
     !this.position && this.setPosition(width, height);

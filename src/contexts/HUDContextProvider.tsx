@@ -40,11 +40,14 @@ export const HUDContextProvider = ({ children }: HUDContextProviderProps) => {
   const [inventoryList, setInventoryList] = useState(Array(10).fill({}));
   const [inventoryPage, setInventoryPage] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [_randomIndex, setRandomIndex] = useState(0);
 
   const state = new State();
 
   useEffect(() => {
-    state.setInventoryCallback(setInventoryList);
+    state.setInventoryCallback(setInventoryList, () =>
+      setRandomIndex((p) => p + 1)
+    );
   }, []);
 
   const currentDisplayedInventory = inventoryList.slice(
@@ -58,12 +61,14 @@ export const HUDContextProvider = ({ children }: HUDContextProviderProps) => {
 
   const SelectItem = (itemName: string | undefined) => {
     if (itemName && itemName !== selectedItem) {
-      state.cb.showToast({
-        title: `${itemName} selected`,
-        description: '',
-      });
+      // state.cb.showToast({
+      //   title: `${itemName} selected`,
+      //   description: '',
+      // });
       setSelectedItem(itemName);
-      state.activeItem = inventoryList.find((item) => (item.name = itemName));
+      state.activeItem = inventoryList.find(
+        (item) => item.name === itemName
+      ).name;
     } else {
       setSelectedItem(null);
       state.activeItem = null;

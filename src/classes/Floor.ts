@@ -1,11 +1,5 @@
 //import { ISOMETRIC_ANGLE } from '../constants';
-import {
-  ISOMETRIC_ANGLE,
-  SHOW_HITBOX,
-  SHOW_TILEMAP,
-  DX,
-  DY,
-} from '../constants';
+import { SHOW_HITBOX, SHOW_TILEMAP, DX, DY } from '../constants';
 import { getDistance, renderHitbox } from '../functions/Metrics';
 import { coordinate, positionType } from '../types';
 import { Sprite } from './Sprite';
