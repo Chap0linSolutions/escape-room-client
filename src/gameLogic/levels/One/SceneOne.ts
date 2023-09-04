@@ -21,6 +21,7 @@ import {
   TableFragment,
   PuffsFragment,
   DrawerFragment,
+  BookshelfFragment,
 } from '../../fragments';
 
 import {
@@ -465,7 +466,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: BookshelfFragment,
   }),
 ];
 

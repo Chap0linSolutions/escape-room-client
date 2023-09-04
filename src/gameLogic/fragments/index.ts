@@ -4,3 +4,4 @@ export * from './fragment7/DrawerFragment';
 export * from './SofaOneFragment';
 export * from './TableFragment';
 export * from './PuffsFragment';
+export * from './BookshelfFragment';
