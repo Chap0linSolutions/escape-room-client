@@ -37,8 +37,6 @@ export class InternDeskFragment extends Fragment {
     );
   }
 
-  update(dt: number): void {}
-
   interact(clickCoords: coordinate): void {
     if (!this.interactions || !clickCoords) return;
     const state = new State();
@@ -85,6 +83,7 @@ export class InternDeskFragment extends Fragment {
     );
   }
 
+  update(_dt: number) {}
   render(canvas: CanvasRenderingContext2D): void {
     const { width, height } = this.sprite.getAllDimensions();
     !this.position && this.setPosition(width, height);
