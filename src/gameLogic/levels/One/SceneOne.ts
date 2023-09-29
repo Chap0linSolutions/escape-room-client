@@ -16,6 +16,7 @@ import { easyCoords } from '../../../functions/Builder';
 import { InteractiveObject, Floor } from '../../../classes';
 import {
   SofaOneFragment,
+  SofaTwoFragment,
   DoorFragment,
   InternDeskFragment,
   TableFragment,
@@ -195,7 +196,7 @@ const objects = [
     action: {
       texts: ['interagir'],
     },
-    fragment: null,
+    fragment: SofaTwoFragment,
   }),
 
   new InteractiveObject({
